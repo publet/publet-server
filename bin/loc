@@ -1,0 +1,27 @@
+#!/usr/bin/env sh
+
+
+function python {
+    git ls-files | grep "py$" | grep -v "migration" | xargs cat | wc -l
+}
+
+function js {
+    git ls-files | grep "js$" | grep -v "components" | grep -v "vendor" | 
+    grep -v "node_modules" | grep -v "trigger" | grep -v "chrome" |
+    grep "static" |  xargs cat | wc -l
+}
+
+function html {
+    git ls-files | grep "html$" | grep -v "trigger" | grep -v "components" |
+    xargs cat | wc -l
+}
+
+function scss {
+    git ls-files | grep "scss$" | grep -v "trigger" | grep -v "components" |
+    xargs cat | wc -l
+}
+
+echo "Python:    " $(python)
+echo "Javascript:" $(js)
+echo "HTML:      " $(html)
+echo "scss:      " $(scss)

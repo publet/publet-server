@@ -1,0 +1,45 @@
+<div class="flavor-editor">
+
+  <div class="block-flavor-label">
+
+    <div ng-show="!editingName">
+      <h3>[[ flavor.name ]]</h3> <a ng-click="editingName=true" href>edit</a>
+    </div>
+
+    <div ng-show="editingName">
+      <input type="text" ng-model="flavor.name" />
+      <a href ng-click="editingName=false">ok</a>
+    </div>
+
+  </div>
+
+  <select ui-select2 data-placeholder="Size" ng-model="flavor.size">
+    <option value=""></option>
+    <option ng-repeat="size in sizes" value="[[ size ]]">[[ size ]]</option>
+  </select>
+  <select ui-select2 data-placeholder="Font" ng-model="flavor.font">
+    <option value=""></option>
+    <option ng-repeat="font in theme.fonts" value="[[ font.resource_uri ]]">[[ font.name ]]</option>
+  </select>
+  <select ui-select2="{formatSelection: formatColorCell, formatResult: formatColorCell, escapeMarkup: escapeMarkup}" data-placeholder="[[ placeholders.color ]]" ng-model="flavor.color">
+    <option value=""></option>
+    <option ng-repeat="color in theme.colors" value="[[ color.resource_uri ]]">[[ color.hex ]]</option>
+  </select>
+  <select ui-select2 data-placeholder="Position" ng-model="flavor.alignment">
+    <option value=""></option>
+    <option ng-repeat="choice in alignmentChoices" value="[[ choice.id ]]">[[ choice.name ]]</option>
+  </select>
+  <select ui-select2 data-placeholder="Justification" ng-model="block.text_alignment">
+    <option value=""></option>
+    <option ng-repeat="choice in textAlignmentChoices" value="[[ choice.id ]]">[[ choice.name ]]</option>
+  </select>
+  <select ui-select2 data-placeholder="Line height" ng-model="flavor.line_height">
+    <option value=""></option>
+    <option ng-repeat="height in line_heights" value="[[ height ]]">[[ height ]]</option>
+  </select>
+
+  <div class="row">
+    <input type="text" ng-model="flavor.custom_css_classes" class="custom_css" placeholder="CSS Classes" />
+    <input type="text" ng-model="flavor.meta" class="custom_css" placeholder="Metadata" />
+  </div>
+</div>

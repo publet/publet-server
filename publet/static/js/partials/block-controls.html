@@ -1,0 +1,31 @@
+<div class="block-controls" style="[[ fullPhotoStyleOFF(true) ]]"
+    when-ready="blockControlsReady()">
+  <div class="inner">
+    <div class="meta-controls">
+      <a href class="glyphicons remove_2" ng-click="removeBlock($event, block)" title="Remove block"><i></i></a>
+
+      <a href ng-click="lock(block)" ng-show="!block.is_locked && canEdit" class="glyphicons lock" title="Lock"><i></i></a>
+      <a href ng-click="unlock(block)"ng-show="block.is_locked && canEdit" class="glyphicons unlock" title="Unlock"><i></i></a>
+
+      <a href class="glyphicons sorting" data-js="reorder" title="Drag to reorder"><i></i></a>
+
+      <a href class="glyphicons toggleButton" ng-click="toggleBlock()" title="Edit/Preview toggle"
+        ng-class="{
+          pencil: !block.isNew,
+          eye_open: block.isNew
+        }" >
+        <i></i>
+      </a>
+
+    </div>
+  </div>
+  <div class="add-blocks-field" ng-show="!active">
+    <div class="hover-field">
+      <a href ng-click="addBlock('text', block)" class="add-text-block"><i></i></a>
+      <a href ng-click="addBlock('photo', block)" class="add-photo-block"><i></i></a>
+      <div class="add-block-symbol">+</div>
+      <a href ng-click="addBlock('video', block)" class="add-video-block"><i></i></a>
+      <a href ng-click="addBlock('audio', block)" class="add-audio-block"><i></i></a>
+    </div>
+  </div>
+</div>

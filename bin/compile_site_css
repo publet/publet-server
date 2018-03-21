@@ -1,0 +1,15 @@
+#!/usr/bin/env sh
+
+CSS_DIR="publet/static/css"
+
+compile_scss() {
+    sass $CSS_DIR/device-browser.scss:$CSS_DIR/style-browser.css \
+        --style compressed
+}
+
+main() {
+    compile_scss
+    echo "compiled"
+}
+
+main

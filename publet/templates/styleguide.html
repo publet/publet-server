@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en" class="{% block html-class %}{% endblock %}" ng-app="Publet">
+<head>
+  <title>{% block page-title %}Publet{% endblock %}</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="" />
+  <meta charset="utf-8" />
+
+  <link href='//fonts.googleapis.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css' />
+  <link href='//fonts.googleapis.com/css?family=Open+Sans:300,400,700' rel='stylesheet' type='text/css' />
+  <link rel="stylesheet" href="{{ STATIC_URL }}components/pure/build/pure-min.css" type="text/css" media="screen" charset="utf-8" />
+  <link rel="stylesheet" href="{{ STATIC_URL }}components/chosen/public/chosen.css" type="text/css" media="screen" charset="utf-8" />
+  <link rel="stylesheet" href="{{ STATIC_URL }}css/style.css?3" type="text/css" media="screen" charset="utf-8" />
+
+  <!--[if lt IE 9]>
+    <script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+
+</head>
+<body class="{% block body-class %}{% endblock %}">
+  <nav id="top-bar" class="group">
+    <h1 class="left"><a href="/">Publet</a></h1>
+    <section class="top-bar-section">
+      {% if request.user.is_authenticated %}
+        <div class="pure-menu pure-menu-open pure-menu-horizontal">
+          <ul class="left">
+            {% with request.user.profile.get_groups as groups %}
+              <li {% if groups %}class="has-dropdown"{% endif %}>
+                <a href="{% url 'groups-list' %}">Groups</a>
+                {% if groups %}
+                  <ul>
+                    {% for group in groups %}
+                      <li>
+                        <a href="{{ group.get_absolute_url }}">{{ group.name }}</a>
+                      </li>
+                    {% endfor %}
+                  </ul>
+                {% endif %}
+              </li>
+            {% endwith %}
+          </ul>
+        </div>
+      {% endif %}
+      <div class="pure-menu pure-menu-open pure-menu-horizontal">
+        <ul class="right">
+          {% if request.user.is_authenticated %}
+            <li>
+              <a href="/password/change/">Change Password</a>
+            </li>
+            {% if request.user.is_superuser %}
+              <li>
+                <a href="/admin/">Admin</a>
+              </li>
+            {% endif %}
+            <li>
+              <a href="/logout/?next={{ request.path }}">Log out</a>
+            </li>
+          {% else %}
+            <li>
+              <a href="/login/">Log in</a>
+            </li>
+            <li>
+              <a href="/signup/">Sign up</a>
+            </li>
+          {% endif %}
+        </ul>
+      </div>
+    </section>
+  </nav>
+  <div class="pure-g">
+    <section id="sidebar" class="pure-u-1-5">
+      <h2 class="hide-text logo">Publet</h2>
+
+      <h3>Master Pages</h3>
+      <ul class="master-pages">
+        <li><a href="#">Cover</a></li>
+        <li><a href="#">Contents</a></li>
+        <li><a href="#">Front of Book</a></li>
+        <li><a href="#">Feature</a></li>
+        <li><a href="#">Visual</a></li>
+      </ul>
+    </section>
+    <section id="main" class="pure-u-4-5">
+      <nav class="tools group">
+        <div class="pure-menu pure-menu-open pure-menu-horizontal preview left">
+          <p class="pure-menu-heading">Preview</p>
+          <ul class="group">
+            <li><a href="#" class="preview-tablet hide-text">Tablet</a></li>
+            <li><a href="#" class="preview-desktop hide-text">Desktop</a></li>
+            <li><a href="#" class="preview-smartphone hide-text">Phone</a></li>
+          </ul>
+        </div>
+        <div class="pure-menu pure-menu-open pure-menu-horizontal aesthetics right">
+          <ul class="group">
+            <li><a href="#" class="tool-assets">Assets</a></li>
+            <li><a href="#" class="tool-fonts">Fonts</a></li>
+            <li><a href="#" class="tool-colors">Colors</a></li>
+            <li><a href="#" class="tool-textures">Textures</a></li>
+            <li><a href="#" class="tool-publish">Publish</a></li>
+          </ul>
+        </div>
+      </nav>
+      <div class="stage">
+        <h3>Example Buttons</h3>
+        <a href="#" class="pure-button">Standard</a>
+        <a href="#" class="pure-button pure-button-green">Green CTA</a>
+        <a href="#" class="pure-button pure-button-red">Red CTA</a>
+        <a href="#" class="pure-button pure-button-orange">Orange CTA</a>
+        <a href="#" class="pure-button pure-button-blue">Blue CTA</a>
+
+        <h3>Example Forms</h3>
+        <form class="pure-form pure-form-stacked">
+          <fieldset>
+            <legend>Stacked Form (legend)</legend>
+
+            <label for="email">Email</label>
+            <input id="email" type="email" placeholder="Email">
+
+            <label for="password">Password</label>
+            <input id="password" type="password" placeholder="Password">
+
+            <label for="state">State</label>
+            <select id="state">
+              <option>AL</option>
+              <option>CA</option>
+              <option>IL</option>
+            </select>
+
+            <label for="remember" class="pure-checkbox">
+              <input id="remember" type="checkbox"> Remember me
+            </label>
+
+            <button type="submit" class="pure-button pure-button-green notice">Sign in</button>
+          </fieldset>
+        </form>
+
+        <form class="pure-form pure-form-aligned">
+          <fieldset>
+            <legend>Aligned Form (legend)</legend>
+
+            <div class="pure-control-group">
+              <label for="name">Username</label>
+              <input id="name" type="text" placeholder="Username">
+            </div>
+
+            <div class="pure-control-group">
+              <label for="password">Password</label>
+              <input id="password" type="password" placeholder="Password">
+            </div>
+
+            <div class="pure-control-group">
+              <label for="email">Email Address</label>
+              <input id="email" type="email" placeholder="Email Address">
+            </div>
+
+            <div class="pure-control-group">
+              <label for="foo">Supercalifragilistic Label</label>
+              <input id="foo" type="text" placeholder="Enter something here...">
+            </div>
+
+            <div class="pure-controls">
+              <label for="cb" class="pure-checkbox">
+                <input id="cb" type="checkbox"> I've read the terms and conditions
+              </label>
+
+              <button type="submit" class="pure-button pure-button-green">Submit</button>
+            </div>
+          </fieldset>
+        </form>
+        <form class="pure-form">
+          <legend>Grouped Form (legend)</legend>
+          <fieldset class="pure-group">
+            <input type="text" class="pure-input-1-2" placeholder="Username">
+            <input type="text" class="pure-input-1-2" placeholder="Password">
+            <input type="email" class="pure-input-1-2" placeholder="Email">
+          </fieldset>
+          <fieldset class="pure-group">
+            <input type="text" class="pure-input-1-2" placeholder="Another Group">
+            <input type="text" class="pure-input-1-2" placeholder="More Stuff">
+          </fieldset>
+
+          <button type="submit" class="pure-button pure-button-green pure-input-1-2 notice">Sign in</button>
+        </form>
+        {% block content %}{% endblock %}
+        </div>
+      </section>
+    </div><!--end .pure-g div-->
+    {% if debug %}
+      <script>document.write('<script src="http://' + (location.host || 'localhost').split(':')[0] + ':35729/livereload.js?snipver=1"></' + 'script>')</script>
+    {% endif %}
+    {% block modals %}{% endblock %}
+  </body>
+</html>

@@ -1,0 +1,62 @@
+{% extends "publications/publication-base.html" %}
+{% load static from staticfiles %}
+
+{% block body-class %}publication-detail{% endblock %}
+
+{% block section %}
+
+<section class="canvas group">
+  <div class="stage-inner">
+    <div class="row">
+      <div class="col-md-12">
+        <h3 class="left">Articles</h3>
+        <a href data-target="#addArticleModal" data-toggle="modal" class="btn btn-default pull-right">Add Article</a>
+      </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+
+            <table id="article-table" class="table publet-table">
+                <thead class="with-background">
+                <tr>
+                    <th></th>
+                    <th>Article name</th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr class="tr-article" ng-repeat="article in publication.articles|orderBy:'order'">
+                  <td></td>
+                  <td>
+                    <a href="[[ article.absolute_url ]]"><strong>[[ article.name ]]</strong></a>
+                  </td>
+                  <td>
+                    <div class="edit-article-name" ng-show="article.nameEdit">
+                      <input type="text" ng-model="article.name" />
+                      <button type="button" class="btn btn-default" ng-click="saveArticleName(publication, article)">Save</button>
+                      <button type="button" class="btn btn-default" ng-click="article.nameEdit=false">Cancel</button>
+                    </div>
+                  </td>
+                  <td><a href class="btn btn-default glyphicon glyphicon-sort reorder"> Reorder</a></td>
+                  <td>
+                      <a class="btn btn-default" href ng-click="article.nameEdit=true"><i class="glyphicon glyphicon-pencil"></i> Rename</a>
+                  </td>
+                  <td>
+                      <a href class="btn btn-default" data-delete="[[ article]]" data-toggle="modal" data-target="#myModal"><i class="glyphicon glyphicon-remove"></i> Remove</a>
+                  </td>
+                  <td></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+  </div>
+</section>
+
+{% include 'articles/delete-article.html' %}
+{% endblock %}

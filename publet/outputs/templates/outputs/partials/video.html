@@ -1,0 +1,67 @@
+{% load static %}
+
+<div {{ block.block_attr|safe }} class="{{ block.alignment_css_class }} {{ block.font_class }} {{ block.custom_css_classes }}">
+    <div class="video-wrapper">
+      <div style="[[ videoStyle ]]" class="video{% if block.has_preview %} video-with-preview{% endif %}">
+        {% if block.is_youtube %}
+          <div id="yt-{{ block.pk }}-{{ block.video_id }}" class="youtube-video" youtube-video="{alignment: '{{ block.alignment }}', videoId: '{{ block.video_id }}'}">
+
+            <div ng-show="previewActive" ng-click="play()">
+              <a class="glyphicons play" href=""><i></i></a>
+              <img src="//img.youtube.com/vi/{{ block.video_id }}/0.jpg" />
+            </div>
+
+            <div id="video-{{ block.pk }}"></div>
+
+          </div>
+        {% elif block.is_vimeo %}
+          {% if request.is_iphone %}
+            <iframe src="//player.vimeo.com/video/{{ block.video_id }}" width="100%" height="200" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
+          {% else %}
+            <div id="{{ block.pk }}" vimeo-video="{'id': '{{ block.video_id }}', 'ratio': {{ block.ratio }}, 'alignment': '{{ block.alignment }}'}">
+              <div ng-show="previewActive" ng-click="play()">
+                <a class="glyphicons play" href=""><i></i></a>
+                <img image-loaded src="{{ block.preview }}" />
+              </div>
+
+              <iframe ng-show="!previewActive" src="https://player.vimeo.com/video/{{ block.video_id }}?api=1&player_id={{ block.pk }}" width="[[ getVideoWidth() ]]" height="[[ getVideoHeight() ]]" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
+            </div>
+          {% endif %}
+        {% else %}
+            <video src="{{ block.video_url }}"></video>
+        {% endif %}
+      </div>
+    </div>
+  <p class="caption" style="{{ block.style|safe }}">{{ block.caption }}</p>
+
+  {% if block.shareable %}
+    <div class="share-button">
+      <div class="share-this">
+        SHARE THIS
+      </div>
+      {% with link=block.get_social_link %}
+        <div class="social-network">
+          <a href="https://twitter.com/intent/tweet?url={{ link }}" onclick="javascript:window.open(this.href, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=600,width=600');return false;">
+            <img class="img" src="{% static 'css/outputs/shared/twitter.png' %}" />
+          </a>
+        </div>
+        <div class="social-network">
+          <a href="https://www.facebook.com/sharer/sharer.php?u={{ block.get_social_link }}" onclick="javascript:window.open(this.href, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=600,width=600');return false;">
+            <img class="img" src="{% static 'css/outputs/shared/facebook.png' %}" />
+          </a>
+        </div>
+        <div class="social-network">
+          <a href="http://www.linkedin.com/shareArticle?mini=true&url={{ block.get_social_link }}" onclick="javascript:window.open(this.href, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=600,width=600');return false;">
+            <img class="img" src="{% static 'css/outputs/shared/linkedin.png' %}" />
+          </a>
+        </div>
+        <div class="social-network">
+          <a href="https://plus.google.com/share?url={{ block.get_social_link }}" onclick="javascript:window.open(this.href, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=600,width=600');return false;">
+            <img class="img" src="{% static 'css/outputs/shared/googleplus.png' %}" />
+          </a>
+        </div>
+      {% endwith %}
+    </div>
+    <div style="clear: both;"></div>
+  {% endif %}
+</div>

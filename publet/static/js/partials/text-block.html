@@ -1,0 +1,54 @@
+<div text-block class="text-block editor-content-block">
+
+  <!-- Preview -->
+  <div
+    ng-show="!active && !block.is_embed"
+    style="[[ style() ]]"
+    ng-bind-html="trust(block.content)"
+    class="[[ block.custom_css_classes ]] text-block-preview"
+    ng-model="block.content"
+    when-ready="textBlockReady()" ready-check="checkIfTextReady()"></div>
+
+  <!-- Preview embed -->
+  <div ng-show="!active && block.is_embed">
+    <div class="iframe-holder"></div>
+  </div>
+
+  <div ng-show="active">
+    <div class="block-icon icon-text-block"><i></i></div>
+    <div class="block-attribute">
+      <select ui-select2 data-placeholder="No template" ng-model="block.flavor">
+        <option value=""></option>
+        <option ng-repeat="flavor in theme.flavors | filter:{type: 'text'}" value="[[ flavor.resource_uri ]]">[[ flavor.name ]]</option>
+      </select>
+    </div>
+    <div ng-show="block.flavor" class="block-attribute block-flavor-label"></div>
+  </div>
+
+  <medium-editor
+    ng-show="active"
+    style="[[ style() ]]"
+    class="editable"
+    ng-bind-html-unsafe="block.content"
+    ng-model="block.content"></medium-editor>
+
+  <ul class="assets-assets" ng-show="block.adding_asset || block.assets.length">
+    <li ng-repeat="asset in block.assets">
+      <textarea style="[[ style() ]]"
+        type="text"
+        ng-model="asset.label"
+        placeholder="Click to edit Download Link text..."
+        ng-blur-publet="blur()"></textarea>
+
+      <div ng-show="active">
+        <a class="control-link" href="[[ asset.asset_url ]]">Preview Download</a>
+        <a class="control-link" href ng-click="removeAsset(asset)">Remove</a>
+      </div>
+    </li>
+  </ul>
+
+  <!--   load editor controls -->
+  <div ng-if="active" ng-include="static + 'js/partials/text-controls.html'"></div>
+  <div ng-if="!block.is_locked || canEdit" ng-include="static + 'js/partials/block-controls.html'"></div>
+
+</div>

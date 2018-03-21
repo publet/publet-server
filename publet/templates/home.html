@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block content %}
+    {% if request.user.is_authenticated %}
+       <ul>
+           <li>
+                User: {{ request.user.username }}
+           </li>
+           <li>
+                API Key: {{ request.user.publet_api_key.key }}
+           </li>
+       </ul>
+    {% else %}
+        <a href="/login/">Log in</a> to get started.
+    {% endif %}
+{% endblock %}

@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>Integration detail - {{ integration.name }}</h1>
+
+<a href="{% url 'integrations' integration.group.slug %}">Back to integration list</a>
+
+<h2>Are you sure you want to delete this integration?</h2>
+
+<form method="post" action=".">
+  {% csrf_token %}
+  <input type="submit" value="Yes, delete" />
+</form>
+
+{% endblock %}

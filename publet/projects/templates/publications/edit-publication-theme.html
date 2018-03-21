@@ -1,0 +1,38 @@
+<div class="modal" ng-show="editingPublicationTheme">
+  <div class="modal-overlay"></div>
+  <div class="modal-container">
+    <header class="modal-header">
+      <h4>Edit &ldquo;[[ publication.name ]]&rdquo;</h4>
+    </header>
+    <form name="savePublicationForm" class="pure-form pure-form-stacked" method="post" accept-charset="utf-8"
+        novalidate ng-submit="saveFlat($scope.savePublicationForm); editingPublicationTheme=false">
+      <div class="modal-body">
+        <fieldset>
+
+          <label>Theme:</label>
+          <select required ng-model="publication.theme"
+            ng-options="theme.resource_uri as theme.name for theme in themes">
+            <option style="display:none" value="">------</option>
+          </select>
+
+        </fieldset>
+
+        {% if can_user_edit_themes %}
+          <a href="{% url 'group-theme-list' group.slug %}" target="_blank">Manage themes</a>
+        {% endif %}
+
+      </div>
+      <div class="modal-footer group">
+          <button type="submit"
+            class="pure-button pure-button-green right">
+            Save
+          </button>
+          <button type="button" ng-click="editingPublicationTheme=false"
+            class="pure-button right">
+            Cancel
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

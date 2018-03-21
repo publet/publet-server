@@ -1,0 +1,60 @@
+{% extends "base.html"  %}
+{% load static from staticfiles %}
+
+{% block inline-js %}
+  window.group_pk = '/api/group/{{ group.pk }}/';
+  window.group_slug = '{{ group.slug }}';
+{% endblock %}
+
+{% block content %}
+
+ <div class="stage-inner ng-scope" ng-cloak ng-controller="ThemeListController">
+  <header>
+    <h4>
+      {% if group %}
+        Themes for {{ group.name }}
+      {% else %}
+        Themes
+      {% endif %}
+    <a href ng-click="addingTheme=true" class="button right">
+      New Theme
+    </a>
+    </h4>
+  </header>
+
+  {% include "themes/add-theme.html" %}
+
+  <div class="theme-list pure-menu pure-menu-open">
+  <ul>
+    {% for theme in themes %}
+      <li>
+        <a href="{% url 'theme-detail' theme.group.slug theme.slug %}">
+          {{ theme.name }}
+
+          {% if user.is_staff and not theme.group %}
+            (*** warning, this theme has no group set ***)
+          {% endif %}
+        </a>
+      </li>
+    {% endfor %}
+  </ul>
+  </div>
+
+<h4>Beta themes</h4>
+  <div class="theme-list pure-menu pure-menu-open">
+  <ul>
+    {% for theme in new_themes %}
+      <li>
+        <a href="{{ url }}/editor/#/{{ theme.pk }}">
+          {{ theme.name }}
+        </a>
+      </li>
+    {% empty %}
+      <li>None yet</li>
+    {% endfor %}
+  </ul>
+  </div>
+
+ </div>
+</div>
+{% endblock %}

@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div>
+  <header>
+    <h3><a href="/groups/">Groups</a> &raquo;</h3>
+    <h3 class="subheader">{{ group.name }}</h3>
+    <a href="{% url 'group-detail' group.slug %}">back to group detail</a>
+  </header>
+  <div class="row">
+    <div class="eight columns alpha">
+      <h1>Error</h1>
+      {% if error %}
+        {{ provider }} said '{{ error }}'
+      {% else %}
+        Unknown error
+      {% endif %}
+    </div>
+  </div>
+
+</div>
+{% endblock %}

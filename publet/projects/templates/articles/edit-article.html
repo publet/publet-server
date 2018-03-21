@@ -1,0 +1,39 @@
+<div class="modal" ng-show="editingArticle && !deletingArticle">
+  <div class="modal-overlay"></div>
+  <div class="modal-container">
+    <header class="modal-header">
+      <h4>Edit &ldquo;[[ article.name ]]&rdquo;</h4>
+    </header>
+    <form name="saveArticleForm" class="pure-form pure-form-stacked" method="post" accept-charset="utf-8"
+        novalidate ng-submit="save($scope.saveArticleForm); editingArticle=false">
+      <div class="modal-body">
+        <fieldset>
+          <label style="margin-top: 0;">Name:</label>
+          <input required ng-model="article.name" type="text" name="name" value="" />
+        </fieldset>
+        <fieldset ng-show="publication.gate_type == '1'">
+          <label style="margin-top: 0;">Social sharing gate copy:</label>
+          <textarea ng-model="article.gate_copy" name="gate_copy">
+            [[ article.gate_copy ]]
+          </textarea>
+        </fieldset>
+      </div>
+      <div class="modal-footer group">
+        <div class="pure-controls">
+          <button type="button"
+            class="pure-button pure-button-red left"
+            ng-click="deletingArticle=true">
+            Delete article
+          </button>
+          <button type="submit" class="pure-button pure-button-green right">
+            Save
+          </button>
+          <button type="button" ng-click="editingArticle=false"
+            class="pure-button right">
+            Cancel
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

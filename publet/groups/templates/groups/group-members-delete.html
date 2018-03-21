@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div>
+  <header>
+    <h3><a href="/groups/">Groups</a> &raquo;</h3>
+    <h3 class="subheader">{{ group.name }}</h3>
+
+    <div class="flash-message">
+      {% if messages %}
+        {% for message in messages %}
+          <p>{{ message }}</p>
+        {% endfor %}
+      {% endif %}
+    </div>
+
+    <a href="{% url 'group-members' group.slug %}">back to group members</a>
+  </header>
+  <div class="row">
+    <h1>Are you sure?</h1>
+    <p>
+      Are you sure you want to delete <em>{{ member.user.username }}</em>
+      from the group <em>{{ group.name }}</em>?
+    </p>
+
+    <form method="post" action=".">
+      {% csrf_token %}
+
+      <button class="pure-button pure-button-primary" type="submit">Yes, I'm sure</button>
+
+    </form>
+
+  </div>
+</div>
+{% endblock %}

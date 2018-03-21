@@ -1,0 +1,15 @@
+{% extends "registration/registration_base.html" %}
+
+{% block page-title %}Signup complete - {{ block.super }}{% endblock %}
+
+{% block body-class %}{{ block.super }} page{% endblock %}
+
+{% block content %}
+  <div class="stage-inner">
+    <p>
+      Your account has been activated!
+
+      Now you can <a href="{% url 'auth_login' %}">log in</a> to see your publications.
+    </p>
+  </div>
+{% endblock %}

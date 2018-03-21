@@ -1,0 +1,53 @@
+// Identity styles for Nowhere Theme
+
+// Colors
+$bgColor: #fbfbfb;
+$color1: #323a45; 
+//$color2: ;
+//$color3: ;
+$headingColor: $color1; 
+$navColor: $color1;
+$navFontColor: #fff;
+
+// Type
+@import url(https://fonts.googleapis.com/css?family=Lora:400,700);
+$fontBody: 'Lora', serif;
+$fontHeading: 'Lora', serif;
+$fontSize: 18px;
+$h1Size: 3em; 
+$h2Size: 1.125em; 
+$h3Size: 1.3125em; 
+$h4Size: 1.125em; 
+$h5Size: 1.125em; 
+$h6Size: 1.125em; 
+$blockquoteSize: 1.778em; // 32px
+$lineHeight: 1.5em;
+//$textShadow:;
+
+// Images
+$imageLogo: url(logo.png) no-repeat;
+//$imageBackground:;
+
+// Box styles
+//$borderRadius:;
+//$boxShadow:;
+
+
+// Import partials
+@import 'base';
+@import 'layout';
+@import 'module';
+@import 'state';
+
+
+/* Custom styles */
+header {
+	h1 {
+		background-size: 40px;
+	}
+}
+article h1 {
+	background: url(nowhere_flourish.png) center bottom no-repeat;
+	margin-bottom: 0.75em;
+	padding-bottom: 0.65em;
+}

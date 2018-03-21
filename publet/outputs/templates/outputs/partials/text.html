@@ -1,0 +1,49 @@
+{% load output_tags %}
+{% load static %}
+
+{% if block.is_embed %}
+  <div {{ block.block_attr|safe }} class="{{ block.alignment_css_class }} embed {{ block.font_class }} {{ block.custom_css_classes }}">
+    <iframe src="{% url 'iframe' block.pk %}" width="100%" frameborder="0">
+    </iframe>
+  </div>
+{% else %}
+<div {{ block.block_attr|safe }} class="text-block {{ block.alignment_css_class }} {{ block.font_class }} {{ block.custom_css_classes }}">
+  {% if block.shareable %}
+    <div class="share-button">
+      <div class="share-this">
+        SHARE THIS
+      </div>
+      {% with link=block.get_social_link %}
+        <div class="social-network">
+          <a href="https://twitter.com/intent/tweet?url={{ link }}" onclick="javascript:window.open(this.href, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=600,width=600');return false;">
+            <img class="img" src="{% static 'css/outputs/shared/twitter.png' %}" />
+          </a>
+        </div>
+        <div class="social-network">
+          <a href="https://www.facebook.com/sharer/sharer.php?u={{ block.get_social_link }}" onclick="javascript:window.open(this.href, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=600,width=600');return false;">
+            <img class="img" src="{% static 'css/outputs/shared/facebook.png' %}" />
+          </a>
+        </div>
+        <div class="social-network">
+          <a href="http://www.linkedin.com/shareArticle?mini=true&url={{ block.get_social_link }}" onclick="javascript:window.open(this.href, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=600,width=600');return false;">
+            <img class="img" src="{% static 'css/outputs/shared/linkedin.png' %}" />
+          </a>
+        </div>
+        <div class="social-network">
+          <a href="https://plus.google.com/share?url={{ block.get_social_link }}" onclick="javascript:window.open(this.href, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=600,width=600');return false;">
+            <img class="img" src="{% static 'css/outputs/shared/googleplus.png' %}" />
+          </a>
+        </div>
+      {% endwith %}
+    </div>
+    <div style="clear: both;"></div>
+
+  {% endif %}
+  <div style="{{ block.style|safe }}">
+    {{ block.processed_html|safe|linebreaksbr }}
+  </div>
+  {% for asset in block.asset_set.all %}
+    <p style="{{ block.style|safe }}"><a href="{{ asset.asset_url }}" download>{{ asset.label }}</a></p>
+  {% endfor %}
+</div>
+{% endif %}

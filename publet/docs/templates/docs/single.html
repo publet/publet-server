@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<a href="{% url 'docs-index' %}">Back to docs</a>
+
+{{ page.html|safe }}
+
+{% endblock %}

@@ -1,0 +1,73 @@
+{% load static from staticfiles %}
+
+<nav id="ui_site_nav">
+        <ul id="ui_top_nav">
+                <li class="bevel-start home-icon" data-chapter="0">
+                    <a href>
+                    </a>
+                    <span class="label"><span>Home</span></span>
+                </li>
+
+                {% for article in publication.get_articles.all|dictsort:'order' %}
+                  <li class="" data-chapter="{{ forloop.counter }}">
+                      {% if pagination == 'h' %}
+                        {% if request.is_custom_domain %}
+                          {% if group.has_domain %}
+                            {% if article.page_number == 1 %}
+                              <a href="/{{ publication.slug }}/">{{ forloop.counter }}</a>
+                              <span class="label"><span>{{ article.name }}</span></span>
+                            {% else %}
+                              <a href="/{{ publication.slug }}/{{ article.page_number }}">{{ forloop.counter }}</a>
+                              <span class="label"><span>{{ article.name }}</span></span>
+                            {% endif %}
+                          {% else %}
+                            {% if article.page_number == 1 %}
+                              <a href="/">{{ forloop.counter }}</a>
+                              <span class="label"><span>{{ article.name }}</span></span>
+                            {% else %}
+                              <a href="/{{ article.page_number }}">{{ forloop.counter }}</a>
+                              <span class="label"><span>{{ article.name }}</span></span>
+                            {% endif %}
+                          {% endif %}
+                        {% else %}
+
+                          {% if heatmap %}
+
+                            {% if article.page_number == 1 %}
+                              <a href="{% url 'publication-heatmap' group.slug publication.slug %}">
+                                {{ article.name }}
+                              </a>
+                            {% else %}
+                              <a href="{% url 'publication-heatmap' group.slug publication.slug article.page_number %}">
+                                {{ article.name }}
+                              </a>
+                            {% endif %}
+
+                          {% else %}
+
+                            {% if article.page_number == 1 %}
+                              <a href="{% url 'preview-publication-html' group.slug publication.slug %}">
+                                {{ forloop.counter }}
+                              </a>
+                              <span class="label"><span>{{ article.name }}</span></span>
+                            {% else %}
+                              <a href="{% url 'preview-publication-html-page' group.slug publication.slug article.page_number %}">
+                                {{ forloop.counter }}
+                              </a>
+                              <span class="label"><span>{{ article.name }}</span></span>
+                            {% endif %}
+
+                          {% endif %}
+
+                        {% endif %}
+                      {% else %}
+                        <a href="#{{ article.slug }}">
+                          {{ forloop.counter }}
+                        </a>
+                        <span class="label"><span>{{ article.name }}</span></span>
+                      {% endif %}
+                    </li>
+
+                {% endfor %}
+        </ul>
+    </nav>

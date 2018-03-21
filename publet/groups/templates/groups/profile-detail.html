@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+
+{% load payments_tags %}
+
+{% block body-class %}profile-detail{% endblock %}
+
+{% block content %}
+  <div class="stage-inner">
+    <header>
+      <h3>{{ group.name }}</h3>
+      {% if group.plan_id %}
+        <form class="pure-form pure-form-stacked" method="post" accept-charset="utf-8" method="POST" action=".">
+          {% csrf_token %}
+          {% if purchase_successful %}
+            <p style="color: green;">
+                You've successfully subscribed to this group.
+            </p>
+            <p>
+              <a href="/dashboard/">Go here</a> to view all of your purchases.
+            </p>
+          {% else %}
+            {% if already_purchased %}
+              <p>
+                Subscribed.
+              </p>
+              <p>
+                <a href="{% url 'payments-unsubscribe' group.slug %}">Unsubscribe from this group</a>
+              </p>
+            {% else %}
+              <p>
+                <a href="{% url 'payments-subscribe' group.slug %}">Subscribe to this group</a>
+              </p>
+              <p>Subscription price: ${{ group.price }}/month</p>
+
+            {% endif %}
+          {% endif %}
+        </form>
+      {% endif %}
+    </header>
+    <div class="pure-g">
+      <div class="pure-u-1">
+        <div class="box">
+          <div class="publications">
+            <div class="pure-menu pure-menu-open">
+              <ul>
+                {% for publication in group.get_active_publications %}
+                  <li class="publication">
+                    <a href="{% url 'preview-publication-html' publication.group.slug publication.slug %}">
+                      {{ publication.name }}
+                      {% if publication.status == 'preorder' %}
+                        (pre-order)
+                      {% endif %}
+                    </a>
+                  </li>
+                {% endfor %}
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}

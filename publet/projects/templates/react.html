@@ -1,0 +1,54 @@
+<!doctype html>
+<html class="no-js" lang="" ng-app="Publet">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>{{ title }}</title>
+    <meta name="viewport" content="width=device-width,height=device-height, initial-scale=1">
+
+    <link rel="apple-touch-icon" href="apple-touch-icon.png">
+    <link rel="stylesheet" href="{{ fonts_url }}">
+
+    {% for stylesheet in css %}
+      <link rel="stylesheet" href="/{{ stylesheet }}">
+    {% endfor %}
+
+    {% for script in js.deps %}
+      <script src="/{{ script }}"></script>
+    {% endfor %}
+
+    <script src="/{{ js.app }}"></script>
+
+    <script>
+        window.publicationId = {{ publication.id }};
+        window.PB = {
+            trackUrl: '{{ track_url }}',
+            host: '{{ HOST }}'
+        };
+        window.analytics.initialize({"Publet": {}});
+        var conf = {
+            publication: window.publicationId
+        };
+
+        var h = window.location.hash;
+
+        if (h) {
+            conf.block = parseInt(h.split('-')[1], 10);
+        }
+
+        window.analytics.page(conf);
+    </script>
+
+  </head>
+  <body ng-controller="PublicationController">
+    <!--[if lt IE 8]>
+      <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+    <![endif]-->
+
+    <!-- Here be dragons. And React -->
+      <div id="content">
+          {{ content|safe }}
+      </div>
+
+  </body>
+</html>

@@ -1,0 +1,58 @@
+<form></form>
+<div class="modal" ng-show="editingGroup">
+  <div class="modal-overlay"></div>
+  <div class="modal-container">
+    <header class="modal-header">
+      <h4>Edit &ldquo;[[ group.name ]]&rdquo;</h4>
+    </header>
+    <form name="saveGroup" class="pure-form pure-form-stacked" method="post" accept-charset="utf-8"
+        novalidate ng-submit="save(); editingGroup=false">
+      <div class="modal-body">
+        <fieldset>
+          <label style="margin-top: 0;" for="name">Name:</label>
+          <input required ng-model="group.name" type="text" id="name" name="name" value="" /><br />
+
+          <label style="margin-top: 30px;">Logo: [[ group.logo_filename ]]</label>
+          <a href ng-click="selectLogoFile()" class="pure-button button-secondary">Upload a file</a>
+          <a href ng-show="group.logo" ng-click="clearLogo()" class="pure-button button-secondary">Clear</a>
+
+          <label style="margin-top: 30px;">Favicon: [[ group.favicon_filename ]]</label>
+          <a href ng-click="selectFaviconFile()" class="pure-button button-secondary">Upload a file</a>
+          <a href ng-show="group.favicon" ng-click="clearFavicon()" class="pure-button button-secondary">Clear</a>
+
+
+          <div>
+            <label for="ga_tracking_id">Google Analytics tracking code (without campaign):</label>
+            <input id="ga_tracking_id" ng-model="group.ga_tracking_id" type="text" name="ga_tracking_id" style="width: 25%" value="" /><br />
+            <p class="help-text" style="margin-bottom: 0;">This is the group of digits right after the UA but before the campaign suffix. E.g. UA-123-x, so you'd put in 123.</p>
+            <label for="social_twitter">Twitter handle:</label>
+            <input id="social_twitter" ng-model="group.twitter" type="text" name="twitter" style="width: 25%" value="" /><br />
+
+            <label for="social_facebook">Facebook:</label>
+            <input id="social_facebook" ng-model="group.facebook" type="text" name="facebook" style="width: 25%" value="" /><br />
+
+            <label for="social_pinterest">Pinterest:</label>
+            <input id="social_pinterest" ng-model="group.pinterest" type="text" name="pinterest" style="width: 25%" value="" /><br />
+
+            <label for="social_linkedin">Linkedin:</label>
+            <input id="social_linkedin" ng-model="group.linkedin" type="text" name="linkedin" style="width: 25%" value="" /><br />
+
+          </div>
+        </fieldset>
+      </div>
+      <div class="modal-footer group">
+        <div class="pure-controls">
+          <button type="submit"
+            class="pure-button pure-button-green right"
+            ng-disabled="saveGroup.$invalid || saveGroupDisabled">
+            Save
+          </button>
+          <button type="button" ng-click="editingGroup=false"
+            class="pure-button right">
+            Cancel
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

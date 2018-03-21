@@ -1,0 +1,122 @@
+{% extends "base.html" %}
+
+{% block body-class %}group-detail{% endblock %}
+{% block inline-js %}
+  window.group_id = {{ group.id }};
+  filepicker.setKey('{{ FILEPICKER_API_KEY }}');
+  window.FP = {
+    write: {
+      policy: "{{ filepicker.write.policy }}",
+      signature: "{{ filepicker.write.signature }}"
+    },
+      read: {
+        policy: "{{ filepicker.read.policy }}",
+        signature: "{{ filepicker.read.signature }}"
+    }
+  };
+{% endblock %}
+
+{% block main %}
+  <div group class="ng-cloak stage-inner"
+    ng-controller="GroupController"
+    ng-cloak
+    ng-show="group">
+
+<nav class="breadcrumb-publet">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4">
+                <ol class="breadcrumb">
+                    <li><a href="/">Home</a></li>
+                    <li><a href>[[ group.name ]]</a></li>
+                </ol>
+            </div>
+            <div class="col-md-8">
+                <ul class="nav nav-pills pull-right">
+                    <li role="presentation" class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#"
+                                                                role="button" aria-haspopup="true"
+                                                                aria-expanded="false">
+                        Settings <span class="caret"></span></a>
+                        <ul class="dropdown-menu primary-dropdown">
+                            <li><a href="#">Edit Publication</a></li>
+                            <li><a href="#" data-target="#themeModal" data-toggle="modal">Edit Theme</a></li>
+                            <li><a href="#">Edit Gate</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</nav>
+<div class="container content" ng-controller="GroupsController">
+    <div class="row">
+        <div class="col-md-6">
+            <strong class="page-title">Groups: </strong> <strong
+    class="group-title">{{ group.name }}</strong>
+        </div>
+
+        <div class="col-md-6">
+            <div class="btn-toolbar">
+                <div class="btn-group pull-right" role="group" aria-label="Third group">
+                  <button type="button" class="btn btn-default dropdown-btn-publet" data-toggle="modal" data-target="#myModal">
+                    Manage group members
+                  </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <hr/>
+    <div class="row margin-bottom">
+        <div class="col-md-12">
+            <div class="has-feedback pull-right ">
+                <i class="fa fa-search form-control-feedback search-icon"></i>
+                <input type="text" class="group-search search-input"
+                       ng-change="search(q)"
+                       ng-model="q" placeholder="Search for...">
+            </div>
+
+            <div class="btn-toolbar">
+                <div class="btn-group">
+                    <button type="button" class="btn btn-default pull-left">Add New Content</button>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+
+            <table class="table publet-table">
+                <thead class="with-background">
+                <tr>
+                    <td></td>
+                    <th>Content title</th>
+                    <th>Status</th>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="publication in publications">
+                    <td></td>
+                    <td><a href="[[ publication.absolute_url ]]"><strong>[[ publication.name ]]</strong></a></td>
+                    <td><strong>[[ publication.status|capitalize ]]</strong></td>
+                    <td><a class="btn btn-default" href><i class="glyphicon glyphicon-pencil"></i> Rename</a></td>
+                    <td><a class="btn btn-default" href><i class="glyphicon glyphicon-duplicate"></i> Duplicate</a></td>
+                    <td><a class="btn btn-default" href><i class="glyphicon glyphicon-remove"></i> Delete</a></td>
+                    <td></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</div>
+
+    {% include 'groups/edit-group.html' %}
+    {% include 'groups/manage-members.html' %}
+  </div>
+{% endblock %}

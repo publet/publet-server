@@ -1,0 +1,70 @@
+{% load static from staticfiles %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>{{ project.name }}</title>
+
+  <meta name="description" content="" />
+  <meta charset="utf-8" />
+
+  <link href='//fonts.googleapis.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css' />
+  <link href='//fonts.googleapis.com/css?family=Open+Sans:300,400,700' rel='stylesheet' type='text/css' />
+
+  {% if STATIC_URL %}
+    <link rel="stylesheet" href="{% static "css/outputs/mobile/style.css" %}" type="text/css" media="screen" charset="utf-8" />
+    <link rel="stylesheet" href="{% static "components/highlightjs/styles/tomorrow.css" %}" type="text/css" media="screen" charset="utf-8" />
+    <script type="text/javascript" src="{% static "components/highlightjs/highlight.pack.js" %}"></script>
+  {% else %}
+    <link rel="stylesheet" href="css/style.css" type="text/css" media="screen" charset="utf-8" />
+    <link rel="stylesheet" href="css/tomorrow.css" type="text/css" media="screen" charset="utf-8" />
+    <script type="text/javascript" src="js/highlight.js"></script>
+  {% endif %}
+
+  <script type="text/javascript">
+     hljs.initHighlightingOnLoad(); 
+  </script>
+
+  <!--[if lt IE 9]>
+    <script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+
+</head>
+<body>
+
+  <header>{{ project.name }}</header>
+  {% for block in project.get_blocks %}
+    {% if block.type == 'heading' %}
+      <div class="block block-heading">
+        <h1>{{ block.heading }}</h1>
+        {% if block.subheading %}
+          <h2>{{ block.subheading }}</h2>
+        {% endif %}
+      </div>
+    {% else %}
+      <div class="block block-{{ block.type }}">
+        {% if block.type == 'code' %}
+          <pre><code>{{ block.content }}</code></pre>
+        {% endif %}
+        {% if block.type == 'photo' %}
+          <img src="{{ block.image }}" />
+        {% endif %}
+        {% if block.type == 'photos' %}{% endif %}
+        {% if block.type == 'pullquote' %}
+          <blockquote>{{ block.content }}</blockquote>
+        {% endif %}
+        {% if block.type == 'text' %}
+          {{ block.content|safe|linebreaksbr|urlize }}
+        {% endif %}
+        {% if block.type == 'video' %}
+          <div class="video">{{ block.video_url }}</div>
+        {% endif %}
+      </div>
+    {% endif %}
+  {% endfor %}
+
+  {% if debug %}
+    <script>document.write('<script src="http://' + (location.host || 'localhost').split(':')[0] + ':35729/livereload.js?snipver=1"></' + 'script>')</script>
+  {% endif %}
+
+</body>
+</html>

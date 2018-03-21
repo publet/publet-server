@@ -1,0 +1,46 @@
+<div class="modal" ng-show="draftDialogOpen">
+  <div class="modal-overlay"></div>
+  <div class="modal-container">
+    <header class="modal-header">
+      <h4>Article &ldquo;[[ article.name ]]&rdquo;</h4>
+    </header>
+    <div class="modal-body">
+      <h3>Draft settings</h3>
+
+      <form ng-show="!draftModeEnabled" name="activate_draft_mode" method="post" action="{% url 'article-draft' group.slug article.publication.slug article.slug %}">
+
+          {% csrf_token %}
+          <input type="hidden" name="action" value="start" />
+          <button type="submit" class="pure-button pure-button-green">Start a draft</button>
+          <p>
+
+          Draft mode lets you edit articles without changing the original
+          version. 'Discard changes' restores the original. 'Commit
+          changes' overwrites the original with your changes." 
+
+          </p>
+
+      </form>
+
+      <form ng-show="draftModeEnabled" method="post" action="{% url 'article-draft' group.slug article.publication.slug article.slug %}">
+        {% csrf_token %}
+        <input type="hidden" name="action" value="publish" />
+        <button type="submit" class="pure-button pure-button-primary">Commit changes</button>
+      </form>
+
+      <form ng-show="draftModeEnabled" method="post" action="{% url 'article-draft' group.slug article.publication.slug article.slug %}">
+        {% csrf_token %}
+        <input type="hidden" name="action" value="trash" />
+        <button type="submit" class="pure-button pure-button-red">Discard changes</button>
+      </form>
+
+    </div>
+    <div class="modal-footer group">
+      <button type="button" ng-click="draftDialogOpen=false"
+        class="pure-button right">
+        Cancel
+      </button>
+    </div>
+  </div>
+</div>
+</div>

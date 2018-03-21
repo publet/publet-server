@@ -1,0 +1,148 @@
+{% load output_tags %}
+{% load static %}
+
+{% if block.grid_type == 'grid' %}
+  <div modal class="gallery -grid {{ block.alignment_css_class }} {{ block.font_class }} {{ block.custom_css_classes }}">
+    {% for photo in block.ordered_photos %}
+
+      {% if forloop.counter|is_alpha:block.grid_size %}
+        <div class="row">
+      {% endif %}
+
+      <div class="gallery__item {% if block.alignment == '2' %} {{ block.grid_size|skeletonify_breaking }} {% else %} {{ block.grid_size|skeletonify }} {% endif %} columns {% if block.grid_size|skeletonify_breaking == 'one-third' %}column{% endif %}{% if forloop.counter|is_omega:block.grid_size %} omega{% endif %}{% if forloop.counter|is_alpha:block.grid_size %} alpha{% endif %}">
+        {% if photo.heading %}
+          <div style="{{ photo.heading_style }}">{{ photo.heading }}</div>
+        {% endif %}
+        {% if photo.has_link %}
+          <a {% if photo.trigger_gate %}data-ga="publet-image-trigger" class="ga trigger-gate" {% else %} target="_blank"{% endif %} href="{{ photo.clean_link }}">
+            <img image-loaded src="{{ photo.cropped_image_url }}" />
+          </a>
+        {% else %}
+          <a class="popup" href="{{ photo.cropped_image_url }}">
+            <img image-loaded src="{{ photo.cropped_image_url }}" />
+          </a>
+        {% endif %}
+
+        {% if photo.description %}
+          <p class="caption" style="{{ photo.description_style }}">{{ photo.description }}</p>
+        {% endif %}
+
+      </div>
+
+      {% if forloop.counter|is_omega:block.grid_size or forloop.last %}
+        </div>
+      {% endif %}
+
+    {% endfor %}
+  </div>
+{% endif %}
+
+{% if block.grid_type == 'cover' %}
+  {% if block.alignment_css_class == 'align-full' %}
+    {% with_break_out %}
+      <div class="gallery -cover {{ block.alignment_css_class }} {{ block.font_class }} {{ block.custom_css_classes }}">
+        {% for photo in block.ordered_photos %}
+          <div class="gallery__item columns">
+            <img src="{{ photo.cropped_image_url }}"/>
+            <div class="headings">
+              <h1>{{ block.cover_content_title }}</h1>
+              <h2>{{ block.cover_content_subtitle }}</h2>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+    {% end_with_break_out %}
+
+  {% else %}
+
+    <div modal class="gallery -cover {{ block.alignment_css_class }} {{ block.font_class }} {{ block.custom_css_classes }}">
+      {% for photo in block.ordered_photos %}
+        <div class="gallery__item columns">
+          <div image-loaded style="background-image: url({{ photo.cropped_image_url }}); width: {{ photo.width }}px; height: {{ photo.height }}px;"></div>
+          <div class="headings">
+            <h1>{{ block.cover_content_title }}</h1>
+            <h2>{{ block.cover_content_subtitle }}</h2>
+          </div>
+      {% endfor %}
+    </div>
+  {% endif %}
+{% endif %}
+
+{% if block.grid_type == 'single' %}
+    <div
+      modal
+      {{ block.block_attr|safe }}
+      class="gallery -single {{ block.alignment_css_class }} {{ block.font_class }} {{ block.custom_css_classes }}">
+      {% for photo in block.ordered_photos %}
+
+        <div class="gallery__item">
+          {% if photo.heading %}<h4>{{ photo.heading }}</h4>{% endif %}
+
+          {% if photo.has_link %}
+            <a {% if photo.trigger_gate %}data-ga="publet-image-trigger" class="ga trigger-gate" {% else %} target="_blank"{% endif %} href="{{ photo.clean_link }}">
+              <img image-loaded src="{{ photo.cropped_image_url }}" />
+            </a>
+          {% else %}
+            {% if publication.enable_image_links %}
+              <a class="popup" href="{{ photo.cropped_image_url }}">
+                <img image-loaded src="{{ photo.cropped_image_url }}" />
+              </a>
+            {% else %}
+              <img image-loaded src="{{ photo.cropped_image_url }}" />
+            {% endif %}
+          {% endif %}
+
+          {% if photo.description %}<p class="caption">{{ photo.description }}</p>{% endif %}
+        </div>
+
+      {% endfor %}
+
+      {% if block.shareable %}
+        <div class="share-button">
+          <div class="share-this">
+            SHARE THIS
+          </div>
+          {% with link=block.get_social_link %}
+            <div class="social-network">
+              <a href="https://twitter.com/intent/tweet?url={{ link }}" onclick="javascript:window.open(this.href, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=600,width=600');return false;">
+                <img class="img" src="{% static 'css/outputs/shared/twitter.png' %}" />
+              </a>
+            </div>
+            <div class="social-network">
+              <a href="https://www.facebook.com/sharer/sharer.php?u={{ block.get_social_link }}" onclick="javascript:window.open(this.href, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=600,width=600');return false;">
+                <img class="img" src="{% static 'css/outputs/shared/facebook.png' %}" />
+              </a>
+            </div>
+            <div class="social-network">
+              <a href="http://www.linkedin.com/shareArticle?mini=true&url={{ block.get_social_link }}" onclick="javascript:window.open(this.href, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=600,width=600');return false;">
+                <img class="img" src="{% static 'css/outputs/shared/linkedin.png' %}" />
+              </a>
+            </div>
+            <div class="social-network">
+              <a href="https://plus.google.com/share?url={{ block.get_social_link }}" onclick="javascript:window.open(this.href, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=600,width=600');return false;">
+                <img class="img" src="{% static 'css/outputs/shared/googleplus.png' %}" />
+              </a>
+            </div>
+          {% endwith %}
+        </div>
+        <div style="clear: both;"></div>
+      {% endif %}
+
+    </div>
+{% endif %}
+
+{% if block.grid_type == 'slideshow' %}
+  <div class="gallery -slideshow flexslider {{ block.alignment_css_class }} {{ block.font_class }} {{ block.custom_css_classes }}">
+    <ul class="slides">
+      {% for photo in block.ordered_photos %}
+        <li>
+          <div class="slide-content">
+            <h2>{{ photo.heading }}</h2>
+            <p>{{ photo.description }}</p>
+          </div>
+          <img image-loaded src="{{ photo.cropped_image_url }}" alt="Image field" />
+        </li>
+      {% endfor %}
+    </ul>
+  </div>
+{% endif %}

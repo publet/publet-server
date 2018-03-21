@@ -1,0 +1,59 @@
+{% extends "registration/registration_base.html" %}
+
+{% block page-title %}Log in - {{ block.super }}{% endblock %}
+
+{% block body-class %}{{ block.super }} login{% endblock %}
+
+{% block content %}
+  <div class="stage-inner">
+    <form method="post" action="{% url 'django.contrib.auth.views.login' %}" class="pure-form pure-form-aligned">
+      <fieldset>
+        <legend><h3>Log in</h3></legend>
+
+        {% if request.GET.activationcomplete %}
+          <div class="alert-box round">
+            Successfully confirmed email! Log in below.
+          </div>
+        {% endif %}
+
+        {% if messages %}
+          <div class="alert-box round">
+            {% for message in messages %}
+              <p>{{ message }}</p>
+            {% endfor %}
+          </div>
+        {% endif %}
+
+        {% if form.errors %}
+          {% if form.non_field_errors %}
+          <div class="alert-box alert round">
+            {{ form.non_field_errors }}
+          </div>
+          {% else %}
+          <div class="alert-box alert round">
+            Please fix the errors below.
+          </div>
+          {% endif %}
+        {% endif %}
+        <div class="pure-control-group">
+          <div class="{% if form.username.errors %}error{% endif %}">
+            <label for="id_username">Username or Email</label>
+            {{ form.username }}
+          </div>
+        </div>
+        <div class="pure-control-group">
+          <div class="{% if form.password.errors %}error{% endif %}">
+            <label for="id_password">Password</label>
+            {{ form.password }}
+          </div>
+        </div>
+        <div class="pure-controls">
+          <button class="pure-button button" type="submit">Log in</button>
+          <a class="button-secondary" style="margin-left: 10px" href="{% url 'auth_password_reset' %}">Forget your password?</a>
+        </div>
+        <input type="hidden" name="next" value="{{ next }}" />
+        {% csrf_token %}
+      </fieldset>
+    </form>
+  </div>
+{% endblock %}

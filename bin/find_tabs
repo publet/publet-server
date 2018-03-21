@@ -1,0 +1,8 @@
+#!/usr/bin/env sh
+
+find publet -name "*.py" -exec grep -r $'\t' {} \;
+
+grep -iIr --exclude=*components* --exclude=*vendor* --exclude=*.min.* $'\t' \
+    publet/static/js
+
+exit 0

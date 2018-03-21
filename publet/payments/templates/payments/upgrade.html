@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+
+{% block javascript %}
+    <script type="text/javascript" src="https://js.stripe.com/v2/"></script>
+{% endblock %}
+
+{% block inline-js %}
+    Stripe.setPublishableKey('{{ STRIPE_PUBLISHABLE_KEY }}');
+{% endblock %}
+
+{% block content %}
+    <div class="row">
+        {% if upgrade_successful %}
+            <div data-alert class="alert-box">
+                Congratulations! You're now a Publet Pro.
+                <a href="#" class="close">&times;</a>
+            </div>
+        {% endif %}
+        <header class="row">
+            <div class="large-12 columns">
+                <h4 class="subheader">Upgrade to Publet Pro</h4>
+            </div>
+        </header>
+        {% if request.user.profile.account_type != 'P' %}
+            <div class="row">
+                <div class="large-12 columns">
+                    {% if debug %}
+                        <p>
+                            This is <code>debug</code> mode only. You can use the following card details to generate a successful transaction:
+                            <ul>
+                                <li>Card number: <pre>4242 4242 4242 4242</pre></li>
+                                <li>Expiration: <pre>10/2020</pre></li>
+                                <li>Name on card: <pre>Anything</pre></li>
+                                <li>CVC: <pre>123</pre></li>
+                            </ul>
+                        </p>
+                    {% endif %}
+                    <form action="." method="post" accept-charset="utf-8">
+                        <script
+                            src="https://checkout.stripe.com/v2/checkout.js" class="stripe-button"
+                            data-key="pk_test_mftVSzggJjwptrFf5TMZfDfk"
+                            data-amount="1000"
+                            data-name="Publet Pro"
+                            data-description="Upgrade to Publet Pro"
+                            data-currency="usd"
+                            data-image="https://stripe.com/img/documentation/checkout/marketplace.png">
+                        </script>
+                        {% csrf_token %}
+                    </form>
+                </div>
+            </div>
+        {% else %}
+            <div class="row">
+                <div class="large-12 columns">
+                    You're already a <code>Pro</code>. You can <a href="{% url 'payments-downgrade' %}">downgrade to a basic account</a> if you'd like.
+                </div>
+            </div>
+        {% endif %}
+    </div>
+{% endblock %}

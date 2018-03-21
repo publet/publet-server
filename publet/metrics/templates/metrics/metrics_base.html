@@ -1,0 +1,30 @@
+<!doctype html>
+<html>
+<head>
+<title>Metrics</title>
+<style type="text/css" media="screen">
+  body {
+    width: 600px;
+    margin: 0 auto;
+    font-family: 'Helvetica Neue', 'Helvetica';
+    text-align: center;
+  }
+  .image {
+    margin: 5px 0;
+  }
+</style>
+</head>
+<body>
+
+<h1>Application metrics</h1>
+
+<p>
+  <a href="{% url 'metrics-daily' %}">Daily</a>
+  <a href="{% url 'metrics-hourly' %}">Hourly</a>
+</p>
+
+{% block content %}
+{% endblock %}
+
+</body>
+</html>

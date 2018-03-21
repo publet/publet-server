@@ -1,0 +1,11 @@
+{% extends "registration/registration_base.html" %}
+
+{% block page-title %}Logged out - {{ block.super }}{% endblock %}
+
+{% block body-class %}{{ block.super }}{% endblock %}
+
+{% block content %}
+    <div class="alert-box round">
+        Successfully logged out. <a href="{% url 'auth_login' %}">Log in</a> again?
+    </div>
+{% endblock %}

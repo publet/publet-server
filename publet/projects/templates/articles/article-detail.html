@@ -1,0 +1,190 @@
+{% extends "base.html" %}
+{% load static from staticfiles %}
+{% load output_tags %}
+{% load common_tags %}
+
+{% block extra_fonts %}
+  {% for font in article.publication.theme.fonts.all %}
+    {% if font.is_google_font %}
+      <link href='{{ font.agnostic_url }}' rel='stylesheet' type='text/css'>
+    {% endif %}
+  {% endfor %}
+{% endblock %}
+
+{% block css %}
+  {% spaceless_with_debug %}
+    {% with theme=article.theme %}
+      {% include 'themes/css_font.html' %}
+    {% endwith %}
+  {% end_spaceless_with_debug %}
+
+  {% if article.publication.theme.css %}
+    {{ article.publication.theme.safe_css|safe }}
+  {% endif %}
+
+{% endblock %}
+
+{% block javascript %}
+  {{ super }}
+
+  {% with_feature canned-demo %}
+    <script type="text/javascript" src="{% static 'js/canned-demo.js' %}"></script>
+  {% end_with_feature %}
+{% endblock %}
+
+
+{% block body-class %}article-detail{% endblock %}
+{% block inline-js %}
+  filepicker.setKey('{{ FILEPICKER_API_KEY }}');
+  window.static = '{{ STATIC_URL }}';
+  window.article_id = {{ article.id }};
+  window.group_id = {{ group.id }};
+  window.publication_id = {{ article.publication.id }};
+  window.canEdit = {{ can_user_edit|lower }};
+  window.FP = {
+    write: {
+      policy: "{{ filepicker.write.policy }}",
+      signature: "{{ filepicker.write.signature }}"
+    },
+      read: {
+        policy: "{{ filepicker.read.policy }}",
+        signature: "{{ filepicker.read.signature }}"
+    }
+  };
+  window.draft_mode_enabled = {{ draft_mode|lower }};
+  window.allFlavors = {{ flavors|safe }};
+  window.PB = {};
+  window.PB.integrations = {{ integrations|safe }};
+  window.PB.features = {{ request.features|json|safe }};
+
+  $(function() {
+    $('.draft-submit').tooltip();
+    $('.draft-button').tooltip();
+  });
+{% endblock %}
+
+{% block main %}
+  <div article article-list-item ng-controller="ArticleController"
+    ng-cloak class="article ng-cloak canvas-container">
+
+    <div id="insertion-line">
+      <div id="insertion-symbol">+</div>
+      <canvas id="insertion-canvas" width="80" height="80"></canvas>
+    </div>
+
+    <header class="article__header">
+      <div class="article__tools">
+          <div class="container">
+            <div class="sixteen columns">
+              <div class="save-status six columns alpha">
+                <a href="{% url 'publication-detail' group.slug article.publication.slug %}" class="breadcrumb glyphicons chevron-left">Back to publication</a>
+                <p class="glyphicons clock saving-indicator">
+                  <span ng-show="!savingDisabled">Saved [[ articleLastModified|timeago ]].</span>
+                  <strong>[[ saveStatus ]]</strong>
+                </p>
+              </div>
+              <div class="controls ten columns omega">
+                <div class="dropdown">
+                  <a href class="dropdown__trigger glyphicons cogwheel">Article settings</a>
+                  <div class="dropdown__menu">
+                    <a href ng-show="{{ can_user_edit|lower }}" ng-click="editingArticle=true" class="glyphicons pencil">Edit article</a>
+                    <a href ng-click="editsVisible=true" class="glyphicons random">View edits</a>
+                    <a href ng-click="draftDialogOpen=true" class="glyphicons notes_2">Draft</a>
+                  </div>
+                </div>
+                <div class="dropdown">
+                  <a href class="dropdown__trigger glyphicons redo">All articles</a>
+                  <div class="dropdown__menu">
+                    {% for a in articles %}
+                      {% if article == a %}
+                        <a href>{{ a.name }} (current)</a>
+                      {% else %}
+                        <a href="{% url 'article-detail' a.group.slug a.publication.slug a.slug %}">{{ a.name }}</a>
+                      {% endif %}
+                    {% endfor %}
+                  </div>
+                </div>
+
+                {% if pagination == 'h' %}
+                  <a href="{% url 'preview-publication-html' article.publication.group.slug article.publication.slug %}{{ article.page_number }}" class="glyphicons eye_open" target="_blank">Preview</a>
+                {% else %}
+                  <a href="{% url 'preview-publication-html' article.publication.group.slug article.publication.slug %}#{{ article.slug }}" class="glyphicons eye_open" target="_blank">Preview</a>
+                {% endif %}
+
+                <a href ng-click="saveNow()" class="glyphicons floppy_save">[[ saveNowText ]]</a>
+
+                {% if article.domain %}
+                  <a href="http://{{ article.domain }}" class="glyphicons global">Live site</a>
+                {% endif %}
+
+              </div>
+            </div>
+          </div>
+      </div> <!--.article__tools-->
+    </header>
+
+    <div ng-show="loading" id="article-loading-overlay" ng-animate-children>
+      <h1>Loading...</h1>
+    </div>
+
+    <div class="container">
+      {% comment %}
+      <div class="container">
+        <div class="sixteen columns">
+          <h2 id="title">[[ article.name ]]</h2>
+        </div>
+      </div>
+      {% endcomment %}
+
+      <section class="article__main twelve columns offset-by-two">
+        <div class="stage">
+
+          <section class="canvas group">
+
+            <div class="content" id="blocks-container">
+              <div id="add-blocks-field" ng-if="!blocks.length">
+                <div class="hover-field">
+                  <a href ng-click="addBlock('text')" class="add-text-block"><i></i></a>
+                  <a href ng-click="addBlock('photo')" class="add-photo-block"><i></i></a>
+                  <div class="add-block-symbol">+</div>
+                  <a href ng-click="addBlock('video')" class="add-video-block"><i></i></a>
+                  <a href ng-click="addBlock('audio')" class="add-audio-block"><i></i></a>
+                </div>
+              </div>
+
+              <div ng-repeat="block in blocks"
+                id="block-[[ block.id ]]"
+                class="block group [[ getAlignmentClassForBlock(block) ]]"
+                ng-class="{editing: block == editingBlock}"
+                ng-click="$parent.editingBlock = block">
+
+                <div block class="inner"
+                  when-ready="showBlockControlsIfNew()"
+                  ready-check="hasBlockControls()">
+
+                  <div ng-include="'{{ STATIC_URL }}js/partials/' + block.type + '-block.html'"></div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- Modal Boxes-->
+          {% include 'articles/delete-article.html' %}
+          {% include 'articles/edit-article.html' %}
+          {% include 'articles/draft-dialog.html' %}
+          {% include 'articles/events.html' %}
+          {% include 'articles/select-integration.html' %}
+          {% include 'delete-block.html' %}
+
+        </div>
+      </section>
+
+    </div>
+
+  </div>
+
+  {% with_feature canned-demo %}
+    {% include 'articles/canned-demo.html' %}
+  {% end_with_feature %}
+
+{% endblock %}

@@ -1,0 +1,564 @@
+#ui_site_nav ul {
+  list-style: none;
+  li {
+    padding: 0;
+  }
+}
+
+nav#ui_site_nav {
+  font-family: $tocFont;
+  .sub-nav .label {
+    font-family: $tocFont;
+  }
+}
+
+.mod-tile-intro span, .statistic p strong.statistic-figure {
+  font-family: $tocFont;
+}
+
+nav#ui_site_nav {
+  li .label span {
+    position: relative;
+    top: 50%;
+    -webkit-transform: translateY(-50%);
+    -ms-transform: translateY(-50%);
+    transform: translateY(-50%);
+  }
+  #ui_top_nav li.home-icon a:before {
+    background-image: url("../../shared/toc-sprite.png");
+    background-repeat: no-repeat;
+  }
+  #ui_bottom_nav {
+    .icon-share > a:before {
+      background-image: url("../../shared/toc-sprite.png");
+      background-repeat: no-repeat;
+    }
+    .bevel-pdf {
+      > a:before, &:hover li a:before {
+        background-image: url("../../shared/toc-sprite.png");
+        background-repeat: no-repeat;
+      }
+    }
+  }
+}
+
+.el-arrow-down, .mod-tooltip-label .tooltip:before {
+  background-image: url("../../shared/toc-sprite.png");
+  background-repeat: no-repeat;
+}
+
+nav#ui_site_nav {
+  #ui_top_nav li.home-icon a:before {
+    content: "";
+    width: 16px;
+    height: 20px;
+    margin: 0 auto;
+    display: block;
+  }
+  #ui_bottom_nav {
+    .icon-share > a:before {
+      content: "";
+      width: 16px;
+      height: 20px;
+      margin: 0 auto;
+      display: block;
+    }
+    .bevel-pdf {
+      > a:before, &:hover li a:before {
+        content: "";
+        width: 16px;
+        height: 20px;
+        margin: 0 auto;
+        display: block;
+      }
+    }
+  }
+  position: fixed;
+  left: 0;
+  z-index: 9000;
+  a {
+    cursor: pointer;
+  }
+  ul {
+    position: absolute;
+    left: 0;
+  }
+  li a {
+    height: 36px;
+    box-sizing: border-box;
+    display: block;
+    background: $tocBackgroundColor;
+    font-size: 16px;
+    text-decoration: none;
+    text-align: center;
+    line-height: 1;
+    color: $tocColor;
+  }
+  #ui_top_nav li {
+    &.home-icon {
+      a:before {
+        background-position: 0 0;
+        background-image: url("../../shared/toc-sprite.png");
+        background-repeat: no-repeat;
+      }
+      .label {
+        display: none !important;
+      }
+    }
+    &.active {
+      a {
+        color: #3689b2;
+        font-size: 20px;
+        font-weight: 400;
+        padding-top: 8px;
+      }
+      &.bevel-start a:before {
+        background-position: -36px 0;
+      }
+    }
+  }
+  #ui_bottom_nav li {
+    &.icon-weibo a:hover:after {
+      background-position: -24px -39px;
+    }
+    &.icon-renren a:hover:after {
+      background-position: -26px -24px;
+    }
+  }
+}
+
+@media (max-width: 739px) {
+  nav#ui_site_nav {
+    display:none;
+    width: 100%;
+    top: 40px;
+    height: 38px;
+    background: #f1efec;
+    li {
+      .label, .indicator {
+        display: none;
+      }
+    }
+    #ui_top_nav {
+      width: 85.7%;
+      height: 38px;
+      box-sizing: border-box;
+      border: 1px solid #d8d7d4;
+      position: absolute;
+      top: 0;
+      left: 0;
+      li {
+        display: inline;
+        a {
+          width: 16.66667%;
+          padding: 10px 5px;
+          float: left;
+          border-right: 1px solid #d8d7d4;
+          border-left: 1px solid #fff;
+        }
+        &:last-child a {
+          border-right: 0;
+        }
+      }
+    }
+    #ui_bottom_nav {
+      display: block;
+      width: 14.3%;
+      height: 38px;
+      box-sizing: border-box;
+      border-top: 1px solid #d8d7d4;
+      border-bottom: 1px solid #d8d7d4;
+      position: absolute;
+      top: 0;
+      right: 0;
+      left: auto;
+      -webkit-transform: translate3d(0, 0, 0);
+      transform: translate3d(0, 0, 0);
+      li {
+        display: none;
+        float: left;
+        position: relative;
+        a {
+          cursor: pointer;
+          width: 100%;
+          padding: 10px 5px;
+          display: block;
+          border-right: 1px solid #d8d7d4;
+          border-left: 1px solid #fff;
+          position: relative;
+        }
+        &:first-child {
+          display: block;
+          width: 100%;
+          a {
+            &.open-menu {
+              display: block;
+              font-weight: bold;
+              letter-spacing: 2px;
+              padding: 5px 5px 15px 5px;
+            }
+            &.close-menu {
+              display: none;
+              background: #f1efec no-repeat 50% 50%;
+            }
+          }
+        }
+        &.lang-nav {
+          > .label {
+            display: block;
+            width: 90px;
+            height: 0;
+            position: absolute;
+            top: 100%;
+            left: calc(50% - 45px);
+            transition: height 0.2s ease-out;
+            ul {
+              width: 100%;
+              height: 100%;
+              position: relative;
+              overflow: hidden;
+              > li {
+                width: 100%;
+                height: 40px;
+                margin: 0;
+                a {
+                  color: #66665c;
+                  height: 40px;
+                  line-height: 20px;
+                  padding: 10px 5px;
+                  &:hover {
+                    color: $tocColor;
+                  }
+                }
+              }
+            }
+          }
+          &.active > {
+            a {
+              color: #3689b2;
+            }
+            .label {
+              height: 160px;
+            }
+          }
+        }
+        &.bevel-pdf {
+          > {
+            a:before {
+              content: "";
+              display: block;
+              width: 16px;
+              height: 20px;
+              background: url("../../shared/toc-sprite.png") no-repeat 0 -178px;
+              background-size: auto auto;
+              position: absolute;
+              left: calc(50% - 8px);
+              top: calc(50% - 10px);
+            }
+            .label {
+              display: block;
+              width: 130px;
+              height: 0;
+              position: absolute;
+              top: 100%;
+              right: 0;
+              transition: height 0.2s ease-out;
+              ul {
+                width: 100%;
+                height: 100%;
+                position: relative;
+                overflow: hidden;
+                > li {
+                  width: 100%;
+                  height: 40px;
+                  margin: 0;
+                  a {
+                    color: #66665c;
+                    height: 40px;
+                    line-height: 20px;
+                    text-align: left;
+                    padding: 10px;
+                    &:before {
+                      content: none;
+                    }
+                    &:after {
+                      content: "";
+                      display: block;
+                      width: 16px;
+                      height: 20px;
+                      background: url("../../shared/toc-sprite.png") no-repeat 0 -218px;
+                      background-size: auto auto;
+                      position: absolute;
+                      right: 10px;
+                      top: calc(50% - 10px);
+                    }
+                    &:hover {
+                      color: #3689b2;
+                      &:after {
+                        background-position: -36px -218px;
+                      }
+                    }
+                    span {
+                      position: static;
+                      display: inline;
+                    }
+                  }
+                }
+              }
+            }
+          }
+          &.active > {
+            a:before {
+              background-position: -36px -178px;
+            }
+            .label {
+              height: 320px;
+            }
+          }
+        }
+        &.icon-weibo a:hover:after {
+          background-position: -24px -39px;
+        }
+        &.icon-renren a:hover:after {
+          background-position: -26px -24px;
+        }
+      }
+      &.open {
+        width: 100%;
+        transition: width 0.2s ease-out;
+        li {
+          display: block;
+          width: 21.5%;
+          &:first-child {
+            width: 14%;
+            a {
+              &.open-menu {
+                display: none;
+              }
+              &.close-menu {
+                display: block;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+@media (min-width: 740px) {
+  nav#ui_site_nav {
+    width: 36px;
+    height: 100%;
+    height: calc(100% - 40px);
+    top: 40px;
+    ul {
+      width: 36px;
+    }
+    li {
+      width: 43px;
+      margin-top: -1px;
+      position: relative;
+      left: 10px;
+      a {
+        width: 36px;
+        height: 36px;
+        border: #d8d7d4 solid;
+        border-width: 1px;
+        padding: 10px 0 13px;
+        position: relative;
+        z-index: 1;
+        overflow: hidden;
+        &:after {
+          content: "";
+          width: 100%;
+          height: 1px;
+          position: absolute;
+          top: 0;
+          left: 0;
+          background: #fff;
+        }
+      }
+      .label {
+        width: 0;
+        height: 36px;
+        display: block;
+        box-sizing: border-box;
+        position: absolute;
+        top: 0;
+        left: 5px;
+        border: #d8d7d4 solid;
+        border-width: 1px 1px 1px 0;
+        border-radius: 0 4px 4px 0;
+        background: $tocBackgroundColor;
+        overflow: hidden;
+        z-index: 0;
+        font-size: 12px;
+        line-height: 1.4;
+        color: $tocColor;
+        transition: left 0.3s ease-out;
+        text-transform: uppercase;
+        span {
+          display: block;
+        }
+      }
+      &.bevel-start a {
+        border-radius: 4px 4px 0 0;
+      }
+      &.bevel-end a {
+        border-radius: 0 0 4px 4px;
+      }
+      &:hover {
+        width: 336px;
+        border-radius: 4px 0 0 4px;
+        a {
+          border-right: 0;
+          border-radius: 0 0 0 0;
+          &:after {
+            display: none;
+          }
+        }
+        &.bevel-start a {
+          border-radius: 4px 0 0 0;
+        }
+        &.home-icon.bevel-start a, &.icon-facebook.bevel-start a {
+          border-radius: 4px 4px 0 0;
+        }
+        &.bevel-end a {
+          border-radius: 0 0 0 4px;
+        }
+        .label {
+          padding-left: 10px;
+          left: 36px;
+          width: 190px;
+        }
+      }
+    }
+    #ui_top_nav {
+      padding-left: 0;
+      top: 25px;
+      transition: top 0.3s ease-out;
+      li {
+        &:hover.bevel-start a {
+          padding: 10px 0 13px;
+          display: block;
+        }
+        &.active.bevel-start a {
+          padding-top: 10px;
+        }
+      }
+    }
+    #ui_bottom_nav {
+      bottom: 25px;
+      li:hover > a {
+        color: $tocColor;
+      }
+      .icon-share {
+        > a {
+          &:before {
+            background-position: 0 -140px;
+          }
+          &:hover:before {
+            background-position: -36px -140px;
+          }
+        }
+        li a {
+          font-size: 14px;
+          display: block;
+        }
+      }
+      .bevel-pdf {
+        li {
+          padding-right: 10px;
+        }
+        > a {
+          position: relative;
+          &:before {
+            margin-top: -2px;
+            background-position: 0 -178px;
+          }
+        }
+        &:hover {
+          > a:before {
+            background-position: -36px -178px;
+          }
+          li a {
+            margin-right: 1em;
+            &:before {
+              position: absolute;
+              right: 0;
+              background-position: 0 -218px;
+            }
+            &:hover:before {
+              background-position: -36px -218px;
+            }
+          }
+        }
+      }
+      a {
+        font-size: 14px;
+      }
+    }
+    .sub-nav {
+      ul {
+        width: auto;
+        padding: .5em 0 .5em .5em;
+        position: relative;
+        bottom: 0;
+        overflow: hidden;
+      }
+      li {
+        width: auto;
+        height: auto;
+        margin: 0;
+        left: 0;
+        a {
+          color: #66665c;
+        }
+      }
+      .label {
+        width: 190px;
+        height: auto;
+        -webkit-transform: scaleY(0);
+        -ms-transform: scaleY(0);
+        transform: scaleY(0);
+        top: auto;
+        bottom: 0;
+        border-radius: 4px 4px 4px 0;
+        -webkit-transform-origin: 0 100%;
+        -ms-transform-origin: 0 100%;
+        transform-origin: 0 100%;
+        transition: -webkit-transform 0.3s ease-out, left 0.3s ease-out;
+        transition: transform 0.3s ease-out, left 0.3s ease-out;
+        a {
+          width: auto;
+          height: auto;
+          margin: 0;
+          padding: .5em 0;
+          border: none;
+          background: none;
+          display: block;
+          overflow: visible;
+          text-align: left;
+          line-height: 1.4;
+          span {
+            position: static;
+            display: inline;
+          }
+        }
+      }
+      &:hover {
+        > a {
+          width: 45px;
+        }
+        .label {
+          width: 190px;
+          left: 45px;
+          -webkit-transform: scaleY(1);
+          -ms-transform: scaleY(1);
+          transform: scaleY(1);
+        }
+      }
+    }
+  }
+}

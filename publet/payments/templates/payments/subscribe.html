@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+
+{% load payments_tags %}
+
+{% block page-title %}{{ group.name }}{% endblock %}
+{% block nav %}{% endblock %}
+
+{% block main %}
+  <div class="modal">
+    <div class="modal-overlay"></div>
+    <div class="modal-container">
+      <header class="modal-header">
+        <h4>Subscribe &ldquo;{{ group.name }}&rdquo;</h4>
+      </header>
+      <form class="pure-form pure-form-stacked" method="post" accept-charset="utf-8" method="POST" action=".">
+        {% csrf_token %}
+        <div class="modal-body">
+          {% if purchase_successful %}
+            <p style="color: green;">
+                You've successfully subscribed to this group. <a href="">Click here</a> to view the subscription.
+            </p>
+            <p>
+              <a href="/dashboard/">Go here</a> to view all of your purchases.
+            </p>
+          {% else %}
+            {% if already_subscribed %}
+              <p>
+                You've already subscribed to this group.
+              </p>
+              <p>
+                <a href="/dashboard/">Go here</a> to view all of your purchases.
+              </p>
+            {% elif errors %}
+              <p>{{ errors }}</p>
+            {% else %}
+              <p>Click below to subscribe to this group.</p>
+              <script
+                src="https://checkout.stripe.com/v2/checkout.js" class="stripe-button"
+                data-key="{{ STRIPE_PUBLISHABLE_KEY }}"
+                data-amount="{{ price|stripify }}"
+                data-name="{{ publication.name }} (${{ price }})"
+                data-description=""
+                data-currency="usd"
+                data-image="">
+              </script>
+            {% endif %}
+          {% endif %}
+        </div>
+        {% if coupon %}
+          <input type="hidden" name="coupon" value="{{ coupon }}" />
+        {% endif %}
+      </form>
+    </div>
+  </div>
+{% endblock %}

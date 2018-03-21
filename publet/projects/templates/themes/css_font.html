@@ -1,0 +1,24 @@
+{% for font in theme.fonts.all %}
+
+  {% if font.has_files %}
+
+    {% for file in font.get_files %}
+      @font-face {
+        font-family: "{{ font.family_name }}";
+        src: url("{{ file.url|safe }}") format("{{ file.format }}");
+        font-weight: normal;
+        font-style: normal;
+      }
+    {% endfor %}
+
+  {% else %}
+    {% if font.url and not font.is_google_font %}
+      @import url({{ font.https_url }});
+    {% endif %}
+  {% endif %}
+
+  .theme-font-{{ font.slug }} {
+    {{ font.css|safe }}
+  }
+
+{% endfor %}

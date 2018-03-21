@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container content" ng-controller="GroupsController">
+    <div class="row">
+        <div class="col-md-12 ">
+            <strong class="page-title">Groups</strong>
+            <button type="button" class="btn btn-new pull-right" data-toggle="modal" data-target="#myModal">
+              New Group
+            </button>
+        </div>
+    </div>
+    <hr/>
+    <div class="row margin-bottom">
+        <div class="col-md-12">
+            <div class="has-feedback pull-right ">
+                <i class="fa fa-search form-control-feedback search-icon"></i>
+                <input type="text" class="group-search search-input"
+                       ng-change="search(q)"
+                       ng-model="q" placeholder="Search for...">
+            </div>
+
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <div class="" ng-repeat="group in groups">
+                        <h4 class="group-item">
+                            <a href="[[ group.slug ]]/" class="ng-binding">
+                                <strong>
+                                  [[ group.name ]]
+                                </strong>
+                            </a>
+                        </h4>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% include 'groups/add-group.html' %}
+</div>
+
+{% endblock %}

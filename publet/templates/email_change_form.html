@@ -1,0 +1,47 @@
+{% extends "registration/registration_base.html" %}
+
+{% block page-title %}Change email - {{ block.super }}{% endblock %}
+
+{% block body-class %}{{ block.super }}{% endblock %}
+
+{% block content %}
+  <div class="stage-inner">
+    {% if messages %}
+      {% for m in messages %}
+        <div class="alert-box round">
+          {{ m }}
+        </div>
+      {% endfor %}
+    {% endif %}
+    <form method="post" action="." class="pure-form pure-form-aligned">
+        {% csrf_token %}
+
+        {% if form.errors %}
+            {% if form.non_field_errors %}
+                <div class="alert-box round alert">
+                    {{ form.non_field_errors }}
+                </div>
+            {% else %}
+                <div class="alert-box round alert">
+                    Please fix the errors below.
+                </div>
+            {% endif %}
+        {% endif %}
+        <fieldset>
+            <legend><h3>Change email</h3></legend>
+            <div class="pure-control-group">
+                <div class="{% if form.email.errors %}error{% endif %}">
+                    <label for="id_email">Email</label>
+                    {{ form.email }}
+                    {% for error in form.email.errors %}
+                      {{ error }}
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="pure-controls">
+                <button class="pure-button button" type="submit">Change email</button>
+            </div>
+        </fieldset>
+    </form>
+  </div>
+{% endblock %}

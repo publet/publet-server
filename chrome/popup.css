@@ -1,0 +1,35 @@
+body {
+ background-color: #FFFFFF;
+ font-family: 'Muli';
+ margin: 0 10px;
+}
+::-webkit-scrollbar {
+    display: none;
+}
+
+h3 {
+ font-size: 17px;
+ margin: 20px 5px 5px 5px;
+}
+ul {
+ font-size: 15px;
+ line-height: 1.35em;
+ list-style-type: none;
+ padding: 0;
+ margin: 0;
+}
+
+li + li {
+ border-top: 1px solid #EBEBEB;
+}
+
+a {
+ color: #A6A6A6;
+ display: block;
+ padding: 8px 7px;
+ text-decoration: none;
+}
+a:hover {
+ background-color: #F2F2F2;
+ color: #7ccde4;
+}

@@ -1,0 +1,100 @@
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Manage group members</h4>
+      </div>
+      <div class="modal-body">
+          <h4>Current group members</h4>
+
+          <table class="table table-bordered tabled-striped">
+              <thead>
+                  <th>Name</th>
+                  <th>Role</th>
+                  <th></th>
+                  <th></th>
+              </thead>
+              <tbody>
+                <tr ng-repeat="member in groupMembers">
+                    <td>[[ member.user.username ]]</td>
+                    <td ng-show="!memberEditing(member)">
+                        [[ member.role_human ]]
+                    </td>
+                    <td ng-show="memberEditing(member)">
+                        <select class="form-control" ng-options="type.value as type.name for type in typeOptions"
+                                ng-model="member.role">
+                        </select>
+                    </td>
+                    <td>
+                        <button type="button"
+                                ng-click="toggleMemberEditing(member)"
+                                class="btn btn-default">
+                            [[ memberEditing(member) ? 'Cancel' : 'Change permissions' ]]
+                        </button>
+                        <button type="button"
+                                class="btn btn-default"
+                                ng-click="saveNewMemberRole(member)"
+                                ng-show="memberEditing(member)">
+                            Save
+                        </button>
+                    </td>
+                    <td>
+                        <button type="button"
+                                ng-click="removeMember(member)"
+                                class="btn btn-danger">
+                            Remove
+                        </button>
+                    </td>
+                </tr>
+              </tbody>
+          </table>
+
+          <h4>Add current Publet users to group</h4>
+          <p>Email or username: <input type="text" class="form-control" ng-model="usernameToFind" /></p>
+          <p><button type="button" class="btn btn-default" ng-click="findUser()">Find</button></p>
+
+          <p ng-show="candidate">
+              Found user: [[ candidate.username ]]
+              <button type="button" ng-click="addToGroup(candidate)" class="btn btn-primary">Add to group</button>
+          </p>
+
+          <p ng-show="candidateNotFound">
+            User "[[ missingUser ]]" not found
+          </p>
+
+          <h4>Add new users to group (email invitation)</h4>
+
+          <form name="inviteUserForm" novalidate method="post" ng-submit="saveUserInviteForm()">
+          <table class="table table-bordered tabled-striped">
+              <thead>
+                  <th>Role</th>
+                  <th>First name</th>
+                  <th>Last name</th>
+                  <th>Email</th>
+                  <th></th>
+              </thead>
+              <tbody>
+                  <tr>
+                    <td>
+                        <select ng-options="type.value as type.name for type in typeOptions"
+                                required
+                                class="form-control"
+                                ng-model="inviteRole">
+                        </select>
+                    </td>
+                    <td><input class="form-control" required type="text" ng-model="inviteFirstName"/></td>
+                    <td><input class="form-control" required type="text" ng-model="inviteLastName"/></td>
+                    <td><input class="form-control" required type="email" ng-model="inviteEmail"/></td>
+                    <td><button type="submit" ng-disabled="inviteUserForm.$invalid" class="btn btn-default">[[ inviteButtonText ]]</button></td>
+                  </tr>
+              </tbody>
+          </table>
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>

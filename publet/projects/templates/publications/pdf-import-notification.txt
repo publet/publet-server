@@ -1,0 +1,11 @@
+Hello there,
+
+A PDF import for your publication "{{ publication.name }}" has successfully finished.
+
+You can view the publication here
+
+{{ publication.get_absolute_url }}
+
+Thanks,
+
+Publet

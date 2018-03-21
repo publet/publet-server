@@ -1,0 +1,253 @@
+{% extends "base.html"  %}
+{% load static from staticfiles %}
+
+{% block css %}
+label {
+  display: inline-block;
+}
+{% endblock %}
+
+{% block inline-js %}
+  filepicker.setKey('{{ FILEPICKER_API_KEY }}');
+  window.static = '{{ STATIC_URL }}';
+  window.FP = {
+    write: {
+      policy: "{{ filepicker.write.policy }}",
+      signature: "{{ filepicker.write.signature }}"
+    },
+      read: {
+        policy: "{{ filepicker.read.policy }}",
+        signature: "{{ filepicker.read.signature }}"
+    }
+  };
+
+  window.theme = {{ theme|safe }};
+  window.group_id = {{ group.id }};
+
+  $(function() {
+    $(document).tooltip();
+  });
+{% endblock %}
+{% block content %}
+
+<div class="theme-editor" ng-cloak ng-controller="ThemeEditorController">
+  <h1>[[ theme.name ]]</h1>
+  <h2>THEME</h2>
+  <div class="colors-field">
+    <div class="color-block" ng-repeat="color in theme.colors">
+      <a class="control-link glyphicons remove_2" href ng-click="removeColor(color.id)">Remove</a>
+      <div class="color-border-wrap">
+        <div class="color-square" style="background-color: #[[ color.hex ]];"></div>
+      </div>
+      <a class="control-link">#[[ color.hex ]]</a>
+    </div>
+  </div>
+  <div class="add-color-controls">
+    <a id="add-color-button" ng-click="addColor()"></a><span><input onkeydown="if (event.keyCode == 13) document.getElementById('add-color-button').click()" id="add-color-field" type="text" ng-model="newColor" placeholder="New Color" maxlength="6" /></span>
+  </div>
+  <div class="colors-field colors-bases-field">
+
+    <div class="color-block">
+      <div class="color-border-wrap">
+        <div class="color-square" style="background-color: #[[ getColorByUri(theme.background_color) ]];"></div>
+      </div>
+      <p>PAGE</p>
+      <select ng-model="theme.background_color" data-ng-options="f.resource_uri as f.hex for f in theme.colors"></select>
+    </div>
+
+    <div class="color-block">
+      <div class="color-border-wrap">
+        <div class="color-square" style="background-color: #[[ getColorByUri(theme.link_color) ]];"></div>
+      </div>
+      <p>LINKS</p>
+      <select ng-model="theme.link_color" ng-options="f.resource_uri as f.hex for f in theme.colors"></select>
+    </div>
+
+    <div class="color-block">
+      <div class="color-border-wrap">
+        <div class="color-square" style="background-color: #[[ getColorByUri(theme.nav_background_color) ]];"></div>
+      </div>
+      <p>NAV BAR</p>
+      <select ng-model="theme.nav_background_color" ng-options="f.resource_uri as f.hex for f in theme.colors"></select>
+    </div>
+
+    <div class="color-block">
+      <div class="color-border-wrap">
+        <div class="color-square" style="background-color: #[[ getColorByUri(theme.nav_font_color) ]];"></div>
+      </div>
+      <p>NAV BAR TEXT</p>
+      <select ng-model="theme.nav_font_color" ng-options="f.resource_uri as f.hex for f in theme.colors"></select>
+    </div>
+
+    <div class="color-block">
+      <div class="color-border-wrap">
+        <div class="color-square" style="background-color: #[[ getColorByUri(theme.heading_color) ]];"></div>
+      </div>
+      <p>HEADING</p>
+      <select ng-model="theme.heading_color" ng-options="f.resource_uri as f.hex for f in theme.colors"></select>
+    </div>
+  </div>
+
+  <div>
+
+    <div class="font-block" ng-repeat="font in theme.fonts">
+      <a class="control-link glyphicons remove_2" href ng-click="removeFont(font.id)">Remove</a>
+      <p style="[[ font.css ]]">[[ font.name ]]</p>
+       <ul ng-show="font.files" class="fonts-list">
+        <li ng-repeat="f in font.files">[[ f.filename ]]</li>
+       </ul>
+    </div>
+
+    <div id="button-field">
+      <a href ng-click="addingNewFont=true" id="button-show-font-field">+ New Font</a>
+    </div>
+
+    <div class="add-fonts-field" ng-show="addingNewFont">
+      <div class="upload-fonts-field">
+        <input type="text" ng-model="fontName" placeholder="New font name" />
+        <input class="button" type="button" ng-click="chooseFontFile()" value="Upload File" />
+        <input class="font-css-field" type="text" ng-model="font_family" placeholder="font-family (e.g. 'Georgia')" />
+        <ul class="uploaded-fonts-list">
+          <li ng-repeat="file in newFontFiles">
+            [[ file.filename ]]
+          </li>
+        </ul>
+        <a id="button-save-font" class="control-link glyphicons disk_save" ng-click="addFont()">Save</a>
+        <a id="button-cancel-font" class="control-link glyphicons remove_2" ng-click="addingNewFont=false">Cancel</a>
+      </div>
+    </div>
+  </div>
+
+  <div id="toc">
+    <h1>Table of contents styles</h1>
+
+  <div class="colors-field">
+
+    <div class="color-block">
+      <div class="color-border-wrap">
+        <div class="color-square" style="background-color: #[[ getColorByUri(theme.toc_color) ]];"></div>
+      </div>
+      <p>TOC FONT COLOR</p>
+      <select ng-model="theme.toc_color" data-ng-options="f.resource_uri as f.hex for f in theme.colors"></select>
+    </div>
+
+    <div class="color-block">
+      <div class="color-border-wrap">
+        <div class="color-square" style="background-color: #[[ getColorByUri(theme.toc_background_color) ]];"></div>
+      </div>
+      <p>TOC BACKGROUND COLOR</p>
+      <select ng-model="theme.toc_background_color" data-ng-options="f.resource_uri as f.hex for f in theme.colors"></select>
+    </div>
+
+    <div>
+      <p>Font</p>
+      <select ui-select2 data-placeholder="Font" ng-model="theme.toc_font">
+        <option value=""></option>
+        <option ng-repeat="font in theme.fonts" value="[[ font.resource_uri ]]">[[ font.name ]]</option>
+      </select>
+    </div>
+
+  </div>
+
+
+  </div>
+
+  <div class="add-patterns-field">
+
+    <div class="add-text-pattern-controls">
+
+      <h1>Text block templates</h1>
+
+      <a href id="add-text-pattern-button" ng-click="addFlavor('text')"></a>
+      <span>
+        <input
+          onkeydown="if (event.keyCode == 13) document.getElementById('add-text-pattern-button').click()"
+          id="add-text-pattern-field"
+          type="text"
+          ng-model="text_flavor_name"
+          placeholder="New Text Template"
+          class="pattern-control" />
+      </span>
+      <a href="#" title="Text template lets you automatically customize how new blocks are styled. Simply choose your size, font, color, block position, and justification. Pick a name for your block type (e.g. header, pull-quote or Amanda if you wish). When you create your publication, you can apply these custom styles to each block.">?</a>
+    </div>
+
+    <div ng-repeat="flavor in theme.flavors | filter:{type: 'text'}" class="pattern-field">
+      <div class="flavor-load-field" ng-include="static + 'js/partials/flavor-editor.html'"></div>
+      <!-- <a class="control-link glyphicons remove_2" href ng-click="removeFlavor(flavor.id)">Remove</a> -->
+    </div>
+
+    <div class="add-text-pattern-controls">
+
+      <h1>Photo block templates</h1>
+
+      <a href id="add-photo-pattern-button" ng-click="addFlavor('photo')"></a>
+      <span>
+        <input
+          onkeydown="if (event.keyCode == 13) document.getElementById('add-photo-pattern-button').click()"
+          id="add-photo-pattern-field"
+          type="text"
+          ng-model="photo_flavor_name"
+          placeholder="New Photo Template"
+          class="pattern-control" />
+      </span>
+      <a href="#" title="Text template lets you automatically customize how new blocks are styled. Simply choose your size, font, color, block position, and justification. Pick a name for your block type (e.g. header, pull-quote or Amanda if you wish). When you create your publication, you can apply these custom styles to each block.">?</a>
+    </div>
+
+    <div ng-repeat="flavor in theme.flavors | filter:{type: 'photo'}" class="pattern-field">
+      <div class="flavor-load-field" ng-include="static + 'js/partials/flavor-editor.html'"></div>
+      <!-- <a class="control-link glyphicons remove_2" href ng-click="removeFlavor(flavor.id)">Remove</a> -->
+    </div>
+
+    <!--
+    <h3>Photo flavors</h3>
+
+    <input type="text" ng-model="photo_flavor_name" placeholder="Flavor name" />
+    <a href ng-click="addFlavor('photo')">Add new</a>
+
+    <div ng-repeat="flavor in theme.flavors | filter:{type: 'photo'}">
+      <div class="block-attribute block-flavor-label">[[ flavor.name ]]</div><a class="control-link glyphicons reomve_2" href ng-click="removeFlavor(flavor.id)">Remove</a>
+
+      <div ng-include="static + 'js/partials/flavor-editor.html'"></div>
+
+    </div>
+
+    <h3>Audio flavors</h3>
+
+    <input type="text" ng-model="audio_flavor_name" placeholder="Flavor name" />
+    <a href ng-click="addFlavor('audio')">Add new</a>
+
+    <div ng-repeat="flavor in theme.flavors | filter:{type: 'audio'}">
+      <div class="block-attribute block-flavor-label">[[ flavor.name ]]</div><a class="control-link glyphicons reomve_2" href ng-click="removeFlavor(flavor.id)">Remove</a>
+
+      <div ng-include="static + 'js/partials/flavor-editor.html'"></div>
+
+    </div>
+
+    <h3>Video flavors</h3>
+
+    <input type="text" ng-model="video_flavor_name" placeholder="Flavor name" />
+    <a href ng-click="addFlavor('video')">Add new</a>
+
+    <div ng-repeat="flavor in theme.flavors | filter:{type: 'video'}">
+      <div class="block-attribute block-flavor-label">[[ flavor.name ]]</div><a class="control-link glyphicons reomve_2" href ng-click="removeFlavor(flavor.id)">Remove</a>
+
+      <div ng-include="static + 'js/partials/flavor-editor.html'"></div>
+
+    </div>
+-->
+  </div>
+
+  <div>
+    <h3>Custom CSS</h3>
+    <textarea rows="10" ng-model="theme.css"></textarea>
+  </div>
+
+  <div>
+    <h3>Custom javascript</h3>
+    <textarea rows="10" ng-model="theme.javascript"></textarea>
+  </div>
+
+  <input class="button" id="save-theme-button" type="button" ng-value="saveButton" ng-click="save()" class="pure-button button" />
+
+</div>
+{% endblock %}

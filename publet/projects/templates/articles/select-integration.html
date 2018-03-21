@@ -1,0 +1,33 @@
+<div class="modal" ng-show="selectingIntegration">
+  <div class="modal-overlay"></div>
+  <div class="modal-container">
+    <header class="modal-header">
+      <h4>Select integration</h4>
+    </header>
+    <form name="saveArticleForm" class="pure-form pure-form-stacked" method="post" accept-charset="utf-8"
+        novalidate ng-submit="submitToIntegration(); selectingIntegration=false">
+      <div class="modal-body">
+        <fieldset>
+          <label style="margin-top: 0;">Select an integration:</label>
+          <select required ng-model="integration"
+            ng-options="integration.slug as integration.name for integration in getIntegrations()">
+            <option style="display:none" value="">------</option>
+          </select>
+        </fieldset>
+      </div>
+      <div class="modal-footer group">
+        <div class="pure-controls">
+          <button type="submit"
+            class="pure-button pure-button-green right"
+            ng-disabled="integration.$invalid">
+            Submit
+          </button>
+          <button type="button" ng-click="hideSubmitToIntegration()"
+            class="pure-button right">
+            Cancel
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

@@ -1,0 +1,211 @@
+{% extends "publications/publication-base.html" %}
+{% load static from staticfiles %}
+{% load minutes from common_tags %}
+{% load json from output_tags %}
+{% load humanize %}
+
+{% block inline-js %}
+  {{ block.super }}
+  window.engaged = {{ engaged_data|safe }};
+  window.read = {{ read_data|safe }};
+  window.social = {{ social|safe }};
+  window.socialReferrals = {{ per_block_referrals_json|safe }};
+  window.socialReferralsPerBlock = {{ per_block_social|safe }};
+  window.dropoff = {{ dropoff|json|safe }};
+{% endblock %}
+
+{% block section %}
+
+<ul class="data-page-tabs">
+  <li ng-class="{active: currentDataTab == 'audience'}"><a href ng-click="currentDataTab = 'audience'">Audience</a></li>
+  <li ng-class="{active: currentDataTab == 'channel'}"><a href ng-click="currentDataTab = 'channel'">Channel</a></li>
+  <li ng-class="{active: currentDataTab == 'content'}"><a href ng-click="currentDataTab = 'content'">Content</a></li>
+  <li ng-class="{active: currentDataTab == 'reader'}"><a href ng-click="currentDataTab = 'reader'">Reader</a></li>
+  <li ng-class="{active: currentDataTab == 'export'}"><a href ng-click="currentDataTab = 'export'">Export</a></li>
+</ul>
+
+<div ng-show="currentDataTab == 'audience'">
+  <div class="row">
+
+    <div class="eight columns alpha">
+
+      <div class="dashboard-widget black">
+        <span>{{ pageviews|intcomma }}</span>
+        <p>Impressions</p>
+      </div>
+
+      <div class="dashboard-widget blue">
+        <span>{{ unique_visitors|intcomma }}</span>
+        <p>Unique visitors</p>
+      </div>
+
+      <div class="dashboard-widget red">
+        <span>{{ conversion_count|intcomma }}</span>
+        <p>Conversion count</p>
+      </div>
+
+      <div class="dashboard-widget blue">
+        <span>{{ num_sessions|intcomma }}</span>
+        <p>Sessions</p>
+      </div>
+
+    </div>
+
+    <div class="eight columns omega">
+    </div>
+  </div>
+
+  <div class="row">
+
+    <div class="eight columns alpha">
+      <highchart id="analytics-chart" config="chartConfig"></highchart>
+    </div>
+
+    <div class="eight columns omega">
+      <highchart id="read-chart" config="readChartConfig"></highchart>
+    </div>
+  </div>
+
+  <div class="row">
+
+    <div class="eight columns alpha">
+      <highchart id="dropoff-chart" config="dropoffConfig"></highchart>
+    </div>
+
+  </div>
+
+  <div class="row">
+    <h3>Advanced</h3>
+    <p>Server-side requests: {{ server_pageviews }}
+      <small>
+        (HTTP requests made to the publication's url.  This will include
+        page views that didn't finish.)
+      </small>
+    </p>
+    <p>Server-side uniques: {{ server_unique_visitors }}</p>
+  </div>
+
+</div>
+
+<div class="row" ng-show="currentDataTab == 'channel'">
+  <div>
+    <highchart id="social-chart" config="socialChartConfig"></highchart>
+  </div>
+  <div class="eight columns omega">
+  </div>
+  <div class="eight columns alpha">
+    <h3 class="left">Social referrers</h3>
+
+    <div>
+      <highchart config="socialReferralChartPerBlock"></highchart>
+    </div>
+  </div>
+
+  <div class="eight columns omega">
+    <h3 class="left">Social referrers (gate signups)</h3>
+
+    <div>
+      <highchart config="socialReferralChart"></highchart>
+    </div>
+  </div>
+</div>
+
+<div class="row" ng-show="currentDataTab == 'content'">
+  <p>
+    <a href="{% url 'publication-heatmap' group.slug publication.slug %}" target="_blank">Launch heatmap viewer</a>
+  </p>
+</div>
+
+<div id="reader" ng-show="currentDataTab == 'reader'">
+  <h2>Readers</h2>
+  {% for reader in readers %}
+      <div class="reader">
+
+        <div class="row">
+
+          <div class="ten columns">
+            User {{ reader.anonymous_id }}
+          </div>
+
+          <div class="four columns omega">
+            <a href ng-show="!readerAnalyticsVisible{{ reader.reader_id }}" ng-click="readerAnalyticsVisible{{ reader.reader_id }} = true">See more</a>
+            <a href ng-show="readerAnalyticsVisible{{ reader.reader_id }}" ng-click="readerAnalyticsVisible{{ reader.reader_id }} = false">See less</a>
+          </div>
+
+        </div>
+
+        <div class="reader-analytics" ng-show="readerAnalyticsVisible{{ reader.reader_id }}">
+
+          <div class="row">
+
+            <div class="eight columns alpha">
+              <p>Engaged time: {{ reader.total_seconds|minutes }}</p>
+            </div>
+
+            <div class="eight columns omega">
+              <p>Percent read: {{ reader.percent_read }}</p>
+            </div>
+
+          </div>
+
+          <div class="row">
+
+            <p>Sessions:</p>
+
+              {% for session in reader.sessions %}
+                <h4>{{ session.date }}</h4>
+                <ul>
+                  {% for event in session %}
+                    <li>{{ event.url }}</li>
+                  {% endfor %}
+                </ul>
+              {% endfor %}
+
+          </div>
+
+        </div>
+
+        <hr>
+      </div>
+  {% endfor %}
+</div>
+
+<div class="csv-export-tab" class="row" ng-show="currentDataTab == 'export'">
+  <h3>Conversions as CSV</h3>
+
+  <p>
+    <a href="{% url 'publication-csv-export' group.slug publication.slug %}" class="pure-button pure-button-primary" target="_blank">Download CSV</a>
+  </p>
+
+  <p>
+
+    Showing data for the last 30 days.  For a complete list of conversions,
+    please use the above "Download CSV" button.
+
+  </p>
+
+    <table>
+
+      <thead>
+          {% for h in conversions_table.header %}
+          <th>{{ h }}</th>
+          {% endfor %}
+      </thead>
+
+      <tbody>
+
+        {% for row in conversions_table.values %}
+          <tr>
+            {% for v in row %}
+            <td>{{ v }}</td>
+            {% endfor %}
+          </tr>
+        {% endfor %}
+
+      </tbody>
+
+    </table>
+
+</div>
+
+{% endblock %}

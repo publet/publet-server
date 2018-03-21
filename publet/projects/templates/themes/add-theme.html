@@ -1,0 +1,20 @@
+<div class="modal" ng-show="addingTheme">
+  <div class="modal-overlay"></div>
+  <div class="modal-container add-publication">
+    <a ng-click="addingTheme=false" type="button" class="glyphicons remove_2"></a>
+    <form name="newTheme" class="pure-form pure-form-stacked" method="post"
+      accept-charset="utf-8" novalidate ng-submit="addTheme()">
+      <div class="modal-body">
+        <fieldset>
+          <div class="pure-control-group">
+            <h2>Theme name</h2>
+            <input ng-model="newThemeName" placeholder="Add theme name here" id="new-publication-name" type="text" required />
+          </div>
+        </fieldset>
+      </div>
+      <button id="create-publication-button" type="submit" class="button" ng-disabled="newTheme.$invalid || newThemeDisabled">
+        Create
+      </button>
+    </form>
+  </div>
+</div>

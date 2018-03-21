@@ -1,0 +1,127 @@
+{% if pagination == 'h' %}
+
+  {% for article in p %}
+    {% include "outputs/partials/article.html" with article=article %}
+  {% endfor %}
+
+  <nav class="pagination container">
+    <div class="twelve columns offset-by-two">
+
+      {% if request.is_custom_domain %}
+
+        {% if group.has_domain %}
+
+          {% if p.has_previous %}
+            {% if p.previous_page_number == 1 %}
+              <a href="/{{ publication.slug }}/" class="pagination__button -prev glyphicons chevron-left"></a>
+            {% else %}
+              <a href="/{{ publication.slug }}/{{ p.previous_page_number }}" class="pagination__button -prev glyphicons chevron-left"></a>
+            {% endif %}
+          {% endif %}
+
+          {% for page_num in range %}
+            {% if page_num == 1 %}
+              <a href="/{{ publication.slug }}/" class="pagination__item{% if page_num == p.number %} -current{% endif %}">{{ page_num }}</a>
+            {% else %}
+              <a href="/{{ publication.slug }}/{{ page_num }}" class="pagination__item{% if page_num == p.number %} -current{% endif %}">{{ page_num }}</a>
+            {% endif %}
+          {% endfor %}
+
+          {% if p.has_next %}
+            <a href="/{{ publication.slug }}/{{ p.next_page_number }}" class="pagination__button -next glyphicons chevron-right"></a>
+          {% endif %}
+
+        {% else %} {% comment %} has_domain else {% endcomment %}
+
+          {% if p.has_previous %}
+            {% if p.previous_page_number == 1 %}
+              <a href="/" class="pagination__button -prev glyphicons chevron-left"></a>
+            {% else %}
+              <a href="/{{ p.previous_page_number }}" class="pagination__button -prev glyphicons chevron-left"></a>
+            {% endif %}
+          {% endif %}
+
+          {% for page_num in range %}
+            {% if page_num == 1 %}
+              <a href="/" class="pagination__item{% if page_num == p.number %} -current{% endif %}">{{ page_num }}</a>
+            {% else %}
+              <a href="/{{ page_num }}" class="pagination__item{% if page_num == p.number %} -current{% endif %}">{{ page_num }}</a>
+            {% endif %}
+          {% endfor %}
+
+          {% if p.has_next %}
+            <a href="/{{ p.next_page_number }}" class="pagination__button -next glyphicons chevron-right"></a>
+          {% endif %}
+
+        {% endif %}{% comment %} end has_domain{% endcomment %}
+
+      {% else %}{% comment %} else is_custom_domain {% endcomment %}
+
+        {% if heatmap %}
+
+          {% if p.has_previous %}
+            {% if p.previous_page_number == 1 %}
+              <a href="{% url 'publication-heatmap' group.slug publication.slug %}" class="pagination__button -prev glyphicons chevron-left"></a>
+            {% else %}
+              <a href="{% url 'publication-heatmap' group.slug publication.slug p.previous_page_number %}" class="pagination__button -prev glyphicons chevron-left"></a>
+            {% endif %}
+          {% endif %}
+
+          {% for page_num in range %}
+            {% if page_num == 1 %}
+              <a href="{% url 'publication-heatmap' group.slug publication.slug %}" class="pagination__item{% if page_num == p.number %} -current{% endif %}">{{ page_num }}</a>
+            {% else %}
+              <a href="{% url 'publication-heatmap' group.slug publication.slug page_num %}" class="pagination__item{% if page_num == p.number %} -current{% endif %}">{{ page_num }}</a>
+            {% endif %}
+          {% endfor %}
+
+          {% if p.has_next %}
+            <a href="{% url 'publication-heatmap' group.slug publication.slug p.next_page_number %}" class="pagination__button -next glyphicons chevron-right"></a>
+          {% endif %}
+
+        {% else %}
+
+          {% if p.has_previous %}
+            {% if p.previous_page_number == 1 %}
+              <a href="{% url 'preview-publication-html' group.slug publication.slug %}" class="pagination__button -prev glyphicons chevron-left"></a>
+            {% else %}
+              <a href="{% url 'preview-publication-html-page' group.slug publication.slug p.previous_page_number %}" class="pagination__button -prev glyphicons chevron-left"></a>
+            {% endif %}
+          {% endif %}
+
+          {% for page_num in range %}
+            {% if page_num == 1 %}
+              <a href="{% url 'preview-publication-html' group.slug publication.slug %}" class="pagination__item{% if page_num == p.number %} -current{% endif %}">{{ page_num }}</a>
+            {% else %}
+              <a href="{% url 'preview-publication-html-page' group.slug publication.slug page_num %}" class="pagination__item{% if page_num == p.number %} -current{% endif %}">{{ page_num }}</a>
+            {% endif %}
+          {% endfor %}
+
+          {% if p.has_next %}
+            <a href="{% url 'preview-publication-html-page' group.slug publication.slug p.next_page_number %}" class="pagination__button -next glyphicons chevron-right"></a>
+          {% endif %}
+
+        {% endif %}{% comment %} end is heatmap {% endcomment %}
+
+      {% endif %}{% comment %} end is_custom domain {% endcomment %}
+
+    </div>
+  </nav>
+
+{% else %}
+
+    {% if should_show_draft %}
+
+        {% for article in publication.get_articles.all|dictsort:'order' %}
+            {% if article.has_draft %}
+                {% include "outputs/partials/article.html" with article=article.get_draft %}
+            {% endif %}
+        {% endfor %}
+
+    {% else %}
+        {% for article in publication.get_articles.all|dictsort:'order' %}
+            {% include "outputs/partials/article.html" with article=article %}
+        {% endfor %}
+    {% endif %}
+
+{% endif %}

@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <div class="stage-inner">
+    <header>
+      <h3>Dashboard</h3>
+    </header>
+
+    <h4>Free publications</h4>
+
+    <div class="pure-menu pure-menu-open">
+      <ul>
+        {% for publication in free %}
+          <li><a href="{% url 'preview-publication-html' publication.group.slug publication.slug %}">{{ publication.name }}</a></li>
+        {% endfor %}
+      </ul>
+    </div>
+
+    <h4>Newest publications</h4>
+
+    <div class="pure-menu pure-menu-open">
+      <ul>
+        {% for publication in free %}
+          <li><a href="{% url 'preview-publication-html' publication.group.slug publication.slug %}">{{ publication.name }}</a></li>
+        {% endfor %}
+      </ul>
+    </div>
+
+    <h4>Most popular publications</h4>
+
+    <div class="pure-menu pure-menu-open">
+      <ul>
+        {% for publication in popular %}
+          <li><a href="{% url 'preview-publication-html' publication.group.slug publication.slug %}">{{ publication.name }}</a></li>
+        {% endfor %}
+      </ul>
+    </div>
+
+  </div>
+  </div>
+  {% endblock %}

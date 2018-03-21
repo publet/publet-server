@@ -1,0 +1,37 @@
+<div class="modal" ng-show="addingPublication">
+  <div class="modal-overlay"></div>
+  <div class="modal-container add-publication">
+    <a ng-click="addingPublication=false" type="button" class="glyphicons remove_2"></a>
+    <form name="newPublication" class="pure-form pure-form-stacked" method="post"
+      accept-charset="utf-8" novalidate ng-submit="addPublication()">
+      <div class="modal-body">
+        <fieldset>
+          <div class="pure-control-group">
+            <h2>Publication title</h2>
+            <input ng-model="newPublicationName" placeholder="Add publication title here" id="new-publication-name" type="text" required />
+          </div>
+          <div class="pure-control-group publication-type-field">
+            <h2>Publication type</h2>
+            <select ui-select2 data-placeholder="Type" required ng-model="newPublicationType" id="new-publication-type" class="chzn-select">
+              <option value=""></option>
+              <option ng-repeat="type in type" value="[[ type.resource_uri ]]">[[ type.name ]]</option>
+            </select>
+          </div>
+
+          <div class="pure-control-group publication-theme-field">
+            <h2>Theme</h2>
+            <select required ng-model="newPublicationTheme" ui-select2 data-placeholder="Theme" id="new-publication-theme" class="chzn-select">
+              <option value=""></option>
+              <option ng-repeat="theme in themes" value="[[ theme.resource_uri ]]">[[ theme.name ]]</option>
+            </select>
+          </div>
+        </fieldset>
+      </div>
+      <button id="create-publication-button" type="submit" class="button" ng-disabled="newPublicationDisabled">
+        Create
+      </button>
+      <p ng-show="error">Please specify a publication name, type and theme</p>
+    </form>
+  </div>
+</div>
+

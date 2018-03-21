@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="stage-inner">
+    <header>
+      <h3>{{ publication.name }}</h3>
+    </header>
+    <div class="pure-menu pure-menu-open">
+      {% if publication.status == 'live' and publication.price %}
+        <p><a href="{% url 'payments-purchase' group.slug publication.slug %}">Purchase ${{ publication.price }}</a>
+      {% elif publication.status == 'custom' and publication.price %}
+        <p><a href="{% url 'payments-purchase' group.slug publication.slug %}">Purchase ${{ publication.price }}</a>
+      {% elif publication.status == 'preorder' %}
+        <p><a href="{% url 'payments-preorder' group.slug publication.slug %}">Preorder</a>
+      {% endif %}
+    </div>
+  </div>
+{% endblock %}

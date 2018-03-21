@@ -1,0 +1,10 @@
+#!/usr/bin/env sh
+
+main() {
+    echo "develop has the following migrations that aren't on master"
+    echo ""
+
+    git diff --diff-filter=A --name-only master develop | grep migrations
+}
+
+main

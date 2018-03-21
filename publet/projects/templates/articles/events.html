@@ -1,0 +1,31 @@
+<div class="modal" ng-show="editsVisible">
+  <div class="modal-overlay"></div>
+  <div class="modal-container">
+    <header class="modal-header">
+      <h4>Edits</h4>
+    </header>
+    <form name="saveArticleForm" class="pure-form pure-form-stacked" method="post" accept-charset="utf-8"
+        novalidate ng-submit="save($scope.saveArticleForm); editingArticle=false">
+      <div class="modal-body">
+        <ul>
+          {% for event in events %}
+            <li>
+              {{ event.get_type_display }} by {{ event.created_by.username }}
+              ({{ event.created }})
+            </li>
+          {% empty %}
+            <li>No changes</li>
+          {% endfor %}
+        </ul>
+      </div>
+      <div class="modal-footer group">
+        <div class="pure-controls">
+          <button type="button" ng-click="editsVisible=false"
+            class="pure-button pure-button-green right">
+            OK
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

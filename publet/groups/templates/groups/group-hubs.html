@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div>
+  <header>
+    <h3><a href="/groups/">Groups</a> &raquo;</h3>
+    <h3 class="subheader">{{ group.name }}</h3>
+
+    <div class="flash-message">
+      {% if messages %}
+        {% for message in messages %}
+          <p>{{ message }}</p>
+        {% endfor %}
+      {% endif %}
+    </div>
+
+    <a href="{% url 'group-detail' group.slug %}">back to group detail</a>
+  </header>
+  <div class="row">
+    <div class="eight columns alpha">
+      <a href="{% url 'group-hubs-add' group.slug %}">Add hub</a>
+
+      <p>
+      Existing hubs
+      </p>
+
+      <div class="publications">
+        <div class="pure-menu pure-menu-open">
+          <table>
+            {% for hub in hubs %}
+            <tr class="publication">
+              <td>
+                <a href="{% url 'group-hub-detail' group.slug hub.slug %}">{{ hub.name }}</a>
+              </td>
+              <td>
+                <a target="_blank" href="{% url 'group-hub-live' group.slug hub.slug %}">View</a>
+              </td>
+              <td>
+                <a href="{% url 'group-hub-delete' group.slug hub.slug %}">Delete</a>
+              </td>
+            </tr>
+            {% empty %}
+              <p>None yet</p>
+            {% endfor %}
+          </table>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+{% endblock %}

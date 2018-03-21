@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+
+{% block inline-js %}
+  window.group_id = {{ group.id }};
+{% endblock %}
+
+{% block content %}
+<div>
+  <header>
+    <h3><a href="/groups/">Groups</a> &raquo;</h3>
+    <h3 class="subheader">{{ group.name }}</h3>
+
+    <div class="flash-message">
+      {% if messages %}
+        {% for message in messages %}
+          <p>{{ message }}</p>
+        {% endfor %}
+      {% endif %}
+    </div>
+
+    <a href="{% url 'group-members' group.slug %}">&laquo; back to member list</a>
+  </header>
+  <div class="row">
+    <div class="">
+        <div>
+            <h2>Add new member to group</h2>
+          <form method="post" action=".">
+            {% csrf_token %}
+
+            <input type="hidden" name="action" value="find" />
+
+            Email or username: <input type="text" name="identifier" />
+            <button type="submit">Find user</button>
+
+          </form>
+        </div>
+
+      {% if member %}
+        <h2>Results</h2>
+        <div style="border: 1px solid #000; margin-top: 20px; padding: 20px;">
+
+          <form method="post" action=".">
+            {% csrf_token %}
+
+            <input type="hidden" name="user" value="{{ member.pk }}" />
+            <input type="hidden" name="action" value="add" />
+
+            <p>Found user: {{ member.get_name }} ({{ member.email }})</p>
+
+            <p>
+              Select a role
+              <select name="role">
+                <option>---</option>
+                <option value="O">Owner</option>
+                <option value="E">Editor</option>
+                <option value="C">Contributor</option>
+                <option value="R">Reviewer</option>
+              </select>
+            </p>
+
+            <p>
+              <button type="submit">Add user to group</button>
+            </p>
+
+          </form>
+        </div>
+      {% endif %}
+
+      {% if not_found %}
+        <div style="border: 1px solid #000; margin-top: 20px; padding: 20px;">
+          <p>User not found</p>
+        </div>
+      {% endif %}
+
+    </div>
+  </div>
+</div>
+{% endblock %}

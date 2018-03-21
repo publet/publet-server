@@ -1,0 +1,11 @@
+{% extends "metrics/metrics_base.html" %}
+
+{% block content %}
+
+{% for metric in metrics %}
+<div class="image">
+  <img src="http://metrics.publet.com/render/?width=600&height=300{% for target in metric %}&target={{ INSTALLATION }}.{{ target }}{% endfor %}&from=-{{ hours }}hours&lineMode=connected" />
+</div>
+{% endfor %}
+
+{% endblock %}

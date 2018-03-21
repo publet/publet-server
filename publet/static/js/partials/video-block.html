@@ -1,0 +1,29 @@
+<div video-block class="video-block editor-content-block" crop="block" ng-init="field='preview'">
+  <div ng-show="active">
+    <div class="block-attribute block-icon icon-video-block"><i></i></div>
+    <div class="block-attribute">
+      <select ui-select2 data-placeholder="No template" ng-model="block.flavor">
+        <option value=""></option>
+        <option ng-repeat="flavor in theme.flavors | filter:{type: 'video'}" value="[[ flavor.resource_uri ]]">[[ flavor.name ]]</option>
+      </select>
+    </div>
+    <div ng-show="block.flavor" class="block-attribute block-flavor-label"></div>
+  </div>
+
+  <div ng-show="video_type == 'youtube'" class="block-preview-field">
+    <div youtube-video id="yt-[[ block.id ]]-[[ getVideoId() ]]" class="youtube-video" style="[[ videoStyle ]]">
+      <div id="video-[[ block.id ]]"></div>
+    </div>
+  </div>
+
+  <div ng-show="video_type == 'vimeo'">
+    <div vimeo-video style="[[ videoStyle ]]">
+      <iframe ng-src="[[ getIframeUrl() ]]" width="[[ getVideoWidth() ]]" height="[[ getVideoHeight() ]]" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
+    </div>
+  </div>
+
+  <!--   load editor controls -->
+  <div ng-if="active" ng-include="static + 'js/partials/video-controls.html'"></div>
+  <div ng-include="static + 'js/partials/block-controls.html'"></div>
+
+</div>

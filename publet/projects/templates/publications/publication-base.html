@@ -1,0 +1,93 @@
+{% extends "base.html" %}
+{% load static from staticfiles %}
+
+{% block body-class %}publication-detail{% endblock %}
+{% block inline-js %}
+  window.publication_id = {{ publication.id }};
+  window.group_id = {{ publication.group.id }};
+  window.icons = {
+    text: '{% static "img/icon_text_grey_small.png" %}',
+    photo: '{% static "img/icon_photo_grey_small.png" %}',
+    audio: '{% static "img/icon_audio_grey_small.png" %}',
+    video: '{% static "img/icon_video_grey_small.png" %}'
+  };
+  filepicker.setKey('{{ FILEPICKER_API_KEY }}');
+  window.newStyle = {{ publication.new_style|lower }};
+  window.FP = {
+    write: {
+      policy: "{{ filepicker.write.policy }}",
+      signature: "{{ filepicker.write.signature }}"
+    },
+      read: {
+        policy: "{{ filepicker.read.policy }}",
+        signature: "{{ filepicker.read.signature }}"
+    }
+  };
+{% endblock %}
+
+{% block main %}
+  <div id="publication" publication publication-list-item ng-controller="PublicationController"
+    ng-cloak class="ng-cloak canvas-container">
+
+    <nav class="breadcrumb-publet">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4">
+                    <ol class="breadcrumb">
+                        <li><a href="/">Home</a></li>
+                        <li><a href="{% url 'group-detail' group.slug %}">{{ group.name }}</a></li>
+                    </ol>
+                </div>
+                <div class="col-md-8">
+                    <ul class="nav nav-pills pull-right">
+                        <li role="presentation" class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#"
+                                                                    role="button" aria-haspopup="true"
+                                                                    aria-expanded="false">
+                            Menu<span class="caret"></span></a>
+                            <ul class="dropdown-menu primary-dropdown">
+                                <li><a href="#">Edit Publication</a></li>
+                                <li><a href="#" data-target="#themeModal" data-toggle="modal">Edit Theme</a></li>
+                                <li><a href="#">Edit Gate</a></li>
+                                <li><a href="{{ publication.get_draft_preview_url }}" target="_blank">Preview draft</a></li>
+                                <li><a href="{{ publication.get_share_url }}" target="_blank">Preview</a></li>
+                                {% if page == 'data' %}
+                                  <li><a href="{% url 'publication-detail' group.slug publication.slug %}">Articles</a></li>
+                                {% else %}
+                                  <li><a href="{% url 'publication-detail-data' group.slug publication.slug %}">Data</a></li>
+                                {% endif %}
+
+                                {% if publication.domain %}
+                                  <li><a href="http://{{ publication.domain }}">Live site</a></li>
+                                {% endif %}
+                            </ul>
+                        </li>
+                    </ul>
+                    <div class="saving-indicator pull-right">
+                      <span ng-show="!savingDisabled">Saved [[ publication.modified|timeago ]].</span>
+                      <strong>[[ saveStatus ]]</strong>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12">
+          <h2 id="title">[[ publication.name ]]</h2>
+        </div>
+      </div>
+
+      <div class="stage">
+
+        {% block section %}{% endblock %}
+
+        {% include 'publications/delete-publication.html' %}
+        {% include 'publications/edit-publication.html' %}
+        {% include 'publications/edit-publication-theme.html' %}
+        {% include 'publications/events.html' %}
+        {% include 'articles/add-article.html' %}
+      </div>
+    </section>
+  </div>
+{% endblock %}

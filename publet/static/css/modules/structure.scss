@@ -1,0 +1,554 @@
+/* vim: set noexpandtab: set softtabstop=0: */
+/* modules/structure.scss */
+// Strucure / Nav Bars / Foundation
+
+// Abstract class for glyphicons to extend from.
+%glyphiconsProto {
+	margin-left: 30px;
+	padding-left: 25px;
+	&:before {
+		font-size: 16px;
+	}
+}
+
+// Dropdown menus
+.dropdown {
+	display: inline-block;
+	position: relative;
+
+	&.-active {
+		.dropdown__menu {
+			display: block !important;
+		}
+	}
+}
+.dropdown__trigger {
+	padding: {
+		right: 15px;
+		left: 30px;
+	}
+	position: relative;
+	&:after {
+		content: "";
+		width: 0;
+		height: 0;
+		border-bottom: 6px solid #333;
+		border-left: 6px solid transparent;
+		position: absolute;
+		top: 9px;
+		right: 12px;
+	}
+}
+.dropdown__menu {
+	background-color: $acDropdownMenuBackground;
+	box-sizing: border-box;
+	display: none;
+	padding: 10px;
+	position: absolute;
+	top: 22px;
+	right: 12px;
+	border-top-left-radius: 10px;
+	border-bottom-left-radius: 10px;
+	border-bottom-right-radius: 10px;
+
+	> * {
+		color: $acDropdownMenuText;
+		display: block;
+		padding: 5px;
+
+		// the icons on the left of the text
+		.glyphicons {
+			@extend %glyphiconsProto;
+			&:before {
+				color: $acDropdownMenuText;
+			}
+		}
+	}
+
+	// arrow at the top of the menu
+	/*&:before {*/
+		/*border: {*/
+			/*right: 8px solid transparent;*/
+			/*bottom: 8px solid #555;*/
+			/*left: 8px solid transparent;*/
+		/*}*/
+		/*content: "";*/
+		/*display: block;*/
+		/*height: 18px;*/
+		/*position: absolute;*/
+		/*right: 12px;*/
+		/*top: -26px;*/
+		/*width: 0;*/
+	/*}*/
+
+	// triangle at the top of the menu
+	&:before {
+		border: {
+			bottom: 12px solid #333;
+			left: 12px solid transparent;
+		}
+		content: "";
+		display: block;
+		width: 0;
+		height: 0;
+		position: absolute;
+		right: 0px;
+		top: -12px;
+	}
+}
+
+// Top Bar
+#top-bar {
+	padding: 10px 0 3px 0;
+	position: relative;
+	z-index: 75; // above the focus overlay, which is 50.
+	background-color: $acMainMenuBackground;
+
+	h1 {
+		margin: -5px 30px 0 0;
+	}
+	ul {
+		margin: {
+			top: 5px;
+			bottom: 0;
+		}
+		padding: {
+			top: 5px;
+			left: 0;
+		}
+		li {
+			display: inline-block;
+			font-size: 12px;
+			list-style-type: none;
+			text-transform: uppercase;
+		}
+	}
+	a {
+		color: $acMainMenuLinks;
+		display: block;
+		font-size: 12px;
+		line-height: 1.5em;
+		padding: 5px 20px;
+		text-transform: uppercase;
+		white-space: nowrap;
+		&:before {
+			color: $acMainMenuLinks;
+		}
+		&:hover {
+			color: $acMainMenuLinksHover;
+			&:before {
+				color: $acMainMenuLinksHover;
+			}
+		}
+	}
+	.glyphicons {
+		@extend %glyphiconsProto;
+		margin-left: 15px;
+		&:before {
+			padding-top: 4px;
+		}
+	}
+
+	.groups-list {
+		margin-top: 0;
+		padding-top: 0;
+	}
+	.dropdown__trigger {
+		&:after {
+			border-bottom: 6px solid $acMainMenuLinks;
+			top: 14px;
+			right: 15px;
+		}
+		&:hover {
+			&:after {
+				border-bottom: 6px solid $acMainMenuLinksHover;
+			}
+		}
+	}
+	.dropdown__menu {
+		top: 26px;
+		right: 15px;
+		background-color: #222;
+		padding: 10px 15px;
+		a {
+			color: #ccc;
+			margin: 2px 0;
+			&:hover {
+				color: #fff;
+			}
+		}
+		.glyphicons {
+			&:before {
+				color: #ccc;
+				padding-top: 5px;
+			}
+			&:hover {
+				&:before {
+					color: #fff;
+				}
+			}
+		}
+		&:before {
+			border-bottom: 12px solid $acMainMenuLinks;
+		}
+	}
+	a.logo {
+		background: url(../img/logo.png) left center no-repeat;
+		background-size: 25px;
+		color: $acMainMenuLinks;
+		font-size: 18px;
+		padding-left: 35px;
+		text-decoration: none;
+		text-transform: none;
+
+		&:hover {
+			color: $acMainMenuLinksHover;
+		}
+	}
+	.row {
+		margin-bottom: 0;
+	}
+}
+
+// Article header
+.article__header {
+	background-color: $acArticleHeaderBackground;
+	position: relative;
+	z-index: 74; // right below the main menu, but still above the focus canvas.
+	margin-bottom: 20px;
+
+	#title {
+		color: $acBlack;
+		padding: 20px 0 20px 0;
+	}
+
+	h2 {
+		color: #eee;
+		font-size: 42px;
+		font-weight: 300;
+		margin: 10px 0 30px 0;
+		text-align: left;
+	}
+	a {
+		text-align: left;
+	}
+	.breadcrumb {
+		color: #eee;
+		font-size: 14px;
+		margin: 0;
+		padding: {
+			bottom: 3px;
+			left: 20px;
+		}
+		&:before {
+			color: #fff;
+			font-size: 14px;
+			padding-top: 1px;
+		}
+	}
+	&.fixed {
+		.article__tools {
+			left: 0;
+			position: fixed;
+			top: 0;
+			width: 100%;
+		}
+	}
+}
+
+// Article Tools bar
+.article__tools {
+	background-color: $acToolBarBackground;
+	clear: left;
+	padding: 9px 0 8px 0;
+
+	.controls {
+		font-size: 12px;
+		font-weight: bold;
+		padding-top: 3px;
+		position: relative;
+		& > a {
+			float: right;
+		}
+		.toolsGlyphProto {
+			@extend %glyphiconsProto;
+			margin-left: 15px;
+			color: $acToolBarLinks;
+			&:before {
+				color: $acToolBarLinks;
+			}
+			&:hover {
+				color: $acToolBarLinksHover;
+				&:before {
+					color: $acToolBarLinksHover;
+				}
+			}
+		}
+		.dropdown {
+			float: right;
+			margin-top: -2px;
+			> .glyphicons {
+				@extend .toolsGlyphProto;
+			}
+		}
+		> .glyphicons {
+			@extend .toolsGlyphProto;
+		}
+		.dropdown__menu {
+			z-index: 98; // 99 is modal overlay, 100 modal boxes
+			.glyphicons {
+				@extend %glyphiconsProto;
+				margin-left: 5px;
+				&:before {
+					font-size: 14px;
+					padding-top: 5px;
+				}
+			}
+		}
+		.button {
+			display: inline-block;
+			margin: 0 2px 10px 2px;
+			padding: .75em 1em;
+		}
+		@media only screen and (min-width: 768px) and (max-width: 959px) {
+			text-align: left !important;
+		}
+	}
+	.dropdown__trigger {
+		&:after {
+			border-bottom: 6px solid $acToolBarLinks;
+		}
+		&:hover {
+			&:after {
+				border-bottom: 6px solid $acToolBarLinksHover;
+			}
+		}
+	}
+}
+
+#article-loading-overlay {
+  background:white;
+  position: absolute;
+  z-index: 98; // 99 is modal overlay, 100 modal boxes
+  width: 100%;
+  height: 100%;
+  text-align: center;
+
+  &.ng-enter, &.ng-leave {
+    -webkit-transition:all cubic-bezier(0.250, 0.460, 0.450, 0.940) 0.5s;
+    transition:all cubic-bezier(0.250, 0.460, 0.450, 0.940) 0.5s;
+  }
+
+  &.ng-enter,
+  &.ng-leave.ng-leave-active {
+    opacity:0;
+  }
+
+  &.ng-leave,
+  &.ng-enter.ng-enter-active {
+    opacity:1;
+  }
+}
+
+
+// Stage
+.stage {
+	background: #FFFFFF;
+	-webkit-border-radius: 10px;
+	-moz-border-radius: 10px;
+	border-radius: 10px;
+	margin: {
+		top: 0;
+		bottom: 20px;
+	}
+	.stage-inner {
+		h3 {
+			margin: 10px 0;
+		}
+	}
+
+ a {
+  text-decoration: none;
+  &.control-link {
+		 color: $mid-gray;
+   font-weight: bold;
+   &:hover {
+				color: $dark-gray;
+			}
+		&.glyphicons {
+			 &:before {
+				color: $mid-gray;
+				margin: 0 7px;
+				position: static;
+				vertical-align: top;
+			 }
+		  &:hover:before {
+			 color: $dark-gray;
+			 }
+		 }
+  }
+ }
+
+	textarea {
+		box-sizing: border-box;
+		-moz-box-sizing: border-box;
+		-webkit-box-sizing: border-box;
+		border-radius: 2px;
+		color: $dark-gray;
+		font-family: 'Muli';
+		outline: none;
+  padding: 10px;
+  margin: 7px 0;
+  width: 100%;
+	}
+
+	input {
+		box-shadow: none;
+		color: $dark-gray;
+		font-family: 'Muli', sans-serif, Arial, serif;
+		outline: none;
+		padding: 6px 10px;
+	}
+
+}
+
+// Stage Subheader
+.canvas-container {
+	&.article {
+		padding-bottom: 300px;
+	}
+	.subheader {
+		background: #f3f3f3;
+		-webkit-border-top-left-radius: 10px;
+		-moz-border-radius-topleft: 10px;
+		 border-top-left-radius: 10px;
+		 -webkit-border-top-right-radius: 10px;
+		 -moz-border-radius-topright: 10px;
+		 border-top-right-radius: 10px;
+		 margin-bottom: 20px;
+		 h2 {
+			color: #505050;
+			margin: 0;
+			padding: 20px;
+		 }
+		 a {
+			float: right;
+			font-size: 16px;
+			font-weight: bold;
+			margin: 24px 20px 0 0;
+		 }
+		 .save-bar {
+			border-bottom: 1px solid #F5F5F5;
+			color: #505050;
+			font-size: 11px;
+			padding: 8px 20px;
+		 }
+	}
+}
+
+.article-detail {
+	#title {
+		padding-left: 120px;
+		margin: 0;
+		margin-top: 1em;
+		margin-bottom: 1em;
+	}
+}
+
+// Publication Detail
+.publication-detail {
+	#title {
+	}
+}
+.row-controls {
+	position: absolute;
+	margin-top: -15px;
+	.glyphicons {
+		padding-left: 35px;
+		&:before {
+			color: #444;
+			font-size: 21px;
+		}
+	}
+
+	.edit-article-name {
+		display: inline;
+	}
+}
+#articles-container .article {
+	.row-controls {
+		right: 10px;
+		top: 23px;
+	}
+}
+.dashboard-widget {
+	padding: 20px;
+	text-align: center;
+	color: #fff;
+	font-size: 32px;
+	font-family: 'Open Sans', 'Helvetica Neue', 'Helvetica', sans;
+	margin: 5px 0;
+
+	span {
+		font-size: 62px;
+		font-weight: bold;
+	}
+
+	p {
+		padding: 0;
+		margin: 0;
+	}
+
+	&.black {
+		background-color: #000;
+	}
+
+	&.blue {
+		background-color: $skyBlue;
+	}
+
+	&.red {
+		background-color: $indianRed;
+	}
+}
+
+.data-page-tabs {
+	list-style: none;
+	overflow: auto;
+
+	li {
+		float: left;
+		padding: 5px 15px;
+		border-bottom: 2px solid #000;
+
+		a {
+			color: #333;
+			outline: none;
+
+		}
+
+		&.active {
+			background-color: #ececec;
+
+			a {
+				color: #333;
+			}
+		}
+	}
+}
+
+.reader {
+	.reader-analytics {
+
+		li {
+			margin: 0;
+			padding: 0;
+		}
+	}
+}
+
+
+.saving-indicator {
+  display: inline-block;
+  padding: 8px 0;
+}

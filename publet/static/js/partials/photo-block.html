@@ -1,0 +1,181 @@
+<div photo-block class="photo-block editor-content-block">
+  <div ng-show="active">
+    <div class="block-icon icon-photo-block"><i></i></div>
+    <div class="block-attribute">
+      <select ui-select2 data-placeholder="No template" ng-model="block.flavor">
+        <option value=""></option>
+        <option ng-repeat="flavor in theme.flavors | filter:{type: 'photo'}" value="[[ flavor.resource_uri ]]">[[ flavor.name ]]</option>
+      </select>
+    </div>
+    <div ng-show="block.flavor" class="block-attribute block-flavor-label"></div>
+  </div>
+
+  <div class="row" ng-if="block.grid_type == 'cover'">
+    <textarea style="[[ style_cover_title() ]]" ng-click="block.has_cover_content_title = true" type="text" ng-model="block.cover_content_title" ng-blur-publet="blur()" placeholder="Click to enter cover title text …"></textarea>
+    <div ng-if="active">
+      <select data-placeholder="Font" ng-change="blur()" ng-model="block.cover_font_title">
+        <option value=""></option>
+        <option ng-repeat="font in theme.fonts" value="[[ font.resource_uri ]]">[[ font.name ]]</option>
+      </select>
+      <select data-placeholder="Size" ng-change="blur()" ng-model="block.cover_size_title">
+        <option value=""></option>
+        <option ng-repeat="size in sizes" value="[[ size ]]">[[ size ]]</option>
+      </select>
+      <select data-placeholder="Color" ng-change="blur()" ng-model="block.cover_color_title">
+        <option value=""></option>
+        <option ng-repeat="color in theme.colors" value="[[ color.resource_uri ]]">[[ color.hex ]]</option>
+      </select>
+    </div>
+
+    <textarea style="[[ style_cover_subtitle() ]]" ng-click="block.has_cover_content_subtitle = true" type="text" ng-model="block.cover_content_subtitle" ng-blur-publet="blur()" placeholder="Click to enter coversubtitle text …"></textarea>
+    <div ng-if="active">
+      <select data-placeholder="Font" ng-change="blur()" ng-model="block.cover_font_subtitle">
+        <option value=""></option>
+        <option ng-repeat="font in theme.fonts" value="[[ font.resource_uri ]]">[[ font.name ]]</option>
+      </select>
+      <select data-placeholder="Size" ng-change="blur()" ng-model="block.cover_size_subtitle">
+        <option value=""></option>
+        <option ng-repeat="size in sizes" value="[[ size ]]">[[ size ]]</option>
+      </select>
+      <select data-placeholder="Color" ng-change="blur()" ng-model="block.cover_color_subtitle">
+        <option value=""></option>
+        <option ng-repeat="color in theme.colors" value="[[ color.resource_uri ]]">[[ color.hex ]]</option>
+      </select>
+    </div>
+  </div>
+
+  <div equal-height-captions="['.photo-heading', '.photo-description']"
+    class="photos-container">
+
+    <div ng-if="!active && block.grid_type == 'slideshow'"
+      class="flex_slider flexSliderNotReady"
+      when-ready="flexSliderReady()"
+      ready-check="flexSliderReadyCheck()">
+
+      <flex-slider slide="photo in block.photos track by photo.image_url">
+        <li>
+          <img loaded="flexSliderImageReady($index)" class="imgNotLoaded fade-the-previous-class-out-for-example" ng-src="[[ photo.cropped_image_url ]]" />
+        </li>
+      </flex-slider>
+    </div>
+
+    <div class="block_images blockImagesNotReady"
+      when-ready="blockImagesReady()"
+      ready-check="blockImagesReadyCheck()"
+      ng-class="{
+        'grid-2': (block.grid_type == 'grid' || (active && block.grid_type != 'single' && block.grid_type != 'cover')) && block.grid_size == 2,
+        'grid-3': (block.grid_type == 'grid' || (active && block.grid_type != 'single' && block.grid_type != 'cover')) && block.grid_size == 3 || FIXME && block.alignment != '2',
+        'grid-3': (block.grid_type == 'grid' || (active && block.grid_type != 'single' && block.grid_type != 'cover')) && block.grid_size == 3 || FIXME && block.alignment == '2',
+        'grid-4': (block.grid_type == 'grid' || (active && block.grid_type != 'single' && block.grid_type != 'cover')) && block.grid_size == 4,
+        'grid-5': (block.grid_type == 'grid' || (active && block.grid_type != 'single' && block.grid_type != 'cover')) && block.grid_size == 5,
+        'grid-6': (block.grid_type == 'grid' || (active && block.grid_type != 'single' && block.grid_type != 'cover')) && block.grid_size == 6
+      }">
+
+      <div class="image-container" ng-repeat="photo in block.photos"
+        ng-class="{ 'col-1': block.grid_type == 'grid' || (active && block.grid_type != 'single' && block.grid_type != 'cover') }">
+          <div class="image-wrapper">
+
+            <!--  Caption title -->
+            <div class="row" ng-if="photo.has_caption && active">
+              <textarea placeholder="Click to edit text …" type="text" ng-model="photo.heading" ng-blur-publet="blur()" placeholder="Caption Title"></textarea>
+              <select ui-select2 data-placeholder="Font" ng-change="contentsChanged()" ng-model="photo.heading_font">
+                <option value=""></option>
+                <option ng-repeat="font in theme.fonts" value="[[ font.resource_uri ]]">[[ font.name ]]</option>
+              </select>
+              <select ui-select2 data-placeholder="Size" ng-change="contentsChanged()" ng-model="photo.heading_size">
+                <option value=""></option>
+                <option ng-repeat="size in sizes" value="[[ size ]]">[[ size ]]</option>
+              </select>
+              <select ui-select2 data-placeholder="Color" ng-change="contentsChanged()" ng-model="photo.heading_color">
+                <option value=""></option>
+                <option ng-repeat="color in theme.colors" value="[[ color.resource_uri ]]">[[ color.hex ]]</option>
+              </select>
+              <select ui-select2 data-placeholder="Justification" ng-change="contentsChanged()" ng-model="photo.heading_text_alignment">
+                <option value=""></option>
+                <option ng-repeat="choice in textAlignmentChoices" value="[[ choice.id ]]">[[ choice.name ]]</option>
+              </select>
+            </div>
+
+            <!-- Preview image -->
+            <div style="[[ fullPhotoStyle() ]]" ng-if="!(!active && block.grid_type == 'slideshow')" class="gallery__item" crop="photo">
+              <div ng-if="!active" class="caption-container">
+                <h4 class="photo-heading" when-ready="updateCaptions(); true">[[ photo.heading ]]</h4>
+              </div>
+              <a href>
+                <img
+                  ng-if="photo.cropped_image_url"
+                  loaded="blockImagesImageLoaded($index)"
+                  class="image imgNotLoaded"
+                  ng-class="{'invisible':block.grid_type == 'grid'}"
+                  ng-src="[[ photo.cropped_image_url ]]"
+                  width="[[ sizeInPixels(photo) ]]" />
+
+                <div
+                  ng-if="photo.cropped_image_url && block.grid_type == 'grid'"
+                  class="grid_image"
+                  style="background: url([[ photo.cropped_image_url ]])"></div>
+
+              </a>
+              <div ng-if="!active" class="caption-container">
+                <p class="photo-description caption" when-ready="updateCaptions(); true">[[ photo.description ]]</p>
+              </div>
+            </div>
+
+            <!-- Caption body -->
+            <div class="row" ng-if="photo.has_caption && active">
+              <textarea placeholder="Click to edit text …" ng-model="photo.description" ng-blur-publet="blur()" placeholder="Caption Body"></textarea>
+              <select ui-select2 data-placeholder="Font" ng-change="contentsChanged()" ng-model="photo.description_font">
+                <option value=""></option>
+                <option ng-repeat="font in theme.fonts" value="[[ font.resource_uri ]]">[[ font.name ]]</option>
+              </select>
+              <select ui-select2 data-placeholder="Size" ng-change="contentsChanged()" ng-model="photo.description_size">
+                <option value=""></option>
+                <option ng-repeat="size in sizes" value="[[ size ]]">[[ size ]]</option>
+              </select>
+              <select ui-select2 ng-change="contentsChanged()" data-placeholder="Color" ng-model="photo.description_color">
+                <option value=""></option>
+                <option ng-repeat="color in theme.colors" value="[[ color.resource_uri ]]">[[ color.hex ]]</option>
+              </select>
+              <select ui-select2 data-placeholder="Justification" ng-change="contentsChanged()" ng-model="photo.description_text_alignment">
+                <option value=""></option>
+                <option ng-repeat="choice in textAlignmentChoices" value="[[ choice.id ]]">[[ choice.name ]]</option>
+              </select>
+            </div>
+
+            <div class="row photo-controls" ng-if="active">
+              Photo size
+              <select ui-select2 ng-change="contentsChanged()" data-placeholder="Size" ng-model="photo.size">
+                <option value=""></option>
+                <option ng-repeat="choice in photoSizeChoices" value="[[ choice.id ]]">[[ choice.name ]]</option>
+              </select>
+
+              <a href class="control-link glyphicons" data-js="photo-reorder" title="Drag to reorder"
+                  ng-class="{
+                    'move': block.grid_type == 'grid' || block.grid_type == 'slideshow',
+                    'sorting': block.grid_type != 'grid' && block.grid_type != 'slideshow'
+                  }"><i></i></a>
+              <a href class="control-link glyphicons remove_2" ng-click="removePhoto(photo)"><i></i></a>
+
+              <input ng-if="photo.has_link" type="text" ng-model="photo.link" class="url-field" placeholder="Add Image Link..." ng-blur-publet="blur()" />
+              <div class="dropdown dropdown-attributes">
+                <a href class="dropdown__trigger block-attribute"><i></i></a>
+                <div class="dropdown__menu">
+                  <div class="dropdown-attribute"><input type="checkbox" ng-model="photo.has_caption" ng-checked="photo.has_caption" /><span>Add Caption</span></div>
+                  <div class="dropdown-attribute"><input type="checkbox" ng-model="photo.has_link" ng-checked="photo.has_link" /><span>Link Image</span></div>
+                  <div class="dropdown-attribute"><input type="checkbox" ng-checked="photo.cropped" ng-click="crop()" /><span>Crop Image</span></div>
+                  <div class="dropdown-attribute"><input type="checkbox" ng-change="contentsChanged()" ng-model="photo.trigger_gate" ng-checked="photo.trigger_gate" /><span>Trigger gate</span></div>
+                </div>
+              </div>
+            </div>
+
+
+          </div> <!-- image wrapper end -->
+      </div> <!-- image container end -->
+    </div>
+
+  </div>
+
+  <div ng-include="static + 'js/partials/photo-controls.html'"></div>
+  <div ng-include="static + 'js/partials/block-controls.html'"></div>
+
+</div>

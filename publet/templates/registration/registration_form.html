@@ -1,0 +1,58 @@
+{% extends "registration/registration_base.html" %}
+
+{% block page-title %}Sign up - {{ block.super }}{% endblock %}
+
+{% block body-class %}{{ block.super }}{% endblock %}
+
+{% block content %}
+  <div class="stage-inner" ng-controller="RegistrationController">
+    <form method="post" action="/signup/{% if request.GET.next %}?next={{ request.GET.next }}{% endif %}" class="pure-form pure-form-aligned">
+      <fieldset>
+        <legend><h3>Sign up</h3></legend>
+        {% if form.errors %}
+          {% if form.non_field_errors %}
+            <div class="alert-box round alert">
+              {{ form.non_field_errors }}
+            </div>
+          {% else %}
+          <div class="alert-box round alert">
+            Please fix the errors below.
+          </div>
+          {% endif %}
+        {% endif %}
+        <div class="pure-control-group">
+          <div class="{% if form.errors.username %}error{% endif %}">
+            <label for="id_username">Username</label>
+            {{ form.username }}
+            {{ form.errors.username }}
+          </div>
+        </div>
+        <div class="pure-control-group">
+          <div class="{% if form.errors.email %}error{% endif %}">
+            <label for="id_email">Email address</label>
+            {{ form.email }}
+            {{ form.errors.email }}
+          </div>
+        </div>
+        <div class="pure-control-group">
+          <div class="{% if form.errors.password1 %}error{% endif %}">
+            <label for="id_password1">Password</label>
+            {{ form.password1 }}
+            {{ form.errors.password1 }}
+          </div>
+        </div>
+        <div class="pure-control-group">
+          <div class="{% if form.errors.password2 %}error{% endif %}">
+            <label for="id_password2">Confirm password</label>
+            {{ form.password2 }}
+            {{ form.errors.password2 }}
+          </div>
+        </div>
+        <div class="pure-controls">
+          <button class="pure-button button" type="submit">Sign up</button>
+        </div>
+      </fieldset>
+      {% csrf_token %}
+    </form>
+  </div>
+{% endblock %}

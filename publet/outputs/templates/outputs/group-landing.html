@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+{% load static from staticfiles %}
+
+{% block body-class %}landing-page{% endblock %}
+
+{% block extra_js %}
+<script>
+  window.PB = window.PB || {};
+  window.PB.group_id = {{ group.pk }};
+  window.PB.hub_id = {{ hub.pk }};
+</script>
+{% endblock %}
+
+{% block nav %}
+<nav>
+  <div class="container">
+    <h1><a href="{% url 'group-hub-live' group.slug hub.slug %}">{{ group.name }}</a></h1>
+
+    {% if group.description %}
+      <p>{{ group.description }}</p>
+    {% endif %}
+
+    {% if group.has_logo %}
+      <img src="{{ group.logo_url }}" />
+    {% endif %}
+  </div>
+
+</nav>
+{% endblock %}
+
+{% block content %}
+
+<div id="landing-page-list" class="container">
+
+  <div id="sidebar" class="one-third column">
+    <h3>Sort by</h3>
+
+    <a href="?sort=name" class="pure-button pure-button-primary">Name</a>
+    <a href="?sort=published" class="pure-button pure-button-primary">Publication date</a>
+
+    <h3>Search</h3>
+
+    <form method="get" action="{% url 'group-hub-live-search' group.slug hub.slug %}">
+      <input type="text" name="query" placeholder="Keywords" />
+      <button class="pure-button pure-button-primary" type="submit">Go</button>
+
+    </form>
+  </div>
+
+  <div class="two-thirds column">
+
+    {% if sort %}
+      <p>Sorting by "{{ sort }}".</p>
+    {% endif %}
+
+    {% for publication in publications %}
+      <div class="five columns publication">
+        <a href="{% url 'preview-publication-html' publication.group.slug publication.slug %}">
+          <img src="{{ publication.thumbnail }}" />
+          {{ publication.name }}
+        </a>
+        {% if group.has_publish_dates %}
+          <br>
+          <small>Published {{ publication.published|date:"Y-m-d" }}</small>
+        {% endif %}
+
+        {% if publication.read_more %}
+          <p>{{ publication.read_more }} <a href="{% url 'preview-publication-html' publication.group.slug publication.slug %}">Read more &raquo;</a></p>
+        {% endif %}
+
+      </div>
+    {% endfor %}
+  </div>
+
+</div>
+
+{% endblock %}

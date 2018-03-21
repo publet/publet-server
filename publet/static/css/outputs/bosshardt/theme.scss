@@ -1,0 +1,47 @@
+// Identity styles for Bosshardt Theme
+
+// Colors
+$bgColor: #f2f2f2;
+$color1: #9e1b30; 
+//$color2: ;
+//$color3: ;
+$headingColor: #333; 
+$navColor: #9e1b30;
+$navFontColor: #fff;
+
+// Type
+@import url(https://fonts.googleapis.com/css?family=Open+Sans:400,300);
+$fontBody: 'Open Sans', sans-serif;
+$fontHeading: 'Open Sans', sans-serif;
+$fontSize: 16px;
+$h1Size: 3.75em; // 60px
+$h2Size: 1.5em; // 24px
+$h3Size: 1.3125em; // 21px
+$h4Size: 1.125em; // 18px
+$h5Size: 1.125em; // 18px
+$h6Size: 1.125em; // 18px
+$blockquoteSize: 2em; // 32px
+$lineHeight: 1.5em;
+//$textShadow:;
+
+// Images
+$imageLogo: url(logo.png) no-repeat;
+//$imageBackground:;
+
+// Box styles
+//$borderRadius:;
+//$boxShadow:;
+
+
+// Import partials
+@import 'base';
+@import 'layout';
+@import 'module';
+@import 'state';
+
+
+/* Custom styles */
+header h1 { 
+	background-size: 100%;
+	max-width: 180px;
+}

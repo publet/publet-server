@@ -1,0 +1,37 @@
+<div class="editor-controls">
+  <div ng-show="active">
+    <div class="block-attribute button" ng-click="choosePhotos('photos')" href>Upload Image(s)</div>
+    <select ui-select2 data-placeholder="[[ placeholders.alignment ]]" ng-model="block.alignment" ng-required>
+      <option value=""></option>
+      <option ng-repeat="choice in alignmentChoices" value="[[ choice.id ]]" ng-class="{ngRepeatLastItem: $last}">[[ choice.name ]]</option>
+    </select>
+    <select ui-select2 data-placeholder="[[ placeholders.grid_type ]]" ng-model="block.grid_type" ng-required>
+      <option value=""></option>
+      <option ng-repeat="type in availableGridTypes" value="[[ type.value ]]" ng-class="{ngRepeatLastItem: $last}">[[ type.label ]]</option>
+    </select>
+    <select ui-select2 ng-show="block.grid_type == 'grid'" data-placeholder="[[ placeholders.grid_size ]]" ng-model="block.grid_size" class="grid_size" ng-required>
+      <option value=""></option>
+      <option ng-repeat="size in gridSizes" value="[[ size.value ]]" ng-class="{ngRepeatLastItem: $last}">[[ size.label ]]</option>
+    </select>
+
+    <div class="block-attribute button" href ng-click="block.show_social_link = true">Social link</div>
+
+    <p ng-show="block.show_social_link">
+      <input type="text" value="[[ block.social_link ]]" size="200" />
+    </p>
+
+    <a class="block-attribute button" href ng-click="showSubmitToIntegration()">Submit to integration</a>
+
+    <input ng-show="block.has_metadata" type="text" ng-model="block.meta" class="meta" placeholder="Add Metadata…" />
+    <input ng-show="block.custom_css_classes" type="text" ng-model="block.custom_css_classes" class="custom_css" placeholder="Add CSS Classes" />
+    <div class="dropdown dropdown-attributes">
+      <a href class="dropdown__trigger block-attribute"><i></i></a>
+      <div class="dropdown__menu">
+        <div class="dropdown-attribute"><input type="checkbox" ng-model="block.has_metadata" ng-checked="block.has_metadata" /><span>Add Metadata</span></div>
+        <div class="dropdown-attribute"><input type="checkbox" ng-model="block.custom_css_classes" ng-checked="block.custom_css_classes" /><span>Add CSS Classes</span></div>
+        <div class="dropdown-attribute"><input type="checkbox" ng-model="block.shareable" ng-checked="block.shareable" /><span>Set shareable</span></div>
+        <div class="dropdown-attribute"><input type="checkbox" ng-model="block.full_size" ng-checked="block.full_size" /><span>Display at full size</span></div>
+      </div>
+    </div>
+  </div>
+</div>

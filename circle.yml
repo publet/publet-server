@@ -1,0 +1,21 @@
+machine:
+    python:
+        version: 2.7.3
+
+deployment:
+    staging:
+        branch: develop
+        commands:
+            - fab staging:ci deploy
+
+test:
+    override:
+        - python manage.py test publet.fonts publet.groups publet.outputs publet.payments publet.projects publet.analytics publet.metrics publet.utils publet.reader publet.docs publet.common:
+            environment:
+                DJANGO_SETTINGS_MODULE: publet.settings_circleci
+        - fab jshint
+
+dependencies:
+    override:
+        - pip install -r requirements.txt --exists-action w
+        - npm install -g jshint

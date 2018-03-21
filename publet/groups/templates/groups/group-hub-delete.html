@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div>
+  <header>
+    <h3><a href="/groups/">Groups</a> &raquo;</h3>
+    <h3 class="subheader">{{ group.name }}</h3>
+
+    <div class="flash-message">
+      {% if messages %}
+        {% for message in messages %}
+          <p>{{ message }}</p>
+        {% endfor %}
+      {% endif %}
+    </div>
+
+    <a href="{% url 'group-detail' group.slug %}">back to group detail</a>
+  </header>
+  <div class="row">
+    <div class="eight columns alpha">
+      <h3>Delete {{ hub.name }}</h3>
+
+      <p>Are you sure you want to delete "{{ hub.name }}"?</p>
+
+      <form method="post" action="{% url 'group-hub-delete' group.slug hub.slug %}">
+        {% csrf_token %}
+        <button type="submit" class="pure-button pure-button-primary">
+          Yes, I'm sure
+        </button>
+        <a href="{% url 'group-hubs' group.slug %}" class="pure-button pure-button-red">Get me out of here!</a>
+      </form>
+
+
+    </div>
+  </div>
+</div>
+{% endblock %}

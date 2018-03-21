@@ -1,0 +1,68 @@
+// Identity styles for Tesla Theme
+
+// Colors
+$bgColor: #f2f2f2;
+$color1: #cc0006; 
+$color2: #929284;
+//$color3: ;
+$headingColor: #333; 
+$navColor: #929284;
+$navFontColor: #eee;
+
+// Type
+@import url(https://fonts.googleapis.com/css?family=Open+Sans:400,300);
+$fontBody: 'Open Sans', sans-serif;
+$fontHeading: 'Open Sans', sans-serif;
+$fontSize: 16px;
+$h1Size: 3.75em; // 60px
+$h2Size: 1.5em; // 24px
+$h3Size: 1.3125em; // 21px
+$h4Size: 1.125em; // 18px
+$h5Size: 1.125em; // 18px
+$h6Size: 1.125em; // 18px
+$blockquoteSize: 2em; // 32px
+$lineHeight: 1.5em;
+//$textShadow:;
+
+// Images
+$imageLogo: url(logo.jpg) no-repeat;
+//$imageBackground:;
+
+// Box styles
+//$borderRadius:;
+//$boxShadow:;
+
+
+// Import partials
+@import 'base';
+@import 'layout';
+@import 'module';
+@import 'state';
+
+
+/* Custom styles */
+header {
+	min-height: 57px;
+	.three.columns {
+		height: 1px;
+		position: relative;
+	}
+	h1 {
+		background-position: left top;
+		background-size: 100%;
+		position: absolute; 
+		top: 0; 
+		left: 0;
+		float: left;
+		height: 110px;
+		max-width: 90px;
+		width: 100%;
+		z-index: 3;
+	}
+	@media only screen and (max-width: 767px) {
+		h1 {
+			height: 60px;
+			max-width: 55px;
+		}
+	} 
+}

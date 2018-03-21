@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+
+{% load payments_tags %}
+
+{% block page-title %}{{ publication.name }}{% endblock %}
+{% block nav %}{% endblock %}
+
+{% block main %}
+  <div class="modal">
+    <div class="modal-overlay"></div>
+    <div class="modal-container">
+      <header class="modal-header">
+        <h4>Pre-order &ldquo;{{ publication.name }}&rdquo; for ${{ publication.price }}.</h4>
+      </header>
+      <form class="pure-form pure-form-stacked" method="post" accept-charset="utf-8" method="POST" action=".">
+        {% csrf_token %}
+        <div class="modal-body">
+          {% if purchase_successful %}
+            <p style="color: green;">
+                You've successfully pre-ordered this publication. We'll email you when it's released.
+            </p>
+            <p>
+              <a href="/dashboard/">Go here</a> to view all of your purchases.
+            </p>
+          {% else %}
+            {% if already_purchased %}
+              <p>
+                You've already pre-ordered this publication. We'll email you when it's ready!
+              </p>
+              <p>
+                <a href="/dashboard/">Go here</a> to view all of your purchases.
+              </p>
+            {% else %}
+              <p>Click below to preorder the digital version of &ldquo;{{ publication.name }}&rdquo;. We'll send you an email when the publication becomes available.</p>
+              <script
+                src="https://checkout.stripe.com/v2/checkout.js" class="stripe-button"
+                data-key="{{ STRIPE_PUBLISHABLE_KEY }}"
+                data-amount="{{ publication.price|stripify }}"
+                data-name="{{ publication.name }} (${{ publication.price }})"
+                data-description=""
+                data-currency="usd"
+                data-image="">
+              </script>
+              <div id="wufoo-q7p2s7" style="margin-top: 40px;">
+                Fill out my <a href="http://smartmediacreative.wufoo.com/forms/q7p2s7">online form</a>.
+              </div>
+              <script type="text/javascript">var q7p2s7;(function(d, t) {
+              var s = d.createElement(t), options = {
+              'userName':'smartmediacreative', 
+              'formHash':'q7p2s7', 
+              'autoResize':true,
+              'height':'340',
+              'async':true,
+              'header':'show', 
+              'ssl':true};
+              s.src = ('https:' == d.location.protocol ? 'https://' : 'http://') + 'wufoo.com/scripts/embed/form.js';
+              s.onload = s.onreadystatechange = function() {
+              var rs = this.readyState; if (rs) if (rs != 'complete') if (rs != 'loaded') return;
+              try { q7p2s7 = new WufooForm();q7p2s7.initialize(options);q7p2s7.display(); } catch (e) {}};
+              var scr = d.getElementsByTagName(t)[0], par = scr.parentNode; par.insertBefore(s, scr);
+              })(document, 'script');</script>
+            {% endif %}
+          {% endif %}
+        </div>
+      </form>
+    </div>
+  </div>
+{% endblock %}

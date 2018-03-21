@@ -1,0 +1,33 @@
+<style>
+ a.publication-table-button {
+     width: 24px;
+     font-size: 32px;
+     font-weight: bold;
+     padding: 0;
+ }
+</style>
+<div class="publications ng-cloak" ng-cloak>
+    <div class="pure-menu pure-menu-open">
+        <table id="publications-list">
+            <thead>
+                <th>Content title</th>
+                <th>Status</th>
+                <th>Duplicate</th>
+                <th>Delete</th>
+            </thead>
+            <tbody>
+            <tr class="publication" ng-repeat="publication in publications"
+                ng-controller="PublicationController">
+              <td>
+                <a href="[[ publication.absolute_url ]]">
+                    [[ publication.name ]]
+                </a>
+              </td>
+              <td>[[ publication.status|capitalize ]]</td>
+              <td><a href class="publication-table-button" ng-click="duplicatePublication(publication)">+</a></td>
+              <td><a href class="publication-table-button" ng-click="deletePublication(publication)">x</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

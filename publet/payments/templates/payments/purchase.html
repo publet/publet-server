@@ -1,0 +1,110 @@
+{% extends "base.html" %}
+{% load static from staticfiles %}
+
+{% load payments_tags %}
+
+{% block page-title %}{{ publication.name }}{% endblock %}
+{% block nav %}{% endblock %}
+
+{% block javascript %}
+<script type="text/javascript" src="https://js.stripe.com/v2/"></script>
+<script type="text/javascript" src="{% static 'js/payments.js' %}" charset="utf-8"></script>
+{% endblock %}
+
+{% block inline-js %}
+Stripe.setPublishableKey('{{ STRIPE_PUBLISHABLE_KEY }}');
+{% endblock %}
+
+{% block main %}
+  <div class="modal">
+    <div class="modal-overlay"></div>
+    <div class="modal-container">
+      <header class="modal-header">
+        <h4>Purchase &ldquo;{{ publication.name }}&rdquo;</h4>
+      </header>
+      <form class="pure-form pure-form-stacked" method="post" accept-charset="utf-8" method="POST" action="." id="payment-form">
+        {% csrf_token %}
+        <div class="modal-body">
+          {% if purchase_successful %}
+            <p style="color: green;">
+                You've successfully purchased this publication. <a href="/{{ already_purchased.publication.group.slug }}/{{ already_purchased.publication.slug }}/">Click here</a> to view the publication.
+            </p>
+
+            <a
+              class="send-to-readmill"
+              href="https://readmill.com"
+              data-download-url="{% url 'download-publication-epub' already_purchased.publication.slug %}"
+              data-buy-url="/{{ already_purchased.publication.group.slug }}/{{ already_purchased.publication.slug }}/"
+              data-display="large">Send to Readmill</a>
+
+            <script type="text/javascript">
+              (function() {
+                var st = document.createElement('script'); st.type = 'text/javascript'; st.async = true;
+                st.src = 'https://platform.readmill.com/send.js';
+                var p = document.getElementsByTagName('script')[0]; p.parentNode.insertBefore(st, p);
+              })();
+            </script>
+
+            <p>
+              <a href="/dashboard/">Go here</a> to view all of your purchases.
+            </p>
+          {% else %}
+            {% if already_purchased %}
+              <p>
+                You've already purchased this publication. <a href="/{{ already_purchased.publication.group.slug }}/{{ already_purchased.publication.slug }}/">Click here</a> to view the publication.
+              </p>
+              <p>
+                <a href="/dashboard/">Go here</a> to view all of your purchases.
+              </p>
+
+            {% else %}
+              {% if errors %}
+                <p>{{ errors }}</p>
+              {% endif %}
+
+              <div class="payment-errors"></div>
+
+              <fieldset>
+                <legend>Purchase for ${{ publication.price }}</legend>
+
+                {% if is_anon %}
+                  <p>
+                    Already a Publet user? <a href="{% url 'auth_login' %}?next={% url 'payments-purchase' publication.group.slug publication.slug %}">Log in here</a>
+                  </p>
+                {% endif %}
+
+                {% if is_anon %}
+                  <label for="username">Username</label>
+                  <input type="text" id="username" name="username" value="{{ username }}" />
+
+                  <label for="email">Email</label>
+                  <input type="text" id="email" name="email" value="{{ email }}" />
+
+                  <label for="password">Password</label>
+                  <input type="password" id="password" name="password" />
+
+                  <label for="password2">Password confirm</label>
+                  <input type="password" id="password2" name="password2" />
+                {% endif %}
+
+                <label for="card_number">Card number</label>
+                <input type="text" id="card_number" data-stripe="number" />
+
+                <label for="expires">Expires</label>
+                <input type="text" id="expires" placeholder="mm" data-stripe="exp-month" /> /
+                <input type="text" placeholder="yyyy" data-stripe="exp-year" />
+
+                <label for="cvc">CVC</label>
+                <input type="text" id="cvc" data-stripe="cvc" />
+
+              </fieldset>
+
+              <button class="pure-button pure-button-primary">Buy</button>
+
+            {% endif %}
+          {% endif %}
+        </div>
+      </form>
+    </div>
+  </div>
+{% endblock %}

@@ -1,0 +1,45 @@
+#!/usr/bin/env sh
+
+JS_PATH=publet/static
+
+cat \
+    $JS_PATH/js/polyfills.js \
+    $JS_PATH/js/utility-functions.js \
+    $JS_PATH/js/app.js \
+    $JS_PATH/js/utility-directives.js \
+    $JS_PATH/js/services/storages.js \
+    $JS_PATH/js/blocks.js \
+    $JS_PATH/js/templates.js \
+    $JS_PATH/js/groups.js \
+    $JS_PATH/js/publications.js \
+    $JS_PATH/js/articles.js \
+    $JS_PATH/js/services/api.js \
+    $JS_PATH/js/services/save.js \
+    $JS_PATH/js/theme-editor.js \
+    $JS_PATH/js/video-directives.js \
+    $JS_PATH/js/blocks/photo-block.js \
+    $JS_PATH/js/blocks/text-block.js \
+    $JS_PATH/js/blocks/video-block.js \
+    $JS_PATH/js/blocks/audio-block.js \
+    $JS_PATH/js/interface-modules.js \
+    $JS_PATH/js/interface.js \
+    $JS_PATH/js/theme-editor.js | uglifyjs > $JS_PATH/js/publet.min.js
+
+echo 'Done with publet.min.js'
+
+cat $JS_PATH/js/track.new.js | uglifyjs > $JS_PATH/js/track.new.min.js
+
+# This can be used to produce a deps bundle but it then needs to be edited by
+# hand because javascript.  Sometimes the newlines between files aren't there
+# and it causes syntax errors.
+#
+# cat \
+#     $JS_PATH/components/jquery/dist/jquery.min.js \
+#     $JS_PATH/components/angular/angular.min.js \
+#     $JS_PATH/components/underscore/underscore.js \
+#     $JS_PATH/components/bacon/dist/Bacon.min.js \
+#     $JS_PATH/js/analytics.min.js > $JS_PATH/js/track.deps.js
+
+cat \
+    $JS_PATH/js/track.deps.js \
+    $JS_PATH/js/track.new.min.js > $JS_PATH/js/track.bundle.js

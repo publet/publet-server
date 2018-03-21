@@ -1,0 +1,5 @@
+/etc/init.d/postgresql start
+/etc/init.d/redis start
+/etc/init.d/supervisord start
+
+exit 0;

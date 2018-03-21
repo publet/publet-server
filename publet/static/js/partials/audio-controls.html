@@ -1,0 +1,55 @@
+<div class="editor-controls">
+  <div ng-show="active">
+    <div class="row">
+      <textarea style="[[ style() ]]" ng-show="block.has_caption" ng-model="block.label" ng-blur-publet="blur()" placeholder="Click to edit text …"></textarea>
+      <select ui-select2 data-placeholder="[[ placeholders.font ]]" ng-model="block.font">
+        <option value=""></option>
+        <option ng-repeat="font in theme.fonts" value="[[ font.resource_uri ]]">[[ font.name ]]</option>
+      </select>
+      <select ui-select2 data-placeholder="[[ placeholders.size ]]" ng-model="block.size">
+        <option value=""></option>
+        <option ng-repeat="size in sizes" value="[[ size ]]">[[ size ]]</option>
+      </select>
+      <select ui-select2 data-placeholder="[[ placeholders.text_alignment ]]" ng-model="block.text_alignment">
+        <option value=""></option>
+        <option ng-repeat="choice in textAlignmentChoices" value="[[ choice.id ]]">[[ choice.name ]]</option>
+      </select>
+      <select ui-select2="{formatSelection: formatColorCell, formatResult: formatColorCell, escapeMarkup: escapeMarkup}" data-placeholder="[[ placeholders.color ]]" ng-model="block.color">
+        <option value=""></option>
+        <option ng-repeat="color in theme.colors" value="[[ color.resource_uri ]]">[[ color.hex ]]</option>
+      </select>
+      <select ui-select2 data-placeholder="[[ placeholders.line_height ]]" ng-model="block.line_height">
+        <option value=""></option>
+        <option ng-repeat="height in line_heights" value="[[ height ]]">[[ height ]]</option>
+      </select>
+      <select ui-select2 data-placeholder="[[ placeholders.alignment ]]" ng-model="block.alignment">
+        <option value=""></option>
+        <option ng-repeat="choice in alignmentChoices" value="[[ choice.id ]]">[[ choice.name ]]</option>
+      </select>
+
+      <div class="block-attribute button" href ng-click="block.show_social_links = true">Social links</div>
+
+      <ul ng-show="block.show_social_links">
+        <li ng-repeat="s in block.social">
+          [[ s.name ]] <input type="text" value="[[ s.link ]]" size="200" />
+        </li>
+      </ul>
+    </div>
+
+
+    <div ng-show="active">
+      <input id="audio-url" class="url-field" type="text" ng-model="block.audio_url" placeholder="Audio URL (Soundcloud only)" />
+      <input ng-show="block.has_metadata" type="text" ng-model="block.meta" class="meta" placeholder="Add Metadata…" />
+      <input ng-show="block.custom_css_classes" type="text" ng-model="block.custom_css_classes" class="custom_css" placeholder="Add CSS Classes" />
+      <div class="dropdown dropdown-attributes">
+        <a href class="dropdown__trigger block-attribute"><i></i></a>
+        <div class="dropdown__menu">
+          <div class="dropdown-attribute"><input type="checkbox" ng-model="block.has_caption" ng-checked="block.has_caption" /><span>Add Caption</span></div>
+          <div class="dropdown-attribute"><input type="checkbox" ng-model="block.has_metadata" ng-checked="block.has_metadata" /><span>Add Metadata</span></div>
+          <div class="dropdown-attribute"><input type="checkbox" ng-model="block.custom_css_classes" ng-checked="block.custom_css_classes" /><span>Add CSS Classes</span></div>
+          <div class="dropdown-attribute"><input type="checkbox" ng-model="block.shareable" ng-checked="block.shareable" /><span>Set shareable</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

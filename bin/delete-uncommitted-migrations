@@ -1,0 +1,7 @@
+#!/usr/bin/env sh
+
+main() {
+    git ls-files --others --exclude-standard | grep migrations\/ | xargs rm
+}
+
+main

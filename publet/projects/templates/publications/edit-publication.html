@@ -1,0 +1,78 @@
+<div class="modal" ng-show="editingPublication && !deletingPublication">
+  <div class="modal-overlay"></div>
+  <div class="modal-container">
+    <header class="modal-header">
+      <h4>Edit &ldquo;[[ publication.name ]]&rdquo;</h4>
+    </header>
+    <form name="savePublicationForm" class="pure-form pure-form-stacked" method="post" accept-charset="utf-8"
+        novalidate ng-submit="saveFlat($scope.savePublicationForm)">
+      <div class="modal-body">
+        <fieldset>
+
+          <label style="margin-top: 0;">Name:</label>
+          <input required ng-model="publication.name" type="text" name="name" value="" />
+
+          <label>Status:</label>
+          <select required ng-model="publication.status"
+            ng-options="status.value as status.name for status in statuses">
+            <option style="display:none" value="">------</option>
+          </select>
+
+          <label>Theme:</label>
+          <select required ng-model="publication.theme"
+            ng-options="theme.resource_uri as theme.name for theme in themes">
+            <option style="display:none" value="">------</option>
+          </select>
+
+          <label>Navigation:</label>
+          <select required ng-model="publication.pagination"
+                  ng-options="opt.value as opt.name for opt in paginationChoices">
+            <option style="display:none" value="">------</option>
+          </select>
+
+          <label style="margin-top: 30px;">Add sidebar table of contents</label>
+          <input type="checkbox" ng-model="publication.toc" />
+          <p class="help-text">This adds a sidebar navigation allowing readers to click on any section of your publication.  It will disappear on a small or phone-sized screen.</p>
+
+          <label style="margin-top: 30px;">Custom domain:</label>
+          <input ng-model="publication.domain" type="text" name="domain" value="" />
+          <p class="help-text">Set your domain (or subdomain) CNAME to `beta.publet.com` after setting the above value. Note: you can also set a Publet-hosted subdomain like `something.publet.com` (only for beta).</p>
+
+          <label>Site password (optional):</label>
+          <input ng-model="publication.hosted_password" type="text" name="hosted_password" value="" />
+          <p class="help-text" style="margin-bottom: 0;">If you set a password, users must enter the password before they can access the hosted HTML site (regardless of custom domain).</p>
+
+        </fieldset>
+      </div>
+      <div class="modal-footer group">
+        <div class="pure-controls">
+          <button type="button"
+            class="pure-button pure-button-red left"
+            ng-click="deletingPublication=true">
+            Delete publication
+          </button>
+          <button type="button"
+            class="pure-button"
+            ng-click="duplicatePublication(publication)">
+            Duplicate
+          </button>
+          <button type="button"
+            class="pure-button"
+            ng-click="republish(publication)"
+            ng-show="publication.status == 'custom'">
+            Republish
+          </button>
+          <button type="submit"
+            class="pure-button pure-button-green right"
+            ng-disabled="(publication.status == 'preorder' && (publication.price == null || publication.price == '')) || savePublicationForm.$invalid || savingDisabled">
+            Save
+          </button>
+          <button type="button" ng-click="editingPublication=false"
+            class="pure-button right">
+            Cancel
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

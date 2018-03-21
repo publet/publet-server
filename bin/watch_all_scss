@@ -1,0 +1,13 @@
+#!/usr/bin/env sh
+#
+# Use peat to watch all scss files and recompile them on change
+
+files_to_watch() {
+    find publet/static/css -type f -name "*.scss" -maxdepth 2
+}
+
+main() {
+    echo $(files_to_watch) | ./bin/peat ./bin/compile_site_css
+}
+
+main

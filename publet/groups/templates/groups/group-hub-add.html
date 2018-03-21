@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div>
+  <header>
+    <h3><a href="/groups/">Groups</a> &raquo;</h3>
+    <h3 class="subheader">{{ group.name }}</h3>
+
+    <div class="flash-message">
+      {% if messages %}
+        {% for message in messages %}
+          <p>{{ message }}</p>
+        {% endfor %}
+      {% endif %}
+    </div>
+
+    <a href="{% url 'group-hubs' group.slug %}">back to group hubs</a>
+  </header>
+  <div class="row">
+    <div class="eight columns alpha">
+
+      <form method="post" action="{% url 'group-hubs-add' group.slug %}">
+        <table>
+          {% csrf_token %}
+          {{ form }}
+          <tr>
+            <td></td>
+            <td>Ctrl-click or Cmd-click to select more than one publication,</td>
+          </tr>
+        </table>
+        <button type="submit" class="pure-button pure-button-primary">Save</button>
+      </form>
+
+    </div>
+  </div>
+</div>
+{% endblock %}

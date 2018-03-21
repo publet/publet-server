@@ -1,0 +1,6 @@
+publet/static/js/vendor
+publet/static/js/analytics.min.js
+publet/static/js/track.new.min.js
+publet/static/js/track.deps.js
+publet/static/js/track.bundle.js
+publet/static/js/publet.min.js

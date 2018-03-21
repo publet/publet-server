@@ -1,0 +1,75 @@
+<div class="editor-controls">
+  <div ng-show="active" class="text-controls">
+    <select ui-select2 data-placeholder="[[ placeholders.alignment ]]" ng-model="block.alignment">
+      <option value=""></option>
+      <option ng-repeat="choice in alignmentChoices" value="[[ choice.id ]]">[[ choice.name ]]</option>
+    </select>
+    <select ui-select2 data-placeholder="[[ placeholders.font ]]" ng-model="block.font">
+      <option value=""></option>
+      <option ng-repeat="font in theme.fonts" value="[[ font.resource_uri ]]">[[ font.name ]]</option>
+    </select>
+    <select ui-select2 data-placeholder="[[ placeholders.size ]]" ng-model="block.size">
+      <option value=""></option>
+      <option ng-repeat="size in sizes" value="[[ size ]]">[[ size ]]</option>
+    </select>
+    <select ui-select2 data-placeholder="[[ placeholders.text_alignment ]]" ng-model="block.text_alignment">
+      <option value=""></option>
+      <option ng-repeat="choice in textAlignmentChoices" value="[[ choice.id ]]">[[ choice.name ]]</option>
+    </select>
+    FG: <select ui-select2="{formatSelection: formatColorCell, formatResult: formatColorCell, escapeMarkup: escapeMarkup}" data-placeholder="[[ placeholders.color ]]" ng-model="block.color">
+      <option value=""></option>
+      <option ng-repeat="color in theme.colors" value="[[ color.resource_uri ]]">[[ color.hex ]]</option>
+    </select>
+    BG: <select ui-select2="{formatSelection: formatColorCell, formatResult: formatColorCell, escapeMarkup: escapeMarkup}" data-placeholder="[[ placeholders.color ]]" ng-model="block.background_color">
+      <option value=""></option>
+      <option ng-repeat="color in theme.colors" value="[[ color.resource_uri ]]">[[ color.hex ]]</option>
+    </select>
+    <select ui-select2 data-placeholder="[[ placeholders.line_height ]]" ng-model="block.line_height">
+      <option value=""></option>
+      <option ng-repeat="height in line_heights" value="[[ height ]]">[[ height ]]</option>
+    </select>
+
+    <div class="block-attribute button" href ng-click="block.show_social_link = true">Social link</div>
+
+    <p ng-show="block.show_social_link">
+      <input type="text" value="[[ block.social_link ]]" size="200" />
+    </p>
+
+    <a class="block-attribute button" href ng-click="showSubmitToIntegration()">Submit to integration</a>
+
+    <a class="control-link" ng-show="block.adding_asset || block.assets.length" ng-click="chooseAsset()" href>Add Asset</a>
+
+    <div ng-show="block.has_cta" class="block-attribute">
+      <select>
+        <option value="s">Small</option>
+        <option selected="selected" value="m">Medium</option>
+        <option value="l">Large</option>
+      </select>
+    </div>
+    <div ng-show="block.has_cta" class="block-attribute"><select ng-model="block.color" ng-options="f.resource_uri as f.hex for f in theme.colors"></select></div>
+    <div ng-show="block.has_cta" class="block-attribute">
+      <select>
+        <option>Function</option>
+      </select>
+    </div>
+    <input ng-show="block.has_metadata" type="text" ng-model="block.meta" class="meta" placeholder="Add Metadata…" />
+    <input ng-show="block.custom_css_classes" type="text" ng-model="block.custom_css_classes" class="custom_css" placeholder="Add CSS Classes" />
+    <div class="dropdown dropdown-attributes">
+      <a href class="dropdown__trigger block-attribute"><i></i></a>
+      <div class="dropdown__menu">
+        <div class="dropdown-attribute"><input type="checkbox" ng-model="block.is_indented" ng-checked="block.is_indented" /><span>Indent Block</span></div>
+        <div class="dropdown-attribute"><input type="checkbox" ng-model="block.shareable" ng-checked="block.shareable" /><span>Set shareable</span></div>
+        <div class="separator-line">----------------------</div>
+        <div class="dropdown-attribute"><input type="checkbox" ng-model="block.adding_asset" ng-checked="block.assets.length != 0" /><span>Add File for Download</span></div>
+        <div class="dropdown-attribute"><input type="checkbox" ng-model="block.has_cta" ng-checked="block.has_cta" /><span>Make into Button</span></div>
+        <div class="dropdown-attribute"><input type="checkbox" ng-model="block.is_embed" ng-checked="block.is_embed" /><span>Make into Embed <a href="#" title="This allows you to insert any embed code into the text block and have it render in your publication.">?</a></span></div>
+        <div class="separator-line">----------------------</div>
+        <div class="dropdown-attribute"><input type="checkbox" ng-model="block.has_metadata" ng-checked="block.has_metadata" /><span>Add Metadata</span></div>
+        <div class="dropdown-attribute"><input type="checkbox" ng-model="block.custom_css_classes" ng-checked="block.custom_css_classes" /><span>Add CSS Classes</span></div>
+      </div>
+    </div>
+
+    <a ng-show="featureActive('canned-demo')" class="block-attribute button" href ng-click="showCannedAnalysis($event)">Analyze</a>
+
+  </div>
+</div>

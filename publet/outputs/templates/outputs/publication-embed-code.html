@@ -1,0 +1,4 @@
+{% load static from staticfiles %}
+<iframe id="publet-{{ publication.slug }}" src="{{ HOST }}{% url 'render-publication-iframe' publication.slug %}" frameBorder="0" width="100%"></iframe>
+<script>window.publetPubEl = document.getElementById('publet-{{ publication.slug }}');</script>
+<script src="{% static "js/embed.js" %}" type="text/javascript"></script>

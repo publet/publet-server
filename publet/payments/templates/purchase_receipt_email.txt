@@ -1,0 +1,16 @@
+Hello {{ user }}
+
+{% if type == 'publication' %}
+Name of publication: {{ publication.name }}
+{% if not made_by_admin %}
+{% if publication.price %}
+Price: ${{ publication.price }}
+{% else %}
+Price: free
+{% endif %}
+{% else %}
+{{ bulk.name }}
+{% endif %}
+Read {{ publication.name }} at {{ host }}{% url 'preview-publication-html' publication.group.slug publication.slug %}
+See all of your Publet library at {{ host }}{% url 'reader-dashboard' %}
+{% endif %}

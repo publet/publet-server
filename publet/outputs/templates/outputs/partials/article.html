@@ -1,0 +1,51 @@
+{% load output_tags %}
+
+<article id="article-{{ article.pk }}" class="article-container">
+
+  <a name="{{ article.slug }}"></a>
+  <div class="container">
+    <div class="twelve columns offset-by-two">
+      {% if should_show_draft and article.has_draft %}
+        {% for block in article.get_draft.get_blocks %}
+          {% if block.type == 'text' %}
+            {% include "outputs/partials/text.html" %}
+          {% endif %}
+
+          {% if block.type == 'gallery' %}
+            {% include "outputs/partials/photo.html" %}
+          {% endif %}
+
+          {% if block.type == 'audio' %}
+            {% include "outputs/partials/audio.html" %}
+          {% endif %}
+
+          {% if block.type == 'video' %}
+            {% include "outputs/partials/video.html" %}
+          {% endif %}
+
+        {% endfor %}
+
+      {% else %}
+        {% for block in article.get_blocks %}
+
+          {% if block.type == 'text' %}
+            {% include "outputs/partials/text.html" %}
+          {% endif %}
+
+          {% if block.type == 'gallery' %}
+            {% include "outputs/partials/photo.html" %}
+          {% endif %}
+
+          {% if block.type == 'audio' %}
+            {% include "outputs/partials/audio.html" %}
+          {% endif %}
+
+          {% if block.type == 'video' %}
+            {% include "outputs/partials/video.html" %}
+          {% endif %}
+
+        {% endfor %}
+      {% endif %}
+    </div>
+  </div>
+</article>

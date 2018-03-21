@@ -1,0 +1,94 @@
+/* Module.scss */
+@import 'modules/theme-editor.scss';
+@import 'modules/content-editor.scss';
+@import 'modules/structure.scss';
+@import 'outputs/base/flexslider.css';
+
+.flexslider {
+	.slide-content {
+		position: absolute;
+		top: 35%;
+		width: 100%;
+		@include breakpoint(mobile-landscape) {
+			top: 35%;
+		}
+		@include breakpoint(mobile-portrait) {
+			top: 20%;
+		}
+		@include breakpoint(tablet-portrait) {
+			top: 30%;
+		}
+	}
+	h2 {
+		color: #fff;
+		font-size: em(32px);
+		margin: {
+			right: auto;
+			left: auto;
+		}
+		max-width: 800px;
+		text-align: center;
+		text-shadow: 0 1px 1px rgba(0,0,0, 0.6);
+		width: 80%;
+		@include breakpoint(mobile-portrait) {
+			font-size: em(26px);
+			max-width: 230px;
+		}
+		@include breakpoint(tablet-portrait) {
+			max-width: 650px;
+		}
+	}
+	p {
+		color: #fff;
+		font-size: em(18px);
+		font-weight: 300;
+		margin: {
+			top: 0;
+			right: auto;
+			left: auto;
+		}
+		max-width: 800px;
+		text-align: center;
+		text-shadow: 0 1px 1px rgba(0,0,0, 0.6);
+		width: 80%;
+		@include breakpoint(mobile-portrait) {
+			font-size: em(16px);
+			max-width: 230px;
+		}
+		@include breakpoint(tablet-portrait) {
+			max-width: 650px;
+		}
+	}
+}
+
+.flexslider .slides li {
+	overflow: hidden;
+	text-align: center;
+	img {
+		@include breakpoint(mobile-portrait) {
+			left: 50%;
+			margin-left: -50%;
+		}
+		@include breakpoint(mobile-landscape) {
+			left: inherit;
+			margin-left: 0;
+		}
+	}
+}
+.flex-direction-nav a {
+	color: #fff;
+	text-shadow: 0 1px 1px rgba(0,0,0, 0.6);
+}
+.flex-control-paging {
+	li {
+		a {
+			background: rgba($skyBlue, 0.6);
+		}
+		a:hover {
+			background: rgba($skyBlue, 0.8);
+		}
+		a.flex-active {
+			background: rgba($skyBlue, 1);
+		}
+	}
+}

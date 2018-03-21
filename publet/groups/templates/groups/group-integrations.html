@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div>
+  <header>
+    <h3><a href="/groups/">Groups</a> &raquo;</h3>
+    <h3 class="subheader">{{ group.name }}</h3>
+
+    <div class="flash-message">
+      {% if messages %}
+        {% for message in messages %}
+          <p>{{ message }}</p>
+        {% endfor %}
+      {% endif %}
+    </div>
+
+    <a href="{% url 'group-detail' group.slug %}">back to group detail</a>
+  </header>
+  <div class="row">
+    <div class="eight columns alpha">
+      <a href="{% url 'buffer-oauth-start' %}?group={{ group.slug }}">Add buffer</a>
+
+      <p>
+      Available integrations:
+      </p>
+
+      <div class="publications">
+        <div class="pure-menu pure-menu-open">
+          <table>
+            {% for integration in integrations %}
+            <tr class="publication">
+              <td>
+                <a href="{% url 'integration-detail' integration.slug %}">{{ integration.name }}</a>
+              </td>
+              <td>
+                <a href="{% url 'integration-delete' integration.slug %}">Delete</a>
+              </td>
+            </tr>
+            {% empty %}
+              <p>None yet</p>
+            {% endfor %}
+          </table>
+        </div>
+      </div>
+
+      <h3>Feedback</h3>
+      <form method="post" action=".">
+        {% csrf_token %}
+        {{ form }}
+        <input type="submit" />
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}

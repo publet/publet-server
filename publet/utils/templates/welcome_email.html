@@ -1,0 +1,27 @@
+Hello {{ user.username }},
+
+Welcome to Publet
+
+{% if account_type == 'R' %}
+Free publications:
+
+{% for publication in free %}
+{{ publication.name }} - {{ HOST }}{% url 'preview-publication-html' publication.group.slug publication.slug %}
+{% endfor %}
+
+Newest publications:
+
+{% for publication in newest %}
+{{ publication.name }} - {{ HOST }}{% url 'preview-publication-html' publication.group.slug publication.slug %}
+{% endfor %}
+{% else %}
+You've been subscribed to these groups:
+
+{% for group in groups %}
+{{ group.name }} - {{ HOST }}{% url 'group-detail' group.slug %}
+{% endfor %}
+{% endif %}
+
+Love,
+
+The Publet Team

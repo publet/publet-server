@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="stage-inner">
+    <header>
+      <h3>Are you sure?</h3>
+    </header>
+    <p>Are you sure you want to unsubscribe from <em>{{ group.name }}</em>?</p>
+
+    <div>
+      <form method="post" action=".">
+        {% csrf_token %}
+        <input type="submit" value="Yes, unsubscribe" class="pure-button button" />
+      </form>
+    </div>
+
+  </div>
+{% endblock %}

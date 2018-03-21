@@ -1,0 +1,24 @@
+#!/usr/bin/env sh
+
+# Search all publet javascript for a term.  Exclude all components and vendor
+# files.
+#
+# Usage: ./search_publet_js <term>
+
+if hash ag 2>/dev/null;
+then
+    ag --js -S --ignore-dir trigger --ignore-dir publet/static/js/vendor \
+        --ignore-dir chrome \
+        --ignore-dir "publet/static/components/*" $1
+    exit 0;
+fi
+
+if hash ack 2>/dev/null;
+then
+    ack --type=js --ignore-dir=publet/static/js/vendor \
+        --ignore-dir=publet/static/components --smart-case $1 publet/static/js
+    exit 0;
+fi
+
+grep -ir --exclude-dir trigger --exclude-dir publet/static/js/vendor \
+    --exclude-dir publet/static/components --include=*.js $1 *

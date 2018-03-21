@@ -1,0 +1,148 @@
+<!doctype html>
+<html>
+<head>
+<title>Metrics</title>
+<style type="text/css" media="screen">
+  body {
+    width: 960px;
+    margin: 0 auto;
+    font-family: 'Helvetica Neue', 'Helvetica';
+  }
+  .image {
+    margin: 5px 0;
+  }
+  table {
+    text-align: left;
+    border-collapse: collapse;
+    border-spacing: 0;
+    margin-bottom: 2.5rem;
+  }
+
+  th, td {
+    padding: 12px 15px;
+    text-align: left;
+    border-bottom: 1px solid #E1E1E1;
+  }
+
+  th:first-child, td:first-child {
+    padding-left: 0;
+    min-width: 500px;
+  }
+  th:last-child, td:last-child {
+    padding-right: 0;
+  }
+
+  p {
+    text-align: left;
+  }
+</style>
+</head>
+<body>
+
+<h1>Database metrics</h1>
+
+<h2>Global</h2>
+
+<table>
+  <thead>
+    <th>Metric</th>
+    <th>seconds</th>
+  </thead>
+  <tr>
+    <td>Engaged time per publication (mean)</td>
+    <td>{{ global.engaged_per_pub|floatformat }}</td>
+  </tr>
+  <tr>
+    <td>Engaged time per publication per user (mean)</td>
+    <td>{{ global.engaged_per_pub_user|floatformat }}</td>
+  </tr>
+  <tr>
+    <td>Engaged time per article (mean)</td>
+    <td>{{ global.engaged_per_art|floatformat }}</td>
+  </tr>
+  <tr>
+    <td>Engaged time per article per user (mean)</td>
+    <td>{{ global.engaged_per_art_user|floatformat }}</td>
+  </tr>
+</table>
+
+<h2>Users</h2>
+
+<h3>Active users</h3>
+
+<p>
+  An <i>active user</i> is one that created at least one authenticated request
+  to Publet in the last 30 days.
+</p>
+
+<table>
+  <tr>
+    <td>Number users</td>
+    <td>{{ users.all_users }}</td>
+  </tr>
+  <tr>
+    <td>Number of active users</td>
+    <td>{{ users.active_users }}</td>
+  </tr>
+  <tr>
+    <td>Number of inactive users</td>
+    <td>{{ users.inactive_users }}</td>
+  </tr>
+  <tr>
+    <td>Active user ratio</td>
+    <td>{{ users.active_user_ratio|floatformat }}%</td>
+  </tr>
+</table>
+
+<h3>Average weekly logins</h3>
+
+<p>
+
+  Average number of authenticated requests per user per week
+
+</p>
+
+<table>
+  <thead>
+    <th>Week starting</th>
+    <th>Average number of requests</th>
+  </thead>
+
+  {% for week, val in users.weekly_logins %}
+    <tr>
+      <td>{{ week|date:"Y-m-d" }}</td>
+      <td>{{ val|floatformat:0 }}</td>
+    </tr>
+  {% endfor %}
+</table>
+
+<h2>Publications</h2>
+
+<table>
+  <tr>
+    <td>Average number of publications per group</td>
+    <td>{{ publications.avg_per_group|floatformat }}</td>
+  </tr>
+</table>
+
+
+<h2>Social</h2>
+
+<p>For all publications, for all time</p>
+
+<table>
+  <thead>
+    <th>Service</th>
+    <th>Num of referrals</th>
+  </thead>
+
+  {% for s in global.social %}
+    <tr>
+      <td>{{ s.0|capfirst }}</td>
+      <td>{{ s.1 }}</td>
+    </tr>
+  {% endfor %}
+</table>
+
+</body>
+</html>

@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="stage-inner">
+    <header>
+      <h3>{{ group.name }}</h3>
+    </header>
+    <div class="pure-menu pure-menu-open">
+      {% if group.price %}
+        <p><a href="{% url 'payments-subscribe' group.slug %}">Subscribe ${{ group.price }}</a>
+      {% endif %}
+    </div>
+  </div>
+{% endblock %}

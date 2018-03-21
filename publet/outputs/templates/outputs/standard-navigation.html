@@ -1,0 +1,57 @@
+<nav class="columns omega {% if publication.get_article_titles_character_total > 50 %}five dropdown{% else %}seven{% endif %}">
+  <ul>
+    {% for article in publication.get_articles.all|dictsort:'order' %}
+      <li>
+        {% if pagination == 'h' %}
+          {% if request.is_custom_domain %}
+            {% if group.has_domain %}
+              {% if article.page_number == 1 %}
+                <a href="/{{ publication.slug }}/">{{ article.name }}</a>
+              {% else %}
+                <a href="/{{ publication.slug }}/{{ article.page_number }}"> {{ article.name }}</a>
+              {% endif %}
+            {% else %}
+              {% if article.page_number == 1 %}
+                <a href="/">{{ article.name }}</a>
+              {% else %}
+                <a href="/{{ article.page_number }}"> {{ article.name }}</a>
+              {% endif %}
+            {% endif %}
+          {% else %}
+
+            {% if heatmap %}
+
+              {% if article.page_number == 1 %}
+                <a href="{% url 'publication-heatmap' group.slug publication.slug %}">
+                  {{ article.name }}
+                </a>
+              {% else %}
+                <a href="{% url 'publication-heatmap' group.slug publication.slug article.page_number %}">
+                  {{ article.name }}
+                </a>
+              {% endif %}
+
+            {% else %}
+
+              {% if article.page_number == 1 %}
+                <a href="{% url 'preview-publication-html' group.slug publication.slug %}">
+                  {{ article.name }}
+                </a>
+              {% else %}
+                <a href="{% url 'preview-publication-html-page' group.slug publication.slug article.page_number %}">
+                  {{ article.name }}
+                </a>
+              {% endif %}
+
+            {% endif %}
+
+          {% endif %}
+        {% else %}
+          <a href="#{{ article.slug }}">
+            {{ article.name }}
+          </a>
+        {% endif %}
+      </li>
+      {% endfor %}
+  </ul>
+</nav>

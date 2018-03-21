@@ -1,0 +1,356 @@
+/* modules/theme-editor.scss */
+
+// Theme Editor
+
+.stage .theme-editor {
+    text-align: center;
+    h1 {
+        color: $dark-gray;
+        font-size: 40px;
+        font-weight: 100;
+        letter-spacing: 1px;
+        margin: 20px 0 5px 0;
+        padding-top: 60px;
+    }
+    h2 {
+        color: $mid-gray;
+        font-size: 18px;
+        font-weight: 100;
+        letter-spacing: 3px;
+        margin: 0 0 20px 0;
+    }
+
+    h3 {
+        color: $dark-gray;
+        font-size: 15px;
+        font-weight: 100;
+        letter-spacing: 1px;
+        margin: 30px 0 10px 0;
+        text-transform: uppercase;
+    }
+
+    a.control-link {
+        color: white;
+        margin: 0 auto;
+        cursor: default;
+        &.glyphicons {
+            font-size: 11px;
+            padding-left: 2px;
+            &:hover {
+                color: $dark-gray !important;
+                &:before {
+                    color: $dark-gray !important;
+                }
+            }
+            &:before {
+                color: white;
+                font-size: 10px;
+                margin: 0 3px 0 -3px;
+                padding-top: 2px;
+            }
+        }
+    }
+
+
+    // Colors Field
+    div.colors-field {
+
+        min-height: 120px;
+        margin-top: 40px;
+        &.colors-bases-field {
+            margin: 60px 0 80px 0;
+            div.color-block div.color-border-wrap {
+                height: 55px;
+                width: 55px;
+            }
+        }
+
+        div.color-block {
+            display: inline-block;
+            margin: 0 auto;
+            padding: 0 15px;
+            vertical-align: top;
+            width: 100px;
+
+            &:hover {
+                a, a.glyphicons:before {
+                    color: $mid-gray;
+                }
+            }
+
+            div.color-border-wrap {
+                background: $light-gray;
+                border-radius: 2px;
+                height: 65px;
+                width: 65px;
+                margin: 7px auto;
+                padding: 3px;
+            }
+
+            div.color-square {
+                border-radius: 2px;
+                height: 100%;
+                width: 100%;
+                margin: 0 auto;
+            }
+
+            p {
+                font-size: 12px;
+                margin: 12px 0 5px 0;
+            }
+        }
+    }
+
+
+    div.add-color-controls, .add-text-pattern-controls {
+        margin-top: 15px;
+        font-family: 'Muli';
+        &:hover{
+            span:before {
+                color: $dark-gray;
+            }
+            input {
+                &::-webkit-input-placeholder { color: $dark-gray;}
+                &::-moz-placeholder { color: $dark-gray;} /* firefox 19+ */
+                &:-ms-input-placeholder { color: $dark-gray;} /* ie */
+                &:-moz-placeholder { color: $dark-gray;}
+            }
+        }
+
+        span:before {
+            color: $mid-gray;
+            content: "+";
+            display: inline-block;
+            font-size: 27px;
+            margin-right: -27px;
+            position: relative;
+            width: 20px;
+            z-index: 100;
+        }
+        span.focused {
+            input {
+                border-color: $light-gray;
+                color: $dark-gray;
+            }
+            &:before {
+                color: $dark-gray;
+                content: "#";
+                font-size: 25px;
+            }
+        }
+        input {
+            border-color: white;
+            color: $mid-gray;
+            font-size: 20px;
+            padding-left: 30px;
+            width: 100px;
+            &.pattern-control {
+                width: 200px;
+                text-align: center;
+                font-size: 18px;
+                margin: 20px 0;
+            }
+            &::-webkit-input-placeholder { font-style: normal;}
+            &::-moz-placeholder { font-style: normal;} /* firefox 19+ */
+            &:-ms-input-placeholder { font-style: normal;} /* ie */
+            &:-moz-placeholder { font-style: normal;}
+            &:focus {
+                &::-webkit-input-placeholder { color: $dark-gray;}
+                &::-moz-placeholder { color: $dark-gray;} /* firefox 19+ */
+                &:-ms-input-placeholder { color: $dark-gray;} /* ie */
+                &:-moz-placeholder { color: $dark-gray;}
+            }
+        }
+    }
+
+    //Fonts Field
+
+    .font-block {
+        display: inline-block;
+        vertical-align: top;
+        margin: 5px 10px;
+        min-width: 100px;
+        &:hover {
+            a, a.glyphicons:before {
+                color: $mid-gray;
+            }
+        }
+        p {
+            background-color: $light-gray;
+            border-radius: 2px;
+            margin: 5px 0;
+            padding: 6px 10px;
+        }
+    }
+
+    div#button-field {
+        margin: 40px auto 15px auto;
+        height: 40px;
+    }
+
+    #button-show-font-field {
+        padding: 7px 5px;
+        line-height: 21px;
+        color: $mid-gray;
+        display: block;
+        display: inline-block;
+        height: 30px;
+        margin: 0 auto;
+        font-size: 20px;
+        &:hover {
+            color: $dark-gray;
+        }
+    }
+
+    div.add-fonts-field {
+        min-height: 120px;
+    }
+
+    ul.fonts-list {
+        font-size: 14px;
+        font-style: italic;
+        list-style-type: none;
+        padding-left: 0;
+        margin: 10px auto 5px auto;
+        word-break: hyphen;
+        li {
+            margin: 5px 0;
+        }
+    }
+
+    div.upload-fonts-field {
+        .font-css-field {
+            display: block;
+            margin: 7px auto 0 auto;
+            width: 295px;
+        }
+        a.control-link {
+            margin-top: 15px;
+            color: $mid-gray;
+            &:before {
+                color: $mid-gray;
+            }
+        }
+
+        ul.uploaded-fonts-list {
+            font-size: 14px;
+            font-style: italic;
+            list-style-type: none;
+            padding-left: 0;
+            margin: 10px auto 5px auto;
+            width: 295px;
+            word-break: hyphen;
+            li {
+                margin: 5px 0;
+            }
+        }
+    }
+
+    .button {
+        background-color: $mid-gray;
+        color: #FFFFFF;
+        box-shadow: none;
+        border-color: $mid-gray;
+        border-radius: 2px;
+        font-size: 16px;
+        margin: 0;
+        padding: 6px 10px;
+        text-shadow: none;
+        &#button-save-font {
+            display: none;
+            font-size: 18px;
+            margin: 0 auto;
+            padding: 6px 15px;
+        }
+        &#save-theme-button {
+            font-size: 22px;
+            margin-bottom: 100px;
+            margin-top: 20px;
+        }
+        &:hover {
+            background-color: $dark-gray;
+            border-color: $dark-gray;
+        }
+    }
+
+    //Flavor Editor
+
+    .add-patterns-field {
+        div.flavor-editor, div.flavor-load-field {
+            display: inline-block;
+        }
+
+        .pattern-field {
+
+            margin: 15px 15px;
+            &:hover {
+                a, a.glyphicons:before {
+                    color: $mid-gray;
+                }
+            }
+        }
+
+        .block-attribute {
+            background-color: $light-gray;
+            border-radius: 2px;
+            display: inline-block;
+            margin: 4px 1px;
+            &.button {
+                background-color: $mid-gray;
+                color: #FFFFFF;
+                box-shadow: none;
+                font-size: 15px;
+                padding: 6px 10px;
+                text-shadow: none;
+                &:hover {
+                    background-color: $dark-gray;
+                }
+            }
+            select {
+                background-color: transparent;
+                border: 0;
+                border-radius: 0;
+                color: $mid-gray;
+                font-family: 'Muli', sans-serif, Arial, serif;
+                font-size: 15px;
+                padding: 6px 10px;
+                -webkit-appearance: none;
+                outline: none;
+            }
+        }
+        div.block-flavor-label {
+            background-color: inherit;
+            color: $mid-gray;
+            font-size: 13px;
+            letter-spacing: 1px;
+            margin-right: 7px;
+            text-transform: uppercase;
+
+            h3 {
+                display: inline-block;
+            }
+
+            a {
+                font-size: 10px;
+            }
+
+        }
+
+        div.row {
+            margin-top: 5px;
+            margin-bottom: 10px;
+        }
+
+    }
+
+    //CSS and JS Blocks
+    textarea {
+        border: 1px solid $light-gray;
+        color: $dark-gray;
+        line-height: 1.25em;
+        margin: 10px;
+        max-width: 90%;
+        font-family: monospace;
+    }
+
+}

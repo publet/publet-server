@@ -1,0 +1,14 @@
+{% extends "admin/base_site.html" %}
+
+{% block content %}
+
+<p>Choose a new group for the publication "{{ publication.name }}".</p>
+
+<form method="post">
+  {% csrf_token %}
+  {{ form }}
+
+  <input type="submit" value="Submit" />
+</form>
+
+{% endblock %}

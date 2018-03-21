@@ -1,0 +1,15 @@
+<div class="modal" ng-show="pdfImportActive">
+  <div class="modal-overlay"></div>
+  <div class="modal-container add-article">
+    <a ng-click="pdfImportActive=false" type="button" class="glyphicons remove_2"></a>
+      <div class="modal-body">
+        <div class="pure-control-group article-type-field">
+          <h2>Import a PDF to populate the publication</h2>
+        </div>
+      </div>
+      <button id="create-publication-button" ng-click="selectPdfForImport()" type="submit" class="button">
+        Select file
+      </button>
+    </form>
+  </div>
+</div>

@@ -1,0 +1,30 @@
+#!/usr/bin/env sh
+
+set -e
+
+UPLOAD_SCRIPT_PATH=/opt/publet/apps/publet/bin/upload_file_to_s3.py
+PYTHON_CMD=/opt/publet/venvs/publet/bin/python
+BACKUP_DIR=/opt/publet/backups
+
+ENV_NAME={{ pillar.env_name }}
+
+DATE=`date +%Y%m%d-%H%M%S`
+FILE="$BACKUP_DIR/pgdump-$ENV_NAME-$DATE.sql"
+
+sudo pg_dump -U postgres publet > $FILE
+
+tar -czf $FILE.tar.gz $FILE
+
+# Once we have the archive, get rid of the huge .sql file
+rm $FILE
+
+if [ ! -e $UPLOAD_SCRIPT_PATH ]
+then
+    echo "Upload script not present."
+    exit 1;
+fi
+
+$PYTHON_CMD $UPLOAD_SCRIPT_PATH publet-postgres-backups $FILE.tar.gz
+
+# Remove oldest backup file
+rm -f $BACKUP_DIR/`ls -L $BACKUP_DIR | head -n 2 | tail -n 1`

@@ -1,0 +1,26 @@
+<div class="modal" ng-show="deleteState.deletingBlock">
+  <div class="modal-overlay"></div>
+  <div class="modal-container">
+    <header class="modal-header">
+      <h4>Delete block</h4>
+    </header>
+    <div class="modal-body">
+      <p>Are you sure you want to delete this block?</p>
+
+    </div>
+    <div class="modal-footer group">
+      <div class="pure-controls">
+        <button type="button"
+          class="pure-button left"
+          ng-click="deleteState.deletingBlock=false">
+          Cancel
+        </button>
+        <button type="button"
+          class="pure-button pure-button-red right"
+          ng-click="_removeBlock()">
+          Delete
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

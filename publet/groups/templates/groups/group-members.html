@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+
+{% block inline-js %}
+  window.group_id = {{ group.id }};
+{% endblock %}
+
+{% block content %}
+<div>
+  <header>
+    <h3><a href="/groups/">Groups</a> &raquo;</h3>
+    <h3 class="subheader">{{ group.name }}</h3>
+
+    {% if messages %}
+        <div class="flash-message">
+            {% for message in messages %}
+                <p>{{ message }}</p>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    <a href="{% url 'group-detail' group.slug %}">back to group detail</a>
+  </header>
+  <div class="row">
+    <div class="">
+      {% if can_edit_members %}
+        <a class="pure-button pure-button-primary" href="{% url 'group-members-add' group.slug %}">Add a new member</a>
+      {% endif %}
+
+      <div>
+        <h2>Existing members</h2>
+        <div class="pure-menu pure-menu-open">
+          <table>
+            {% for member in current_members %}
+            <tr class="publication">
+              <td>
+                <a href>{{ member.user.get_name }}</a>
+              </td>
+              <td>
+                {{ member.get_role_display }}
+              </td>
+              <td>
+                {% if can_edit_members %}
+                  <a href="{% url 'group-members-delete' group.slug member.user.pk %}">Remove user from group</a>
+                {% endif %}
+              </td>
+              <td>
+                {% if can_edit_members %}
+                  <a href="{% url 'group-members-change' group.slug member.user.pk %}">Change permission</a>
+                {% endif %}
+              </td>
+            </tr>
+            {% empty %}
+              <p>None yet</p>
+            {% endfor %}
+          </table>
+        </div>
+      </div>
+
+      {% if can_invite_users %}
+
+        <div ng-controller="InviteByEmailController">
+          <h2>Invite people to this group via email</h2>
+          <p>
+            Select a user type:
+            <select ng-model="userType" ng-options="type.value as type.name for type in typeOptions"></select>
+          </p>
+          <p class="error" ng-show="!valid">Invalid CSV data</p>
+          <p ng-show="done">Saved!</p>
+          <textarea cols="30" rows="10" ng-model="users" placeholder="first name,last name,email"></textarea>
+          <p>
+            <input ng-click="inviteUsers()" type="submit" value="Submit" class="pure-button" />
+          </p>
+        </div>
+
+      {% endif %}
+
+    </div>
+  </div>
+</div>
+{% endblock %}

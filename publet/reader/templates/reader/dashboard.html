@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <div class="stage-inner">
+    <header>
+      <h3>Dashboard</h3>
+    </header>
+    <div class="pure-menu pure-menu-open">
+      <ul>
+        {% for purchase in purchases %}
+        <li>
+
+          {% if purchase.purchase_type == 'publication' %}
+
+            <a href="{% url 'preview-publication-html' purchase.publication.group.slug purchase.publication.slug %}">
+              Purchase - {{ purchase.publication.name }}
+              {% if purchase.publication.status == 'preorder' %}
+                (pre-ordered)
+              {% endif %}
+            </a>
+
+          {% elif purchase.purchase_type == 'subscription' %}
+
+            <a href="{% url 'profile-detail' purchase.group.slug %}">
+            Subscription -
+              {{ purchase.group.name }}
+            </a>
+
+          {% else %}
+
+          {% endif %}
+
+
+        </li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+  </div>
+  {% endblock %}
