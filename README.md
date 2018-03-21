@@ -8,3 +8,9 @@ Publet
 * [How to write an awesome ticket](https://gitlab.com/publet/publet/blob/master/docs/how-to-write-an-awesome-ticket.md)
 * [QA](https://gitlab.com/publet/publet/blob/master/docs/qa.md)
 * [Developer guidelines](https://gitlab.com/publet/publet/blob/master/docs/developer-guidelines.md)
+
+License
+-------
+
+You may use this software under the terms of the General Public License version
+3 (GPLv3).
